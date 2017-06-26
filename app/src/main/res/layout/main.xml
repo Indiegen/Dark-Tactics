@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+	android:layout_gravity="center"
+
+    android:orientation="vertical" >
+
+	<ImageView
+		android:id="@+id/logo"
+		android:layout_width="wrap_content"
+		android:layout_height="100dp"
+		android:padding="10sp"
+		android:contentDescription="logo"
+		android:src="@drawable/logo" 
+	/>
+
+	<ImageView
+		android:id="@+id/images"
+		android:layout_width="wrap_content"
+		android:layout_height="200dp"
+		android:contentDescription="start"
+		android:src="@drawable/indiegen" 
+	/>
+	<Button
+		android:id="@+id/button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:text="@string/start"/>
+
+	<TextView
+		android:id="@+id/tutorial"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:padding="10sp"
+		android:text="@string/tutorial"
+		android:textSize="20sp"/>
+	
+	<TextView
+		android:id="@+id/funding"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center"
+		
+		android:padding="10sp"
+		android:text="@string/link"
+		android:textSize="20sp"/>
+	
+	
+</LinearLayout>
