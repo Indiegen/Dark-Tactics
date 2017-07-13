@@ -44,13 +44,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         start = (ImageView) findViewById(R.id.images);
         start.setOnClickListener(this);
 
-        //Intent i = new Intent(this,juego.class);
-        //startActivity(i);
     }
 
     @Override
     protected void onPause() {
-        // TODO: Implement this method
         super.onPause();
         player.pause();
 
@@ -58,7 +55,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onResume() {
-        // TODO: Implement this method
         super.onResume();
 
         player.start();
