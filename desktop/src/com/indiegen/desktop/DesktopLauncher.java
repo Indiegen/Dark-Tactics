@@ -2,13 +2,13 @@ package com.indiegen.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.indiegen.game.MyGdxGame;
+import com.indiegen.game.DarkTactics;
 
 public class DesktopLauncher {
 
     public static void main (String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        new LwjglApplication(new MyGdxGame(), config);
+        new LwjglApplication(new DarkTactics(), config);
     }
 
 }

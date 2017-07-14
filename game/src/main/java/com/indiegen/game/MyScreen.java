@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.indiegen.game.utils.Assets;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -500,12 +501,17 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                     rect.hasTarget = false;
                 }
 
-                if (maps.getMap()[(int) rect.getX() / margin][(int) rect.getY() / margin] == 3 ||
-                        maps.getMap()[(int) rect.getX() / margin][(int) rect.getY() / margin] == 6) {
+                try{
+                    if (maps.getMap()[(int) rect.getX() / margin][(int) rect.getY() / margin] == 3 ||
+                            maps.getMap()[(int) rect.getX() / margin][(int) rect.getY() / margin] == 6) {
 
-                    rect.setColor(new Color(1, 0, 0, .2f));
-                    rect.isEnable = false;
+                        rect.setColor(new Color(1, 0, 0, .2f));
+                        rect.isEnable = false;
+                    }
+                } catch (ArrayIndexOutOfBoundsException excepcion){
+
                 }
+
             }
         }
     }
