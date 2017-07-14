@@ -25,6 +25,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.indiegen.game.actors.Blood;
+import com.indiegen.game.actors.HealthBar;
 import com.indiegen.game.utils.AssetsManager;
 import com.indiegen.game.utils.Constants;
 

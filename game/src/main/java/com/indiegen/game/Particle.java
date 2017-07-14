@@ -60,7 +60,7 @@ public class Particle {
         return Alpha;
     }
 
-    Particle(MyActor actor) {
+    public Particle(MyActor actor) {
         this.actor = actor;
         rand = new RandomXS128();
         pos = new Vector2(actor.getX() + actor.getWidth() / 2, actor.getY() + actor.getHeight() / 2);
@@ -77,7 +77,7 @@ public class Particle {
 
     }
 
-    void animate(float x) {
+    public void animate(float x) {
 
         delta += Gdx.graphics.getDeltaTime();
 

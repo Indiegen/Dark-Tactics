@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.indiegen.game.actors.CloseUp;
+import com.indiegen.game.actors.HealthBar;
 import com.indiegen.game.utils.AssetsManager;
 
 public class Ui {
@@ -34,7 +36,7 @@ public class Ui {
     TextButton moveButton;
     TextButton guardButton;
     TextButton itemButton;
-    HealthBar HealthBar;
+    com.indiegen.game.actors.HealthBar HealthBar;
     Message message;
     CloseUp closeUp;
     Texture guard;
