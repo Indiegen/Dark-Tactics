@@ -4,23 +4,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.indiegen.game.utils.Assets;
+import com.indiegen.game.utils.AssetsManager;
 
 public class CloseUp extends Actor {
 
-    ShapeRenderer shape;
-    Texture closeUp;
-    Assets assets;
+    private Texture closeUp;
 
-    public CloseUp(Assets assets) {
-        this.assets = assets;
-        closeUp = assets.heroCloseUp;
-
+    public CloseUp() {
+        closeUp = AssetsManager.getHeroCloseUp();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
         batch.draw(closeUp, 0, 0, 64, 64);
     }
 }

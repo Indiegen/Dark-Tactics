@@ -25,7 +25,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.indiegen.game.utils.Assets;
+import com.indiegen.game.utils.AssetsManager;
+import com.indiegen.game.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -103,7 +104,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         actors.add(new stdEnemy(enemyTexture, margin * 10, margin * 6, "2"));
         actors.add(new stdEnemy(enemyTexture, margin * 5, margin * 5, "3"));
         actors.add(new stdEnemy(enemyTexture, margin * 3, margin, "4"));
-        actors.add(new KingSkeleton(assets.kingSkeleton, margin * 18, margin * 6, "Boss"));
+        actors.add(new KingSkeleton(AssetsManager.getKingSkeleton(), margin * 18, margin * 6, "Boss"));
 
         for (MyActor actor : actors) {
             stage.addActor(actor);
@@ -130,7 +131,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                 actingActor = player;
                 player.setFatigue(30);
 
-                assets.potionSound.play();
+                AssetsManager.getPotionSound().play();
                 //thisGame.setScreen(new MyScreen(thisGame,batch));
             }
         }
@@ -205,7 +206,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
     }
 
     private Game thisGame;
-    private Assets assets;
+    private AssetsManager assets;
     private Batch batch;
     private ShapeRenderer shape;
     Texture texture;
@@ -223,8 +224,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
     private Stage uiStage;
 
     int margin;
-    private int hmiHeight = 1440;
-    private int hmiWidth = 2560;
+
     private float currentZoom = 1;
     private float newZoom = 1;
 
@@ -246,26 +246,23 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         this.batch = batch;
 
         touchVec = new Vector3();
-        hmiHeight = 640;
-        hmiWidth = 360;
         margin = 64;
-        camera = new OrthographicCamera(hmiWidth, hmiHeight);
-        Viewport viewport = new FitViewport(hmiWidth, hmiHeight, camera);
-        Viewport uiViewport = new FitViewport(hmiWidth, hmiHeight);
+        camera = new OrthographicCamera(Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        Viewport viewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT, camera);
+        Viewport uiViewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT);
         stage = new Stage(viewport);
         uiStage = new Stage(uiViewport);
         viewport.apply();
         Table table = new Table();
         table.setFillParent(true);
         uiStage.addActor(table);
-        assets = new Assets();
 
-        music1 = assets.music2;
+        music1 = AssetsManager.getMusic();
 
 
-        texture = assets.texture;
-        playerTexture = assets.hero21;
-        enemyTexture = assets.enemy;
+        texture = AssetsManager.getTexture();
+        playerTexture = AssetsManager.getHero21();
+        enemyTexture = AssetsManager.getEnemy();
         healthBar = new HealthBar();
 
         shape = new ShapeRenderer();
@@ -290,14 +287,14 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
 
         font = new BitmapFont();
-        ui = new Ui(this, assets);
+        ui = new Ui(this);
 
-        ui.getAttackButton().setPosition(hmiWidth - margin, 0);
-        ui.getMoveButton().setPosition(hmiWidth - margin * 2, 0);
-        ui.getGuardButton().setPosition(hmiWidth - margin, 64);
-        ui.getItemButton().setPosition(hmiWidth - margin * 2, 64);
+        ui.getAttackButton().setPosition(Constants.APP_WIDTH - margin, 0);
+        ui.getMoveButton().setPosition(Constants.APP_WIDTH - margin * 2, 0);
+        ui.getGuardButton().setPosition(Constants.APP_WIDTH - margin, 64);
+        ui.getItemButton().setPosition(Constants.APP_WIDTH - margin * 2, 64);
 
-        mydialog = new MyDialog(this, uiStage, assets);
+        mydialog = new MyDialog(this, uiStage);
 
         mydialog.welcome().show();
 
@@ -310,10 +307,8 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         table.addActor(ui.getGuardButton());
         table.addActor(ui.getItemButton());
 
-
         initScreen();
-        maps = new Maps(assets);
-
+        maps = new Maps();
 
     }
 
@@ -401,7 +396,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
 
             uiStage.getBatch().begin();
-            uiStage.getBatch().draw(actor.getTurnTexture(), hmiWidth - 34 - sangria, hmiHeight - 16 - 48 * turn, 32, 32);
+            uiStage.getBatch().draw(actor.getTurnTexture(), Constants.APP_WIDTH - 34 - sangria, Constants.APP_HEIGHT - 16 - 48 * turn, 32, 32);
             sangria = 0;
 
             //font.setColor(Color.RED);
@@ -501,14 +496,14 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                     rect.hasTarget = false;
                 }
 
-                try{
+                try {
                     if (maps.getMap()[(int) rect.getX() / margin][(int) rect.getY() / margin] == 3 ||
                             maps.getMap()[(int) rect.getX() / margin][(int) rect.getY() / margin] == 6) {
 
                         rect.setColor(new Color(1, 0, 0, .2f));
                         rect.isEnable = false;
                     }
-                } catch (ArrayIndexOutOfBoundsException excepcion){
+                } catch (ArrayIndexOutOfBoundsException excepcion) {
 
                 }
 
@@ -594,7 +589,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                         actor.setPlayerState(stdPlayerState.ATTACKING);
                         //enemy.setHP(enemy.getHP()-player.getAttack());
                         //assets
-                        assets.swordAttackSound.play();
+                        AssetsManager.getSwordAttackSound().play();
                         actor.setFatigue(50);
                         blood.createBlood(player);
                         return;
@@ -617,7 +612,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                     actor.setDir(0);
                 }
                 actor.setPlayerState(stdPlayerState.MOVING);
-                assets.walkSound.play();
+                AssetsManager.getWalkSound().play();
                 //ready.remove(0);
                 actor.setFatigue(20);
 
@@ -649,7 +644,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
 
                         player.setPlayerState(stdPlayerState.MOVING);
-                        assets.walkSound.play();
+                        AssetsManager.getWalkSound().play();
                         player.setFatigue(player.WALK);
 
 
@@ -669,7 +664,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                                 actor.setPlayerState(stdPlayerState.BEING_HITTING);
                                 player.setPlayerState(stdPlayerState.ATTACKING);
                                 //enemy.setHP(enemy.getHP()-player.getAttack());
-                                assets.swordAttackSound.play();
+                                AssetsManager.getSwordAttackSound().play();
                                 blood.createBlood(actor);
                                 if (actor.getX() > player.getX()) {
                                     player.setDir(1);
@@ -797,7 +792,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 // and 96 is the "distance"  
 // Experiment with this value between based on your DarkTactics resolution
 // my lights are 8 up to 128 in distance
-        //float tw=assets.light.getWidth();
+        //float tw=AssetsManager.getLight().getWidth();
 
 // make sure the center is still the center based on the "distance"
         float tw = camera.viewportWidth * newZoom;
@@ -807,22 +802,22 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
 
 // and render the sprite
-        batch.draw(assets.light, camera.position.x - assets.light.getWidth() / 2, camera.position.y - assets.light.getHeight() / 2, assets.light.getWidth(), assets.light.getHeight());
-        batch.draw(assets.light, 64 * 3 - lightSize / 4 - 32, -lightSize / 4 - 32, lightSize, lightSize);
-        batch.draw(assets.light, 0 - lightSize / 4 - 32, 64 * 6 - lightSize / 4 - 32, lightSize, lightSize);
-        batch.draw(assets.light, 64 * 4 - lightSize / 4 - 32, 64 * 2 - lightSize / 4 - 32, lightSize, lightSize);
-        batch.draw(assets.light, 64 * 6 - lightSize / 4 - 32, 64 * 3 - lightSize / 4 - 32, lightSize, lightSize);
+        batch.draw(AssetsManager.getLight(), camera.position.x - AssetsManager.getLight().getWidth() / 2, camera.position.y - AssetsManager.getLight().getHeight() / 2, AssetsManager.getLight().getWidth(), AssetsManager.getLight().getHeight());
+        batch.draw(AssetsManager.getLight(), 64 * 3 - lightSize / 4 - 32, -lightSize / 4 - 32, lightSize, lightSize);
+        batch.draw(AssetsManager.getLight(), 0 - lightSize / 4 - 32, 64 * 6 - lightSize / 4 - 32, lightSize, lightSize);
+        batch.draw(AssetsManager.getLight(), 64 * 4 - lightSize / 4 - 32, 64 * 2 - lightSize / 4 - 32, lightSize, lightSize);
+        batch.draw(AssetsManager.getLight(), 64 * 6 - lightSize / 4 - 32, 64 * 3 - lightSize / 4 - 32, lightSize, lightSize);
         batch.end();
 
         stage.getBatch().begin();
         stage.getBatch().setColor(0.9f, 0.9f, .9f, 1f);
-        stage.getBatch().draw(assets.light, camera.position.x - assets.light.getWidth() / 2, camera.position.y - assets.light.getHeight() / 2, assets.light.getWidth(), assets.light.getHeight());
+        stage.getBatch().draw(AssetsManager.getLight(), camera.position.x - AssetsManager.getLight().getWidth() / 2, camera.position.y - AssetsManager.getLight().getHeight() / 2, AssetsManager.getLight().getWidth(), AssetsManager.getLight().getHeight());
         //stage.getBatch().setColor(0.9f, 0.0f, .0f, 1f);
-        stage.getBatch().draw(assets.light, 64 * 3 - lightSize / 4 - 32, -lightSize / 4 - 32, lightSize, lightSize);
-        stage.getBatch().draw(assets.light, 0 - lightSize / 4 - 32, 64 * 6 - lightSize / 4 - 32, lightSize, lightSize);
-        stage.getBatch().draw(assets.light, 64 * 4 - lightSize / 4 - 32, 64 * 2 - lightSize / 4 - 32, lightSize, lightSize);
-        stage.getBatch().draw(assets.light, 64 * 6 - lightSize / 4 - 32, 64 * 3 - lightSize / 4 - 32, lightSize, lightSize);
-        //stage.getBatch().draw(assets.light, 0, 0, 400, 400);
+        stage.getBatch().draw(AssetsManager.getLight(), 64 * 3 - lightSize / 4 - 32, -lightSize / 4 - 32, lightSize, lightSize);
+        stage.getBatch().draw(AssetsManager.getLight(), 0 - lightSize / 4 - 32, 64 * 6 - lightSize / 4 - 32, lightSize, lightSize);
+        stage.getBatch().draw(AssetsManager.getLight(), 64 * 4 - lightSize / 4 - 32, 64 * 2 - lightSize / 4 - 32, lightSize, lightSize);
+        stage.getBatch().draw(AssetsManager.getLight(), 64 * 6 - lightSize / 4 - 32, 64 * 3 - lightSize / 4 - 32, lightSize, lightSize);
+        //stage.getBatch().draw(AssetsManager.getLight(), 0, 0, 400, 400);
         stage.getBatch().end();
 
 

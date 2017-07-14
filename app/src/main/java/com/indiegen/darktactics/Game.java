@@ -11,7 +11,6 @@ public class Game extends AndroidApplication {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO: Implement this method
         super.onCreate(savedInstanceState);
 
         initgame = new DarkTactics();

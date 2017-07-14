@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.indiegen.game.utils.Assets;
+import com.indiegen.game.utils.AssetsManager;
 
 public class Maps {
-    //Assets assets;
+    //AssetsManager assets;
     Batch batch;
     int margen = 64;
     int tileSize = 32;
@@ -27,8 +27,6 @@ public class Maps {
     TextureRegion[] torches;
 
     Animation torchAnimation;
-
-    Assets assets;
 
     public int[][] map = {
             {3, 3, 3, 3, 3, 3, 6, 3, 3, 3,},
@@ -54,21 +52,17 @@ public class Maps {
             {6, 3, 3, 6, 3, 3, 6, 3, 3, 6,},
     };
 
-    public Maps(Assets assets)
-
-    {
+    public Maps() {
         torches = new TextureRegion[3];
-
-        this.assets = assets;
-        tilesTexture = assets.tiles;
+        tilesTexture = AssetsManager.getTiles();
         tileRegion = new TextureRegion(tilesTexture, tileSize * 19, tileSize * 6, tileSize, tileSize);
         brickRegion = new TextureRegion(tilesTexture, tileSize * 7, tileSize * 7, tileSize, tileSize);
         grassRegion = new TextureRegion(tilesTexture, tileSize * 1, tileSize * 1, tileSize, tileSize);
         groundRegion = new TextureRegion(tilesTexture, tileSize * 0, tileSize * 1, tileSize, tileSize);
         doorRegion = new TextureRegion(tilesTexture, tileSize * 5, tileSize * 19, tileSize, tileSize);
-        torches[0] = (new TextureRegion(assets.torch, tileSize * 0, tileSize * 0, tileSize, tileSize));
-        torches[1] = (new TextureRegion(assets.torch, tileSize * 1, tileSize * 0, tileSize, tileSize));
-        torches[2] = (new TextureRegion(assets.torch, tileSize * 0, tileSize * 1, tileSize, tileSize));
+        torches[0] = (new TextureRegion(AssetsManager.getTorch(), tileSize * 0, tileSize * 0, tileSize, tileSize));
+        torches[1] = (new TextureRegion(AssetsManager.getTorch(), tileSize * 1, tileSize * 0, tileSize, tileSize));
+        torches[2] = (new TextureRegion(AssetsManager.getTorch(), tileSize * 0, tileSize * 1, tileSize, tileSize));
 
         torchAnimation = new Animation(0.2f, torches);
         torchAnimation.setPlayMode(Animation.PlayMode.LOOP);

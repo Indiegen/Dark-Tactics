@@ -10,11 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.indiegen.game.utils.Assets;
+import com.indiegen.game.utils.AssetsManager;
 
 public class Ui {
     Skin skin;
-    Assets assets;
 
     Texture tilesTexture;
 
@@ -22,7 +21,7 @@ public class Ui {
     TextureRegion brickRegion;
     TextureRegion grassRegion;
     TextureRegion groundRegion;
-    TextureRegion button1;
+    TextureRegion swordButton;
     TextureRegion walkbutton;
     Dialog endDialog;
 
@@ -43,28 +42,27 @@ public class Ui {
     Texture item2;
     TextButton.TextButtonStyle itemStyle;
 
-    public Ui(final callBack myCallBack, Assets assets) {
+    public Ui(final callBack myCallBack) {
 
-        this.assets = assets;
         skin = new Skin();
 
-        tilesTexture = assets.tiles;
+        tilesTexture = AssetsManager.getTiles();
         tileRegion = new TextureRegion(tilesTexture, tileSize * 19, tileSize * 6, tileSize, tileSize);
         brickRegion = new TextureRegion(tilesTexture, tileSize * 7, tileSize * 7, tileSize, tileSize);
         grassRegion = new TextureRegion(tilesTexture, tileSize * 1, tileSize * 1, tileSize, tileSize);
         groundRegion = new TextureRegion(tilesTexture, tileSize * 1, tileSize * 16, tileSize, tileSize);
-        button1 = new TextureRegion(assets.button1, 0, 0, 32, 32);
-        walkbutton = new TextureRegion(assets.walkbutton, 0, 0, 32, 32);
-        guard = assets.guard;
-        item = assets.item;
-        item2 = assets.item2;
-        closeUp = new CloseUp(assets);
+        swordButton = new TextureRegion(AssetsManager.getSwordButton(), 0, 0, 32, 32);
+        walkbutton = new TextureRegion(AssetsManager.getWalkbutton(), 0, 0, 32, 32);
+        guard = AssetsManager.getGuard();
+        item = AssetsManager.getItem();
+        item2 = AssetsManager.getItem2();
+        closeUp = new CloseUp();
         // Generate a 1x1 white texture and store it in the skin named "white".
         Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.GREEN);
         pixmap.fill();
 
-        skin.add("white", button1);
+        skin.add("white", swordButton);
         skin.add("down", groundRegion);
         skin.add("upWalk", walkbutton);
         skin.add("upGuard", guard);
