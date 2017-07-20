@@ -8,8 +8,6 @@ import com.indiegen.game.utils.AssetsManager;
 
 public class DarkTactics extends Game implements ApplicationListener {
 
-    private Batch batch;
-
     public DarkTactics() {
 
     }
@@ -17,14 +15,12 @@ public class DarkTactics extends Game implements ApplicationListener {
     @Override
     public void create() {
         AssetsManager.loadAssets();
-        batch = new SpriteBatch();
-        MyScreen myScreen1 = new MyScreen(this, batch);
+        MyScreen myScreen1 = new MyScreen(this);
         setScreen(myScreen1);
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
         AssetsManager.dispose();
         super.dispose();
     }

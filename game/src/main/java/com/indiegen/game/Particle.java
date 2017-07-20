@@ -67,7 +67,6 @@ public class Particle {
         vel = new Vector2();
         acc = new Vector2();
         delta = 0;
-        //pos.set(100,100);
         vel.set((1f - rand.nextFloat() * 2) * .2f, (1f - rand.nextFloat() * 2) * .2f);
         acc.set(1f, 1f);
         setSize((int) (rand.nextFloat() * (MaxSize - MinSize) + MinSize));

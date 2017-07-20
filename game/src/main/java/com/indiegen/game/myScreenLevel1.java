@@ -6,21 +6,19 @@ import com.indiegen.game.enums.ScreenState;
 
 public class myScreenLevel1 extends MyScreen implements Levels {
 
-    myScreenLevel1(Game game, Batch batch) {
-        super(game, batch);
+    myScreenLevel1(Game game) {
+        super(game);
 
     }
 
     @Override
     public void initScreen() {
 
-        // TODO: Implement this method
         actors.clear();
         stage.getActors().clear();
 
         player = new Player(playerTexture);
         player.setPosition(margin * 1, margin * 1);
-        //player.setHP(200);
         healthBar.setBarHP(80);
         healthBar.setMaxHP(120);
         floor.setX(0);

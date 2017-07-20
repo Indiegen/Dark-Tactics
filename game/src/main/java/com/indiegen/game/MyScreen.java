@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -73,6 +74,74 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
     private FrameBuffer lightBuffer;
     Music music1;
 
+    public MyScreen(Game game) {
+        thisGame = game;
+        this.batch = new SpriteBatch();
+
+        touchVec = new Vector3();
+        margin = 64;
+        camera = new OrthographicCamera(Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        Viewport viewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT, camera);
+        Viewport uiViewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        stage = new Stage(viewport);
+        uiStage = new Stage(uiViewport);
+        viewport.apply();
+        Table table = new Table();
+        table.setFillParent(true);
+        uiStage.addActor(table);
+
+        music1 = AssetsManager.getMusic();
+
+
+        texture = AssetsManager.getTexture();
+        playerTexture = AssetsManager.getHero21();
+        enemyTexture = AssetsManager.getEnemy();
+        healthBar = new HealthBar();
+
+        shape = new ShapeRenderer();
+        blood = new Blood(shape);
+        floor = new stdCharacter(texture);
+        dummy = new stdEnemy(enemyTexture, 9999, 9999, "dummy");
+        actors = new ArrayList<>();
+        ready = new ArrayList<>();
+
+
+        InputMultiplexer im = new InputMultiplexer();
+        GestureDetector gd = new GestureDetector(this);
+
+        im.addProcessor(gd);
+        im.addProcessor(uiStage);
+        im.addProcessor(this);
+
+
+        Gdx.input.setInputProcessor(im);
+
+
+        font = new BitmapFont();
+        ui = new Ui(this);
+
+        ui.getAttackButton().setPosition(Constants.APP_WIDTH - margin, 0);
+        ui.getMoveButton().setPosition(Constants.APP_WIDTH - margin * 2, 0);
+        ui.getGuardButton().setPosition(Constants.APP_WIDTH - margin, 64);
+        ui.getItemButton().setPosition(Constants.APP_WIDTH - margin * 2, 64);
+
+        mydialog = new MyDialog(this, uiStage);
+
+        mydialog.welcome().show();
+
+        table.addActor(ui.getAttackButton());
+        table.addActor(ui.getMoveButton());
+        table.addActor(ui.getHealthBar());
+        table.addActor(ui.getMessage());
+        table.addActor(ui.getCloseUp());
+        table.addActor(ui.getGuardButton());
+        table.addActor(ui.getItemButton());
+
+        initScreen();
+        maps = new Maps();
+
+    }
+
     @Override
     public boolean keyDown(int p1) {
         return false;
@@ -121,7 +190,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
         player = new Player(playerTexture);
         player.setPosition(margin, margin);
-        //player.setHP(200);
         healthBar.setBarHP(80);
         healthBar.setMaxHP(120);
         floor.setX(0);
@@ -170,7 +238,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                 player.setFatigue(30);
 
                 AssetsManager.getPotionSound().play();
-                //thisGame.setScreen(new MyScreen(thisGame,batch));
             }
         }
 
@@ -184,10 +251,8 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         } else {
             if (player.getPlayerState() == stdPlayerState.READY) {
                 player.setPlayerState(stdPlayerState.GUARD);
-                //drawRects(player);
                 actingActor = player;
                 player.setFatigue(player.GUARD);
-                //music2.play();
             }
         }
     }
@@ -202,7 +267,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                 player.setPlayerState(stdPlayerState.ATTACK_TARGETING);
                 drawRects(player);
                 actingActor = player;
-                //music2.play();
             }
         }
 
@@ -236,84 +300,11 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         initScreen();
     }
 
-    public MyScreen(Game game, Batch batch) {
-        thisGame = game;
-        this.batch = batch;
-
-        touchVec = new Vector3();
-        margin = 64;
-        camera = new OrthographicCamera(Constants.APP_WIDTH, Constants.APP_HEIGHT);
-        Viewport viewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT, camera);
-        Viewport uiViewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT);
-        stage = new Stage(viewport);
-        uiStage = new Stage(uiViewport);
-        viewport.apply();
-        Table table = new Table();
-        table.setFillParent(true);
-        uiStage.addActor(table);
-
-        music1 = AssetsManager.getMusic();
-
-
-        texture = AssetsManager.getTexture();
-        playerTexture = AssetsManager.getHero21();
-        enemyTexture = AssetsManager.getEnemy();
-        healthBar = new HealthBar();
-
-        shape = new ShapeRenderer();
-        blood = new Blood(shape);
-        floor = new stdCharacter(texture);
-        dummy = new stdEnemy(enemyTexture, 9999, 9999, "dummy");
-        actors = new ArrayList<>();
-        ready = new ArrayList<>();
-
-
-        InputMultiplexer im = new InputMultiplexer();
-        GestureDetector gd = new GestureDetector(this);
-
-        //InputProcessor in = new InputProcessor(this);
-
-        im.addProcessor(gd);
-        im.addProcessor(uiStage);
-        im.addProcessor(this);
-
-
-        Gdx.input.setInputProcessor(im);
-
-
-        font = new BitmapFont();
-        ui = new Ui(this);
-
-        ui.getAttackButton().setPosition(Constants.APP_WIDTH - margin, 0);
-        ui.getMoveButton().setPosition(Constants.APP_WIDTH - margin * 2, 0);
-        ui.getGuardButton().setPosition(Constants.APP_WIDTH - margin, 64);
-        ui.getItemButton().setPosition(Constants.APP_WIDTH - margin * 2, 64);
-
-        mydialog = new MyDialog(this, uiStage);
-
-        mydialog.welcome().show();
-
-
-        table.addActor(ui.getAttackButton());
-        table.addActor(ui.getMoveButton());
-        table.addActor(ui.getHealthBar());
-        table.addActor(ui.getMessage());
-        table.addActor(ui.getCloseUp());
-        table.addActor(ui.getGuardButton());
-        table.addActor(ui.getItemButton());
-
-        initScreen();
-        maps = new Maps();
-
-    }
-
-
     @Override
     public void render(float delta) {
 
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND); // Or GL20
         camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
         camera.update();
 
@@ -332,7 +323,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
         for (MyActor actor : actors) {
             if (actor.getPlayerState() == stdPlayerState.FINISH) {
-                //actingActor = dummy;
                 actor.setPlayerState(stdPlayerState.WAITING);
             }
             if (actor.getHP() <= 0) {
@@ -393,10 +383,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
             uiStage.getBatch().begin();
             uiStage.getBatch().draw(actor.getTurnTexture(), Constants.APP_WIDTH - 34 - sangria, Constants.APP_HEIGHT - 16 - 48 * turn, 32, 32);
             sangria = 0;
-
-            //font.setColor(Color.RED);
-            //font.setScale(.5f);
-            //font.draw(uiStage.getBatch(), actor.getName()+" "+actor.getPlayerState(), hmiWidth - 100, hmiHeight - 128 - 34 * turn);
             uiStage.getBatch().end();
 
             turn++;
@@ -429,7 +415,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
             MyActor ready = itr.next();
 
             if (ready.isDead()) {
-                //text=text+" "+ready.getName()+" "+ready.getPlayerState();
                 itr.remove();
                 ready.remove();
             }
@@ -470,10 +455,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                 if (actor.getFatigue() <= 0) {
 
                     actor.setPlayerState(stdPlayerState.READY);
-                    //actingActor = actor;
-                    //actingActor.Acting(true);
                     ready.add(actor);
-                    //actor.setDefence(0);
                     actor.setFatigue(20);
                 }
             }
@@ -509,8 +491,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
     @Override
     public void resize(int p1, int p2) {
 
-// if lightBuffer was created before, dispose, we recreate a new one
-
 
     }
 
@@ -518,48 +498,40 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
     @Override
     public void show() {
 
-        // TODO: Implement this method
+
     }
 
     @Override
     public void hide() {
 
 
-        // TODO: Implement this method
     }
 
     @Override
     public void pause() {
-        // TODO: Implement this method
+
     }
 
     @Override
     public void resume() {
-        // TODO: Implement this method
+
     }
 
     @Override
     public void dispose() {
         stage.dispose();
         thisGame.dispose();
-        // TODO: Implement this method
-    }
+        batch.dispose();
 
-////////////////////////////////////////////////////////////////////
+    }
 
     @Override
     public boolean touchDown(float p1, float p2, int p3, int p4) {
-        // TODO: Implement this method
-
-        //camera.position.set(p1, p2 , 0);
         currentZoom = newZoom;
-
-
         return false;
     }
 
     private void AIMove(MyActor actor) {
-
 
         MyRect targetRect = new MyRect(9999, 9999, margin, margin);
         if (actor.getPlayerState() == stdPlayerState.READY && !actor.isDead()) {
@@ -582,8 +554,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                         actor.setPlayerState(stdPlayerState.ATTACK_TARGETING);
                         player.setPlayerState(stdPlayerState.BEING_HITTING);
                         actor.setPlayerState(stdPlayerState.ATTACKING);
-                        //enemy.setHP(enemy.getHP()-player.getAttack());
-                        //assets
                         AssetsManager.getSwordAttackSound().play();
                         actor.setFatigue(50);
                         blood.createBlood(player);
@@ -608,7 +578,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                 }
                 actor.setPlayerState(stdPlayerState.MOVING);
                 AssetsManager.getWalkSound().play();
-                //ready.remove(0);
                 actor.setFatigue(20);
 
             }
@@ -617,7 +586,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
     @Override
     public boolean tap(float p1, float p2, int p3, int p4) {
-        // TODO: Implement this method
 
         touchVec.set(p1, p2, 0);
         touchVec = camera.unproject(touchVec);
@@ -637,13 +605,10 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                             player.setDir(0);
                         }
 
-
                         player.setPlayerState(stdPlayerState.MOVING);
                         AssetsManager.getWalkSound().play();
                         player.setFatigue(player.WALK);
 
-
-                        //ready.remove(0);
                         return false;
                     }
                 }
@@ -658,7 +623,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                                 actor.setDamage(player.getAttack());
                                 actor.setPlayerState(stdPlayerState.BEING_HITTING);
                                 player.setPlayerState(stdPlayerState.ATTACKING);
-                                //enemy.setHP(enemy.getHP()-player.getAttack());
                                 AssetsManager.getSwordAttackSound().play();
                                 blood.createBlood(actor);
                                 if (actor.getX() > player.getX()) {
@@ -672,10 +636,8 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
                                 actingActor = actor;
                                 player.setFatigue(player.ATTACK);
-                                //ready.remove(0);
 
                                 return false;
-                                //player.setPlayerState(stdPlayerState.WAITING_OTHERS);
 
                             }
                         }
@@ -685,13 +647,12 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
             }
         }
 
-
         return false;
     }
 
     @Override
     public boolean longPress(float p1, float p2) {
-        // TODO: Implement this method
+
 
         return false;
     }
@@ -705,22 +666,18 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
     @Override
     public boolean pan(float p1, float p2, float deltaX, float deltaY) {
-        // TODO: Implement this method
-        //touchX=touchX- deltaX/(Gdx.graphics.getWidth()/hmiWidth);
-        //touchY=touchY+ deltaY/(Gdx.graphics.getWidth()/hmiWidth);
 
         return false;
     }
 
     @Override
     public boolean panStop(float p1, float p2, int p3, int p4) {
-        // TODO: Implement this method
+
         return false;
     }
 
     @Override
     public boolean zoom(float initialDistance, float finalDistance) {
-        // TODO: Implement this method
 
         newZoom = (currentZoom + (initialDistance - finalDistance) * .005f);
         if (newZoom > 3) {
@@ -736,16 +693,12 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
     @Override
     public boolean pinch(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4) {
-        // TODO: Implement this method
-
 
         return false;
     }
 
 
     private void drawLights() {
-
-        // start rendering to the lightBuffer
 
         if (lightBuffer != null)
             lightBuffer.dispose();
@@ -757,46 +710,26 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
         lightBufferRegion.flip(false, true);
 
-
         lightBuffer.begin();
 
-// setup the right blending
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendEquation(GL20.GL_FUNC_REVERSE_SUBTRACT);
-
-// set the ambient color values, this is the "global" light of your scene
-// imagine it being the sun.  Usually the alpha value is just 1, and you change the darkness/brightness with the Red, Green and Blue values for best effect
-
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-// start rendering the lights to our spriteBatch
         batch.begin();
 
-
-// set the color of your light (red,green,blue,alpha values)
         batch.setColor(0.9f, 0.9f, .9f, .9f);
 
-// tx and ty contain the center of the light source
         float tx = (camera.position.x - camera.viewportWidth * newZoom / 2);
         float ty = (camera.position.y - camera.viewportHeight * newZoom / 2);
 
-// tw will be the size of the light source based on the "distance"
-// (the light image is 128x128)
-// and 96 is the "distance"  
-// Experiment with this value between based on your DarkTactics resolution
-// my lights are 8 up to 128 in distance
-        //float tw=AssetsManager.getLight().getWidth();
-
-// make sure the center is still the center based on the "distance"
         float tw = camera.viewportWidth * newZoom;
         float th = camera.viewportHeight * newZoom;
 
         float lightSize = 256;
 
-
-// and render the sprite
         batch.draw(AssetsManager.getLight(), camera.position.x - AssetsManager.getLight().getWidth() / 2, camera.position.y - AssetsManager.getLight().getHeight() / 2, AssetsManager.getLight().getWidth(), AssetsManager.getLight().getHeight());
         batch.draw(AssetsManager.getLight(), 64 * 3 - lightSize / 4 - 32, -lightSize / 4 - 32, lightSize, lightSize);
         batch.draw(AssetsManager.getLight(), 0 - lightSize / 4 - 32, 64 * 6 - lightSize / 4 - 32, lightSize, lightSize);
@@ -807,44 +740,30 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         stage.getBatch().begin();
         stage.getBatch().setColor(0.9f, 0.9f, .9f, 1f);
         stage.getBatch().draw(AssetsManager.getLight(), camera.position.x - AssetsManager.getLight().getWidth() / 2, camera.position.y - AssetsManager.getLight().getHeight() / 2, AssetsManager.getLight().getWidth(), AssetsManager.getLight().getHeight());
-        //stage.getBatch().setColor(0.9f, 0.0f, .0f, 1f);
+
         stage.getBatch().draw(AssetsManager.getLight(), 64 * 3 - lightSize / 4 - 32, -lightSize / 4 - 32, lightSize, lightSize);
         stage.getBatch().draw(AssetsManager.getLight(), 0 - lightSize / 4 - 32, 64 * 6 - lightSize / 4 - 32, lightSize, lightSize);
         stage.getBatch().draw(AssetsManager.getLight(), 64 * 4 - lightSize / 4 - 32, 64 * 2 - lightSize / 4 - 32, lightSize, lightSize);
         stage.getBatch().draw(AssetsManager.getLight(), 64 * 6 - lightSize / 4 - 32, 64 * 3 - lightSize / 4 - 32, lightSize, lightSize);
-        //stage.getBatch().draw(AssetsManager.getLight(), 0, 0, 400, 400);
         stage.getBatch().end();
-
 
         lightBuffer.end();
 
-
-// now we render the lightBuffer to the default "frame buffer"
-// with the right blending !
-
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        //Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
-
 
         batch.begin();
         batch.setColor(0.9f, 0.9f, .9f, .9f);
         batch.draw(lightBufferRegion, tx, ty, tw, th);
-        //batch.draw(lightBufferRegion, tx+64*3, ty, tw, th);
         batch.end();
 
         stage.getBatch().begin();
         stage.getBatch().setColor(0.9f, .9f, .9f, .9f);
         stage.getBatch().draw(lightBufferRegion, tx, ty, tw, th);
-        //stage.getBatch().draw(lightBufferRegion, tx+64*3, ty, tw, th);
         stage.getBatch().end();
-
 
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         Gdx.gl.glDisable(GL20.GL_BLEND);
         Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
-        //Gdx.gl20.glBlendFunc(
-// post light-rendering
-
 
     }
 

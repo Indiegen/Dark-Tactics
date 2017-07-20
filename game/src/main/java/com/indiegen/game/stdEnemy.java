@@ -17,207 +17,6 @@ import java.util.ArrayList;
 
 class stdEnemy extends MyActor implements stdActor {
 
-    @Override
-    public TextureRegion getTurnTexture() {
-        // TODO: Implement this method
-        return turnTexture;
-    }
-
-    @Override
-    public void setTurnTexture(TextureRegion turnTexture) {
-        // TODO: Implement this method
-        this.turnTexture = turnTexture;
-    }
-
-
-    @Override
-    public void Acting(Boolean acting) {
-        // TODO: Implement this method
-        this.acting = acting;
-    }
-
-    @Override
-    public void setFatigue(int fatigue) {
-        // TODO: Implement this method
-        this.fatigue = fatigue;
-    }
-
-    @Override
-    public int getFatigue() {
-        // TODO: Implement this method
-        return this.fatigue;
-    }
-
-
-    @Override
-    public Vector2 getPosMap() {
-        // TODO: Implement this method
-
-        return new Vector2(getX() / margin, getY() / margin);
-    }
-
-    @Override
-    public boolean isAnimationFinished() {
-        // TODO: Implement this method
-        return getAnimation().isAnimationFinished(this.delta);
-    }
-
-
-    @Override
-    public void setAnimation(int animations) {
-        // TODO: Implement this method
-        delta = 0;
-        switch (animations) {
-            case 0:
-
-                animation = waitAnimation;
-                break;
-            case 1:
-
-                animation = walk;
-                break;
-            case 2:
-
-                animation = attackAnimation;
-                break;
-        }
-    }
-
-    @Override
-    public Animation getAnimation() {
-        // TODO: Implement this method
-        return animation;
-    }
-
-    @Override
-    public void dead() {
-        // TODO: Implement this method
-        this.dead = true;
-    }
-
-
-    @Override
-    public boolean isDead() {
-        // TODO: Implement this method
-        return dead;
-    }
-
-    @Override
-    public void setDamage(int damage) {
-        // TODO: Implement this method
-        this.damage = damage;
-        setHP(getHP() - damage);
-    }
-
-
-    @Override
-    public int getDamage() {
-        // TODO: Implement this method
-        return damage;
-    }
-
-    @Override
-    public void setFontAlpha(float fontAlpha) {
-        // TODO: Implement this method
-        this.fontAlpha = fontAlpha;
-    }
-
-    @Override
-    public float getFontAlpha() {
-        // TODO: Implement this method
-        return fontAlpha;
-    }
-
-    @Override
-    public void drawLabel(int hit) {
-        // TODO: Implement this method
-        setHP(getHP() - hit);
-    }
-
-
-    @Override
-    public void setAttack(int attack) {
-        // TODO: Implement this method
-    }
-
-    @Override
-    public int getAttack() {
-        // TODO: Implement this method
-        return attack;
-    }
-
-    @Override
-    public void setPlayerState(stdPlayerState newPlayerState) {
-        // TODO: Implement this method
-        actorState.exit(this, delta);
-        this.actorState = newPlayerState;
-        actorState.enter(this, delta);
-    }
-
-    @Override
-    public stdPlayerState getPlayerState() {
-        // TODO: Implement this method
-        return actorState;
-    }
-
-
-    @Override
-    public void setHP(int HP) {
-        // TODO: Implement this method
-        this.HP = HP;
-    }
-
-    @Override
-    public int getHP() {
-        // TODO: Implement this method
-        return HP;
-    }
-
-
-    @Override
-    public void moveRects() {
-        // TODO: Implement this method
-        rects.clear();
-
-        rects.add(new MyRect(getX(), getY() + margin, margin, margin));
-        rects.add(new MyRect(getX(), getY() - margin, margin, margin));
-        rects.add(new MyRect(getX() - margin, getY(), margin, margin));
-        rects.add(new MyRect(getX() + margin, getY(), margin, margin));
-
-    }
-
-    @Override
-    public void attackRects() {
-        // TODO: Implement this method
-        rects.clear();
-
-        rects.add(new MyRect(getX(), getY() + margin, margin, margin));
-        rects.add(new MyRect(getX(), getY() - margin, margin, margin));
-        rects.add(new MyRect(getX() - margin, getY(), margin, margin));
-        rects.add(new MyRect(getX() + margin, getY(), margin, margin));
-
-    }
-
-    @Override
-    public void setX(float x) {
-        // TODO: Implement this method
-        super.setX(x);
-
-    }
-
-    @Override
-    public void setY(float y) {
-        // TODO: Implement this method
-        super.setY(y);
-    }
-
-
-    @Override
-    public int getSpeed() {
-        // TODO: Implement this method
-        return speed;
-    }
-
     Texture texture;
     TextureRegion[] walkFrames;
     TextureRegion[] attackFrames;
@@ -383,11 +182,206 @@ class stdEnemy extends MyActor implements stdActor {
         rects.add(new MyRect(getX(), getY(), margen, margen));
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
     }
+    
+    @Override
+    public TextureRegion getTurnTexture() {
+
+        return turnTexture;
+    }
+
+    @Override
+    public void setTurnTexture(TextureRegion turnTexture) {
+
+        this.turnTexture = turnTexture;
+    }
+
+    @Override
+    public void Acting(Boolean acting) {
+
+        this.acting = acting;
+    }
+
+    @Override
+    public void setFatigue(int fatigue) {
+
+        this.fatigue = fatigue;
+    }
+
+    @Override
+    public int getFatigue() {
+        return this.fatigue;
+    }
+
+    @Override
+    public Vector2 getPosMap() {
+        return new Vector2(getX() / margin, getY() / margin);
+    }
+
+    @Override
+    public boolean isAnimationFinished() {
+
+        return getAnimation().isAnimationFinished(this.delta);
+    }
+
+
+    @Override
+    public void setAnimation(int animations) {
+
+        delta = 0;
+        switch (animations) {
+            case 0:
+
+                animation = waitAnimation;
+                break;
+            case 1:
+
+                animation = walk;
+                break;
+            case 2:
+
+                animation = attackAnimation;
+                break;
+        }
+    }
+
+    @Override
+    public Animation getAnimation() {
+
+        return animation;
+    }
+
+    @Override
+    public void dead() {
+
+        this.dead = true;
+    }
+
+
+    @Override
+    public boolean isDead() {
+
+        return dead;
+    }
+
+    @Override
+    public void setDamage(int damage) {
+
+        this.damage = damage;
+        setHP(getHP() - damage);
+    }
+
+    @Override
+    public int getDamage() {
+
+        return damage;
+    }
+
+    @Override
+    public void setFontAlpha(float fontAlpha) {
+
+        this.fontAlpha = fontAlpha;
+    }
+
+    @Override
+    public float getFontAlpha() {
+
+        return fontAlpha;
+    }
+
+    @Override
+    public void drawLabel(int hit) {
+
+        setHP(getHP() - hit);
+    }
+
+
+    @Override
+    public void setAttack(int attack) {
+
+    }
+
+    @Override
+    public int getAttack() {
+
+        return attack;
+    }
+
+    @Override
+    public void setPlayerState(stdPlayerState newPlayerState) {
+
+        actorState.exit(this, delta);
+        this.actorState = newPlayerState;
+        actorState.enter(this, delta);
+    }
+
+    @Override
+    public stdPlayerState getPlayerState() {
+
+        return actorState;
+    }
+
+
+    @Override
+    public void setHP(int HP) {
+
+        this.HP = HP;
+    }
+
+    @Override
+    public int getHP() {
+
+        return HP;
+    }
+
+
+    @Override
+    public void moveRects() {
+
+        rects.clear();
+
+        rects.add(new MyRect(getX(), getY() + margin, margin, margin));
+        rects.add(new MyRect(getX(), getY() - margin, margin, margin));
+        rects.add(new MyRect(getX() - margin, getY(), margin, margin));
+        rects.add(new MyRect(getX() + margin, getY(), margin, margin));
+
+    }
+
+    @Override
+    public void attackRects() {
+
+        rects.clear();
+
+        rects.add(new MyRect(getX(), getY() + margin, margin, margin));
+        rects.add(new MyRect(getX(), getY() - margin, margin, margin));
+        rects.add(new MyRect(getX() - margin, getY(), margin, margin));
+        rects.add(new MyRect(getX() + margin, getY(), margin, margin));
+
+    }
+
+    @Override
+    public void setX(float x) {
+
+        super.setX(x);
+
+    }
+
+    @Override
+    public void setY(float y) {
+
+        super.setY(y);
+    }
+
+
+    @Override
+    public int getSpeed() {
+
+        return speed;
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        // TODO: Implement this method
+
         delta += Gdx.graphics.getDeltaTime();           // #15
 
 
@@ -551,13 +545,13 @@ class stdEnemy extends MyActor implements stdActor {
 
     @Override
     public void setRotation(float degrees) {
-        // TODO: Implement this method
+
         super.setRotation(degrees);
     }
 
     @Override
     public float getRotation() {
-        // TODO: Implement this method
+
         return super.getRotation();
     }
 
@@ -591,20 +585,19 @@ class stdEnemy extends MyActor implements stdActor {
 
     @Override
     public void setPosition(float x, float y) {
-        // TODO: Implement this method
+
         super.setPosition(x, y);
     }
 
     @Override
     public void act(float delta) {
-        // TODO: Implement this method
+
         actorState.update(this, delta);
         super.act(delta);
     }
 
     @Override
     public void scaleBy(float scale) {
-        // TODO: Implement this method
 
 
         super.scaleBy(scale);

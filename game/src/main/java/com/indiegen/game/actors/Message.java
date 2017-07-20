@@ -17,9 +17,6 @@ public class Message extends Actor {
         shape = new ShapeRenderer();
         text = "hello world";
         font = new BitmapFont();
-        //setBarHP(100);
-        //setBarMP(10);
-
     }
 
     public void setText(String text) {
@@ -32,10 +29,8 @@ public class Message extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
         font.setColor(Color.RED);
         font.getData().scale(2f);
         font.draw(batch, text, 30, 100);
-
     }
 }

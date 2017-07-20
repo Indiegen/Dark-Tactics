@@ -11,22 +11,6 @@ public class MyRect extends Rectangle {
     boolean isEnable = true;
     float distance = 9999;
 
-    MyRect(int x, int y, float R, float G, float B, float alpha) {
-        color.set(R, G, B, alpha);
-        this.x = x * margen;
-        this.y = y * margen;
-        this.height = margen;
-        this.width = margen;
-    }
-
-    MyRect(int x, int y, Color color) {
-        this.color = color;
-        this.x = x;
-        this.y = y;
-        this.height = margen;
-        this.width = margen;
-    }
-
     MyRect(float x, float y, int width, int height) {
         //this.color.set(1,1,1,1);
         this.x = x;
@@ -51,8 +35,5 @@ public class MyRect extends Rectangle {
         return hasTarget;
     }
 
-    public void drawRect(ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(this.color);
-        shapeRenderer.rect(this.x, this.y, this.width, this.height);
-    }
+
 }
