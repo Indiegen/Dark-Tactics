@@ -12,6 +12,11 @@ import java.util.ArrayList;
 
 public class MyActor extends Actor implements stdActor {
 
+    int damage = 0;
+    ArrayList<MyRect> rects;
+    boolean dead = false;
+    float fontAlpha;
+    Animation animation;
 
     public void setTexture(Texture texture) {
         // TODO: Implement this method
@@ -313,11 +318,5 @@ public class MyActor extends Actor implements stdActor {
         // TODO: Implement this method
         return false;
     }
-
-    int damage = 0;
-    ArrayList<MyRect> rects;
-    boolean dead = false;
-    float fontAlpha;
-    Animation animation;
 
 }
