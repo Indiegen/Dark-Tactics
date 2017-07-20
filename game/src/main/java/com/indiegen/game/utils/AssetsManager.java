@@ -234,6 +234,30 @@ public class AssetsManager {
         return skin;
     }
 
+    public static void dispose(){
+        texture.dispose();
+        hero21.dispose();
+        tiles.dispose();
+        enemy.dispose();
+        kingSkeleton.dispose();
+        swordButton.dispose();
+        walkbutton.dispose();
+        background.dispose();
+        torch.dispose();
+        heroCloseUp.dispose();
+        guard.dispose();
+        item.dispose();
+        item2.dispose();
+        hmi.dispose();
+        light.dispose();
+        music.dispose();
+        music2.dispose();
+        swordAttackSound.dispose();
+        walkSound.dispose();
+        potionSound.dispose();
+        skin.dispose();
+    }
+
 }
 
 

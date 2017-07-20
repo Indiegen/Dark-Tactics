@@ -2,6 +2,7 @@ package com.indiegen.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.indiegen.game.enums.ScreenState;
 
 public class myScreenLevel1 extends MyScreen implements Levels {
 
@@ -21,7 +22,7 @@ public class myScreenLevel1 extends MyScreen implements Levels {
         player.setPosition(margin * 1, margin * 1);
         //player.setHP(200);
         healthBar.setBarHP(80);
-        healthBar.maxHP = 120;
+        healthBar.setMaxHP(120);
         floor.setX(0);
         floor.setY(0);
         floor.setWidth(margin * 8);
@@ -30,7 +31,7 @@ public class myScreenLevel1 extends MyScreen implements Levels {
         actors.add(player);
 
         actingActor = dummy;
-        state = screenState.START;
+        state = ScreenState.START;
 
         music1.setLooping(true);
         music1.play();

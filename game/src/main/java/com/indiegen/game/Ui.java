@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.indiegen.game.actors.CloseUp;
 import com.indiegen.game.actors.HealthBar;
+import com.indiegen.game.actors.Message;
 import com.indiegen.game.utils.AssetsManager;
 
 public class Ui {

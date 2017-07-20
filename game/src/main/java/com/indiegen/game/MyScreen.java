@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.indiegen.game.actors.Blood;
 import com.indiegen.game.actors.HealthBar;
+import com.indiegen.game.enums.ScreenState;
 import com.indiegen.game.utils.AssetsManager;
 import com.indiegen.game.utils.Constants;
 
@@ -36,6 +37,41 @@ import java.util.Objects;
 
 @SuppressWarnings("CanBeFinal")
 public class MyScreen implements Screen, GestureDetector.GestureListener, callBack, Levels, InputProcessor {
+
+    private Game thisGame;
+    private Batch batch;
+    private ShapeRenderer shape;
+    Texture texture;
+    Texture playerTexture;
+    Texture enemyTexture;
+    stdCharacter floor;
+    Player player;
+    MyActor actingActor;
+    MyActor dummy;
+    ArrayList<MyActor> actors;
+    ArrayList<MyActor> ready;
+    HealthBar healthBar;
+    Blood blood;
+    Stage stage;
+    private Stage uiStage;
+
+    int margin;
+
+    private float currentZoom = 1;
+    private float newZoom = 1;
+
+    private String text = "";
+
+    private BitmapFont font;
+    private Camera camera;
+    private Vector3 touchVec;
+
+    ScreenState state;
+    private Ui ui;
+    private Maps maps;
+    private MyDialog mydialog;
+    private FrameBuffer lightBuffer;
+    Music music1;
 
     @Override
     public boolean keyDown(int p1) {
@@ -87,7 +123,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         player.setPosition(margin, margin);
         //player.setHP(200);
         healthBar.setBarHP(80);
-        healthBar.maxHP = 120;
+        healthBar.setMaxHP(120);
         floor.setX(0);
         floor.setY(0);
         floor.setWidth(margin * 8);
@@ -96,7 +132,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         actors.add(player);
 
         actingActor = dummy;
-        state = screenState.START;
+        state = ScreenState.START;
 
         music1.setLooping(true);
         music1.play();
@@ -199,49 +235,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         text = "thanks for playing";
         initScreen();
     }
-
-
-    public enum screenState {
-        START,
-        FINISH,
-        WIN
-    }
-
-    private Game thisGame;
-    private AssetsManager assets;
-    private Batch batch;
-    private ShapeRenderer shape;
-    Texture texture;
-    Texture playerTexture;
-    Texture enemyTexture;
-    stdCharacter floor;
-    Player player;
-    MyActor actingActor;
-    MyActor dummy;
-    ArrayList<MyActor> actors;
-    ArrayList<MyActor> ready;
-    HealthBar healthBar;
-    Blood blood;
-    Stage stage;
-    private Stage uiStage;
-
-    int margin;
-
-    private float currentZoom = 1;
-    private float newZoom = 1;
-
-    private String text = "";
-
-    private BitmapFont font;
-    private Camera camera;
-    private Vector3 touchVec;
-
-    screenState state;
-    private Ui ui;
-    private Maps maps;
-    private MyDialog mydialog;
-    private FrameBuffer lightBuffer;
-    Music music1;
 
     public MyScreen(Game game, Batch batch) {
         thisGame = game;
@@ -352,18 +345,18 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         }
 
         if (maps.getMap()[(int) player.getX() / margin][(int) player.getY() / margin] == 5) {
-            state = screenState.WIN;
+            state = ScreenState.WIN;
         }
 
         isTurnEnd2();
 
 
-        if (state == screenState.WIN) {
+        if (state == ScreenState.WIN) {
             mydialog.levelCompleted().show();
-            state = screenState.FINISH;
+            state = ScreenState.FINISH;
         }
 
-        if (state != screenState.FINISH) {
+        if (state != ScreenState.FINISH) {
             AITurn();
         }
         ui.getMessage().setText("");
@@ -460,7 +453,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
                 actors.remove(i);
                 mydialog.youAreDead().show();
-                state = screenState.FINISH;
+                state = ScreenState.FINISH;
 
             }
 

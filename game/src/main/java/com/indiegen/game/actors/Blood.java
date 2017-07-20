@@ -15,7 +15,7 @@ public class Blood extends Actor {
     ShapeRenderer shape;
     ArrayList<Particle> bloods;
 
-    Blood(ShapeRenderer shape) {
+    public Blood(ShapeRenderer shape) {
         this.shape = shape;
         bloods = new ArrayList<>();
     }

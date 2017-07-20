@@ -25,6 +25,7 @@ public class DarkTactics extends Game implements ApplicationListener {
     @Override
     public void dispose() {
         batch.dispose();
+        AssetsManager.dispose();
         super.dispose();
     }
 
