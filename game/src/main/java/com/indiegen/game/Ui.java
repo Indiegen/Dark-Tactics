@@ -60,7 +60,6 @@ public class Ui {
         item = AssetsManager.getItem();
         item2 = AssetsManager.getItem2();
         closeUp = new CloseUp();
-        // Generate a 1x1 white texture and store it in the skin named "white".
         Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.GREEN);
         pixmap.fill();
@@ -72,13 +71,10 @@ public class Ui {
         skin.add("upItem", item);
         skin.add("upItem2", item2);
 
-        // Store the default libgdx font under the name "default".
         BitmapFont bfont = new BitmapFont();
         bfont.getData().scale(0.5f);
-        //bfont.scale(0.5f);
         skin.add("default", bfont);
 
-        // Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = skin.newDrawable("white");
         textButtonStyle.down = skin.newDrawable("down");

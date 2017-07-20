@@ -62,5 +62,5 @@ public interface stdActor {
     void Acting(Boolean acting);
     TextureRegion getTurnTexture();
     void setTurnTexture(TextureRegion turnTexture);
-    //public enum stdState{WAITING, ACTING, MOVING, ATTACKING, CHARGING, GUARDING, ITEM_USING,GET_HITTING }
+
 }

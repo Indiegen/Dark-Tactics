@@ -33,7 +33,6 @@ class stdEnemy extends MyActor implements stdActor {
     Rectangle rectDown;
     Rectangle rectLeft;
     Rectangle rectRight;
-    //int margin;
     int velX = 0;
     Color color;
     int FRAME_COLS = 3;
@@ -61,47 +60,23 @@ class stdEnemy extends MyActor implements stdActor {
         maxHP = 80;
         texture = settexture;
 
-
         attack = 10;
-        rects = new ArrayList<MyRect>();
+        rects = new ArrayList<>();
 
-        //margin = 64;
         setWidth(margin);
         setHeight(margin);
 
         boundingBox = new BoundingBox();
         font = new BitmapFont();
         rectangle = new Rectangle(getX(), getY(), margin, margin);
-//		rectUp = new Rectangle(getX(), getY() + margin, margin, margin);
-//		rectDown = new Rectangle(getX(), getY() - margin, margin, margin);
-//		rectLeft = new Rectangle(getX() - margin, getY(), margin, margin);
-//		rectRight = new Rectangle(getX() + margin, getY(), margin, margin);
-////
-//		walkFrames = new TextureRegion[4];
-//
-//		walkFrames[0] = new TextureRegion(texture, 0, 37, 33, 28);
-//        walkFrames[1] = new TextureRegion(texture, 33, 37, 33, 28);
-//		walkFrames[2] = new TextureRegion(texture, 66, 37, 33, 28);
-//		walkFrames[3] = new TextureRegion(texture, 33, 37, 33, 28);
-//
-//		walkLeft = new Animation(0.08f, walkFrames);
-//		walkFramesR = new TextureRegion[4];
-//		walkFramesR[0] = new TextureRegion(texture, 0, 69, 33, 28);
-//        walkFramesR[1] = new TextureRegion(texture, 30, 69, 33, 28);
-//		walkFramesR[2] = new TextureRegion(texture, 60, 69, 33, 28);
-//		walkFramesR[3] = new TextureRegion(texture, 30, 69, 33, 28);
-//		walkRight = new Animation(0.08f, walkFramesR);      // #11
-
         currentFrame = new TextureRegion(texture, 0, 0, 60, 60);
         setX(0);
         setY(0);
         delta = 0f;
         shape = new ShapeRenderer();
 
-        //playerState = stdPlayerState.WAITING;
         actorState = stdPlayerState.WAITING;
         rects.add(new MyRect(getX(), getY(), margin, margin));
-        //setTurnTexture(waitFrames[0]);
 
     }
 
@@ -112,7 +87,7 @@ class stdEnemy extends MyActor implements stdActor {
         setName("Skeleton " + name);
 
         attack = 10;
-        rects = new ArrayList<MyRect>();
+        rects = new ArrayList<>();
 
         int margen = 64;
         setWidth(margen * (texture.getWidth() / texture.getHeight()));
@@ -121,41 +96,27 @@ class stdEnemy extends MyActor implements stdActor {
         boundingBox = new BoundingBox();
         font = new BitmapFont();
         rectangle = new Rectangle(getX(), getY(), margen, margen);
-//		rectUp = new Rectangle(getX(), getY() + margin, margin, margin);
-//		rectDown = new Rectangle(getX(), getY() - margin, margin, margin);
-//		rectLeft = new Rectangle(getX() - margin, getY(), margin, margin);
-//		rectRight = new Rectangle(getX() + margin, getY(), margin, margin);
-//
+
         dir = 1;
 
         walkFrames = new TextureRegion[4];
-
 
         walkFrames[0] = new TextureRegion(texture, 0, 32, 32, 32);
         walkFrames[1] = new TextureRegion(texture, 32, 32, 32, 32);
         walkFrames[2] = new TextureRegion(texture, 64, 32, 32, 32);
         walkFrames[3] = new TextureRegion(texture, 96, 32, 32, 32);
-        //walkFrames[4] = new TextureRegion(texture, 32+25, 32+68, 32, 32);
-        //walkFrames[6] = new TextureRegion(texture, 64+25, 32+68, 32, 32);
-        //walkFrames[5] = new TextureRegion(texture, 64+24, 32+68, 32, 32);
 
         walk = new Animation(0.2f, walkFrames);
         walk.setPlayMode(Animation.PlayMode.NORMAL);
 
         waitFrames = new TextureRegion[3];
 
-        //waitFrames[0] = new TextureRegion(texture, 23, 68, 32, 32);
         waitFrames[0] = new TextureRegion(texture, 0, 0, 32, 32);
         waitFrames[1] = new TextureRegion(texture, 0, 64, 32, 32);
         waitFrames[2] = new TextureRegion(texture, 32, 64, 32, 32);
-        //walkFrames[1] = new TextureRegion(texture, 32, 32, 32, 32);
-
-
-        //attackFrames[1] = new TextureRegion(texture, 6, 124, 42, 60);
 
         waitAnimation = new Animation(0.8f, waitFrames);
         waitAnimation.setPlayMode(Animation.PlayMode.NORMAL);
-        //currentFrame.flip(true, false);
 
         attackFrames = new TextureRegion[4];
 
@@ -176,13 +137,11 @@ class stdEnemy extends MyActor implements stdActor {
         delta = 0f;
         shape = new ShapeRenderer();
 
-
-        //playerState = stdPlayerState.WAITING;
         actorState = stdPlayerState.WAITING;
         rects.add(new MyRect(getX(), getY(), margen, margen));
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
     }
-    
+
     @Override
     public TextureRegion getTurnTexture() {
 
@@ -382,7 +341,7 @@ class stdEnemy extends MyActor implements stdActor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        delta += Gdx.graphics.getDeltaTime();           // #15
+        delta += Gdx.graphics.getDeltaTime();
 
 
         if (getPlayerState() == stdPlayerState.BEING_HITTING) {
@@ -397,7 +356,7 @@ class stdEnemy extends MyActor implements stdActor {
         if (getPlayerState() == stdPlayerState.WAITING_TO_MOVE || getPlayerState() == stdPlayerState.ATTACK_TARGETING) {
             batch.end();
             Gdx.gl.glEnable(GL20.GL_BLEND);
-            //Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
             shape.begin(ShapeRenderer.ShapeType.Filled);
             shape.setProjectionMatrix(batch.getProjectionMatrix());
 
@@ -410,50 +369,6 @@ class stdEnemy extends MyActor implements stdActor {
         }
 
 
-//		if (getState() == 0)
-//		{
-//			batch.end();
-//
-//			rectangle.set(getX(), getY(), margin, margin);
-//			rectUp.set(getX(), getY() + margin, margin, margin);
-//			rectDown.set(getX(), getY() - margin, margin, margin);
-//			rectLeft.set(getX() - margin, getY(), margin, margin);
-//			rectRight.set(getX() + margin, getY(), margin, margin);
-//
-//			shape.setProjectionMatrix(batch.getProjectionMatrix());
-//
-//			Gdx.gl.glEnable(GL20.GL_BLEND);
-//			//Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-//			shape.begin(ShapeType.Filled);
-//			shape.setColor(1, 1, 1, .2f);
-//
-//			drawRect(rectUp);
-//			drawRect(rectDown);
-//			drawRect(rectLeft);
-//			drawRect(rectRight);
-//
-//			shape.end();
-//			Gdx.gl.glDisable(GL20.GL_BLEND);
-//			batch.begin();
-//		}
-
-//		switch (getPlayerState())
-//		{ 
-//			case MOVING:
-//				setAnimation(walk);
-//				currentFrame = getAnimatin().getKeyFrame(delta, true);
-//				break;
-//
-//			case ATTACKING:
-//				setAnimation(attackAnimation);
-//				currentFrame = getAnimatin().getKeyFrame(delta, true);
-//				break;
-//			default:
-//				currentFrame = walkFrames[0];
-//				delta = 0;
-//
-//
-//		}
 
         currentFrame = getAnimation().getKeyFrame(delta, true);
         if (dir == 0 && !currentFrame.isFlipX()) {
@@ -466,16 +381,11 @@ class stdEnemy extends MyActor implements stdActor {
 
         setWidth(margin);
         setHeight(margin);
-        //currentFrame=walkFrames[1];
-        //batch.setColor(getX(),getY(),getWidth(),getHeight());
-        //batch.draw(currentFrame, getX(), getY(), getWidth()/2, getHeight()/2 , getWidth() * 3, getHeight() * 3, getScaleX(), getScaleY(), getRotation());
 
         setRectangle(new Rectangle(getX(), getY(), margin, margin));
 
         batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         batch.setColor(Color.WHITE);
-        //batch.draw(texture, getX(), getY(), 0, 0 , getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation(), (int)getWidth() * 0, (int)getHeight() * 0, texture.getWidth(), texture.getHeight(), getFlipX(), getFlipY());
-        //batch.draw(texture, getX(), getY(), getWidth()/3,getHeight()/3);
 
     }
 
@@ -572,7 +482,7 @@ class stdEnemy extends MyActor implements stdActor {
 
     @Override
     public Rectangle getRectangle() {
-        //rectangle.set(getX(), getY(), getWidth(), getHeight());
+
         return rectangle;
     }
 
@@ -599,52 +509,11 @@ class stdEnemy extends MyActor implements stdActor {
     @Override
     public void scaleBy(float scale) {
 
-
         super.scaleBy(scale);
-        //rectangle.set(getX(),getY(),getWidth(),getHeight());
+
     }
 
     public boolean isTouched(float x, float y) {
-
-//		if (state == 0)
-//		{
-//
-//		}
-//		if (rectangle.contains(x, y) && state == 0)
-//		{
-//
-//			setState(1);
-//			return true;
-//		}
-//		if (rectUp.contains(x, y) && state == 0)
-//		{
-//
-//			setCurX(getX());
-//			setCurY(getY() + margin);
-//			setState(2);
-//			return true;
-//		}
-//		if (rectDown.contains(x, y) && state == 0)
-//		{
-//			setCurX(getX());
-//			setCurY(getY() - margin);
-//			setState(3);
-//			return true;
-//		}
-//		if (rectLeft.contains(x, y) && state == 0)
-//		{
-//			setCurX(getX() - margin);
-//			setCurY(getY());
-//			setState(4);
-//			return true;
-//		}
-//		if (rectRight.contains(x, y) && state == 0)
-//		{
-//			setCurX(getX() + margin);
-//			setCurY(getY());
-//			setState(5);
-//			return true;
-//		}
 
         return false;
     }
