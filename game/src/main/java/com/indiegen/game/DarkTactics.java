@@ -8,10 +8,6 @@ import com.indiegen.game.utils.AssetsManager;
 
 public class DarkTactics extends Game implements ApplicationListener {
 
-    public DarkTactics() {
-
-    }
-
     @Override
     public void create() {
         AssetsManager.loadAssets();

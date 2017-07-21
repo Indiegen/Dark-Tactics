@@ -14,30 +14,12 @@ public class MyActor extends Actor implements stdActor {
 
     int damage = 0;
     ArrayList<MyRect> rects;
-    boolean dead = false;
     float fontAlpha;
     Animation animation;
 
     public Texture getTexture() {
         return null;
     }
-
-
-    public void initialice() {
-
-    }
-
-
-    public void setDefence(int defence) {
-
-    }
-
-
-    public int getDefence() {
-
-        return 0;
-    }
-
 
     @Override
     public TextureRegion getTurnTexture() {
@@ -108,7 +90,7 @@ public class MyActor extends Actor implements stdActor {
     @Override
     public void dead() {
 
-        dead = true;
+        boolean dead = true;
     }
 
 

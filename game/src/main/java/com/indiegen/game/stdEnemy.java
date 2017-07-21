@@ -15,87 +15,56 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 import java.util.ArrayList;
 
-class stdEnemy extends MyActor implements stdActor {
+public class stdEnemy extends MyActor implements stdActor {
 
     Texture texture;
     TextureRegion[] walkFrames;
     TextureRegion[] attackFrames;
     TextureRegion[] waitFrames;
-    TextureRegion currentFrame;
-    TextureRegion turnTexture;
+    private TextureRegion currentFrame;
+    private TextureRegion turnTexture;
     Animation walk;
     Animation attackAnimation;
     Animation waitAnimation;
-    Animation animation;
-    BoundingBox boundingBox;
+    private Animation animation;
+    private BoundingBox boundingBox;
     Rectangle rectangle;
-    Rectangle rectUp;
-    Rectangle rectDown;
-    Rectangle rectLeft;
-    Rectangle rectRight;
-    int velX = 0;
-    Color color;
-    int FRAME_COLS = 3;
-    int FRAME_ROWS = 1;
-    float delta = 0;
+
+    private int velX = 0;
+    private Color color;
+    private float delta = 0;
     int dir;
-    boolean flipX = false;
-    boolean flipY = false;
-    int state = 0;
-    ShapeRenderer shape;
-    float curX;
-    float curY;
-    int HP;
+    private boolean flipX = false;
+    private boolean flipY = false;
+    private int state = 0;
+    private final ShapeRenderer shape;
+    private float curX;
+    private float curY;
+    private int HP;
     int maxHP;
-    boolean dead = false;
-    int fatigue = 0;
+    private boolean dead = false;
+    private int fatigue = 0;
 
-    stdPlayerState actorState;
-    boolean acting = false;
-    int attack;
-    BitmapFont font;
+    private stdPlayerState actorState;
+    private final int attack;
+    private final BitmapFont font;
 
-    public stdEnemy(Texture settexture) {
+    public stdEnemy(Texture texture, int x, int y, String name) {
         setHP(20);
         maxHP = 80;
-        texture = settexture;
-
-        attack = 10;
-        rects = new ArrayList<>();
-
-        setWidth(margin);
-        setHeight(margin);
-
-        boundingBox = new BoundingBox();
-        font = new BitmapFont();
-        rectangle = new Rectangle(getX(), getY(), margin, margin);
-        currentFrame = new TextureRegion(texture, 0, 0, 60, 60);
-        setX(0);
-        setY(0);
-        delta = 0f;
-        shape = new ShapeRenderer();
-
-        actorState = stdPlayerState.WAITING;
-        rects.add(new MyRect(getX(), getY(), margin, margin));
-
-    }
-
-    public stdEnemy(Texture settexture, int x, int y, String name) {
-        setHP(20);
-        maxHP = 80;
-        texture = settexture;
+        this.texture = texture;
         setName("Skeleton " + name);
 
         attack = 10;
         rects = new ArrayList<>();
 
-        int margen = 64;
-        setWidth(margen * (texture.getWidth() / texture.getHeight()));
-        setHeight(margen);
+        int margin = 64;
+        setWidth(margin * (texture.getWidth() / texture.getHeight()));
+        setHeight(margin);
 
         boundingBox = new BoundingBox();
         font = new BitmapFont();
-        rectangle = new Rectangle(getX(), getY(), margen, margen);
+        rectangle = new Rectangle(getX(), getY(), margin, margin);
 
         dir = 1;
 
@@ -138,7 +107,7 @@ class stdEnemy extends MyActor implements stdActor {
         shape = new ShapeRenderer();
 
         actorState = stdPlayerState.WAITING;
-        rects.add(new MyRect(getX(), getY(), margen, margen));
+        rects.add(new MyRect(getX(), getY(), margin, margin));
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
     }
 
@@ -157,7 +126,6 @@ class stdEnemy extends MyActor implements stdActor {
     @Override
     public void Acting(Boolean acting) {
 
-        this.acting = acting;
     }
 
     @Override
@@ -317,19 +285,6 @@ class stdEnemy extends MyActor implements stdActor {
 
     }
 
-    @Override
-    public void setX(float x) {
-
-        super.setX(x);
-
-    }
-
-    @Override
-    public void setY(float y) {
-
-        super.setY(y);
-    }
-
 
     @Override
     public int getSpeed() {
@@ -453,19 +408,6 @@ class stdEnemy extends MyActor implements stdActor {
         return color;
     }
 
-    @Override
-    public void setRotation(float degrees) {
-
-        super.setRotation(degrees);
-    }
-
-    @Override
-    public float getRotation() {
-
-        return super.getRotation();
-    }
-
-
     public void setBoundingBox(BoundingBox boundingBox) {
         this.boundingBox = boundingBox;
     }
@@ -494,23 +436,10 @@ class stdEnemy extends MyActor implements stdActor {
     }
 
     @Override
-    public void setPosition(float x, float y) {
-
-        super.setPosition(x, y);
-    }
-
-    @Override
     public void act(float delta) {
 
         actorState.update(this, delta);
         super.act(delta);
-    }
-
-    @Override
-    public void scaleBy(float scale) {
-
-        super.scaleBy(scale);
-
     }
 
     public boolean isTouched(float x, float y) {

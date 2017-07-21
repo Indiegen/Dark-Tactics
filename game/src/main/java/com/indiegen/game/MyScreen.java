@@ -1,6 +1,5 @@
 package com.indiegen.game;
 
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -36,27 +35,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-@SuppressWarnings("CanBeFinal")
 public class MyScreen implements Screen, GestureDetector.GestureListener, callBack, Levels, InputProcessor {
 
     private Game thisGame;
     private Batch batch;
     private ShapeRenderer shape;
-    Texture texture;
-    Texture playerTexture;
-    Texture enemyTexture;
-    stdCharacter floor;
-    Player player;
-    MyActor actingActor;
-    MyActor dummy;
-    ArrayList<MyActor> actors;
-    ArrayList<MyActor> ready;
-    HealthBar healthBar;
-    Blood blood;
-    Stage stage;
+    private Texture texture;
+    private Texture playerTexture;
+    private Texture enemyTexture;
+    private stdCharacter floor;
+    private Player player;
+    private MyActor actingActor;
+    private MyActor dummy;
+    private ArrayList<MyActor> actors;
+    private ArrayList<MyActor> ready;
+    private HealthBar healthBar;
+    private Blood blood;
+    private Stage stage;
     private Stage uiStage;
 
-    int margin;
+    private int margin;
 
     private float currentZoom = 1;
     private float newZoom = 1;
@@ -67,12 +65,12 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
     private Camera camera;
     private Vector3 touchVec;
 
-    ScreenState state;
+    private ScreenState state;
     private Ui ui;
     private Maps maps;
     private MyDialog mydialog;
     private FrameBuffer lightBuffer;
-    Music music1;
+    private Music music1;
 
     public MyScreen(Game game) {
         thisGame = game;
@@ -92,7 +90,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
         music1 = AssetsManager.getMusic();
 
-
         texture = AssetsManager.getTexture();
         playerTexture = AssetsManager.getHero21();
         enemyTexture = AssetsManager.getEnemy();
@@ -105,7 +102,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         actors = new ArrayList<>();
         ready = new ArrayList<>();
 
-
         InputMultiplexer im = new InputMultiplexer();
         GestureDetector gd = new GestureDetector(this);
 
@@ -113,9 +109,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
         im.addProcessor(uiStage);
         im.addProcessor(this);
 
-
         Gdx.input.setInputProcessor(im);
-
 
         font = new BitmapFont();
         ui = new Ui(this);
@@ -139,6 +133,45 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
 
         initScreen();
         maps = new Maps();
+
+    }
+
+    @Override
+    public void initScreen() {
+        actors.clear();
+        stage.getActors().clear();
+
+        player = new Player(playerTexture);
+        player.setPosition(margin, margin);
+        healthBar.setBarHP(80);
+        healthBar.setMaxHP(120);
+        floor.setX(0);
+        floor.setY(0);
+        floor.setWidth(margin * 8);
+        player.setHeight(margin);
+        floor.setHeight(8 * .99f * margin * texture.getHeight() / texture.getWidth());
+        actors.add(player);
+
+        actingActor = dummy;
+        state = ScreenState.START;
+
+        music1.setLooping(true);
+        music1.play();
+        music1.setVolume(0);
+
+        actors.add(new stdEnemy(enemyTexture, margin * 4, margin * 5, "1"));
+        actors.add(new stdEnemy(enemyTexture, margin * 10, margin * 6, "2"));
+        actors.add(new stdEnemy(enemyTexture, margin * 5, margin * 5, "3"));
+        actors.add(new stdEnemy(enemyTexture, margin * 3, margin, "4"));
+        actors.add(new KingSkeleton(AssetsManager.getKingSkeleton(), margin * 18, margin * 6, "Boss"));
+
+        for (MyActor actor : actors) {
+            stage.addActor(actor);
+        }
+        ready.clear();
+
+        stage.addActor(blood);
+
 
     }
 
@@ -181,47 +214,6 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
     public boolean scrolled(int p1) {
         return false;
     }
-
-
-    @Override
-    public void initScreen() {
-        actors.clear();
-        stage.getActors().clear();
-
-        player = new Player(playerTexture);
-        player.setPosition(margin, margin);
-        healthBar.setBarHP(80);
-        healthBar.setMaxHP(120);
-        floor.setX(0);
-        floor.setY(0);
-        floor.setWidth(margin * 8);
-        player.setHeight(margin);
-        floor.setHeight(8 * .99f * margin * texture.getHeight() / texture.getWidth());
-        actors.add(player);
-
-        actingActor = dummy;
-        state = ScreenState.START;
-
-        music1.setLooping(true);
-        music1.play();
-        music1.setVolume(0);
-
-        actors.add(new stdEnemy(enemyTexture, margin * 4, margin * 5, "1"));
-        actors.add(new stdEnemy(enemyTexture, margin * 10, margin * 6, "2"));
-        actors.add(new stdEnemy(enemyTexture, margin * 5, margin * 5, "3"));
-        actors.add(new stdEnemy(enemyTexture, margin * 3, margin, "4"));
-        actors.add(new KingSkeleton(AssetsManager.getKingSkeleton(), margin * 18, margin * 6, "Boss"));
-
-        for (MyActor actor : actors) {
-            stage.addActor(actor);
-        }
-        ready.clear();
-
-        stage.addActor(blood);
-
-
-    }
-
 
     public void buttonItem() {
         if (player.getPlayerState() == stdPlayerState.ITEM) {
@@ -480,7 +472,7 @@ public class MyScreen implements Screen, GestureDetector.GestureListener, callBa
                         rect.setColor(new Color(1, 0, 0, .2f));
                         rect.isEnable = false;
                     }
-                } catch (ArrayIndexOutOfBoundsException excepcion) {
+                } catch (ArrayIndexOutOfBoundsException ex) {
 
                 }
 
