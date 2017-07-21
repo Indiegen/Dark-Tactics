@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Blood extends Actor {
-    ShapeRenderer shape;
-    ArrayList<Particle> bloods;
+    private final ShapeRenderer shape;
+    private final ArrayList<Particle> bloods;
 
     public Blood(ShapeRenderer shape) {
         this.shape = shape;

@@ -10,12 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class HealthBar extends Actor {
 
-    ShapeRenderer shape;
-    int barHP;
-    int barMP;
-    int maxHP;
-    BitmapFont font;
-    String text;
+    private ShapeRenderer shape;
+    private int barHP;
+    private int barMP;
+    private int maxHP;
+    private BitmapFont font;
+    private String text;
 
     public HealthBar() {
         shape = new ShapeRenderer();
@@ -56,7 +56,6 @@ public class HealthBar extends Actor {
 
         batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
-        //Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shape.begin(ShapeRenderer.ShapeType.Filled);
         shape.setProjectionMatrix(batch.getProjectionMatrix());
 
