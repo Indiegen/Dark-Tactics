@@ -45,7 +45,7 @@ public class Ui {
     Texture item2;
     TextButton.TextButtonStyle itemStyle;
 
-    public Ui(final callBack myCallBack) {
+    public Ui(final CustomCallBack myCustomCallBack) {
 
         skin = new Skin();
 
@@ -138,25 +138,25 @@ public class Ui {
 
         getAttackButton().addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                myCallBack.buttonAttack();
+                myCustomCallBack.buttonAttack();
             }
         });
 
         getMoveButton().addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                myCallBack.buttonMove();
+                myCustomCallBack.buttonMove();
             }
         });
 
         getItemButton().addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                myCallBack.buttonItem();
+                myCustomCallBack.buttonItem();
             }
         });
 
         getGuardButton().addListener(new ChangeListener() {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                myCallBack.buttonGuard();
+                myCustomCallBack.buttonGuard();
             }
         });
 

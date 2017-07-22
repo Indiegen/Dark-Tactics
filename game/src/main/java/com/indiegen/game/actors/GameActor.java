@@ -1,4 +1,4 @@
-package com.indiegen.game;
+package com.indiegen.game.actors;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.indiegen.game.enums.GamePlayerState;
+import com.indiegen.game.utils.RectangleUtils;
 
-public interface stdActor {
+public interface GameActor {
 
     Vector2 getPosMap();
     void setAnimation(int animations);
@@ -45,10 +47,10 @@ public interface stdActor {
     Rectangle getRectangle();
     void setBoundingBox(BoundingBox boundingBox);
     BoundingBox getBoundingBox();
-    boolean drawRect(MyRect rect);
+    boolean drawRect(RectangleUtils rect);
     boolean isTouched(float x, float y);
-    void setPlayerState(stdPlayerState playerState);
-    stdPlayerState getPlayerState();
+    void setPlayerState(GamePlayerState playerState);
+    GamePlayerState getPlayerState();
     void moveRects();
     void attackRects();
     int getSpeed();

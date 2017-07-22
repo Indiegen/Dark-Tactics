@@ -1,4 +1,4 @@
-package com.indiegen.game;
+package com.indiegen.game.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-class stdCharacter extends Actor {
+public class GameCharacter extends Actor {
     Texture texture;
     TextureRegion[] walkFramesL;
     TextureRegion[] walkFramesR;
@@ -40,7 +40,7 @@ class stdCharacter extends Actor {
     float curY;
 
 
-    public stdCharacter(Texture settexture) {
+    public GameCharacter(Texture settexture) {
         texture = settexture;
         setX(0);
         setY(0);

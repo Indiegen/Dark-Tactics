@@ -1,4 +1,4 @@
-package com.indiegen.game;
+package com.indiegen.game.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,16 +6,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.indiegen.game.enums.GamePlayerState;
+import com.indiegen.game.utils.RectangleUtils;
 
-import java.util.ArrayList;
-
-class Player extends MyActor implements stdActor {
+public class Player extends CustomActor implements GameActor {
 
     public void setPotions(int potions) {
         this.potions = potions;
@@ -72,10 +71,9 @@ class Player extends MyActor implements stdActor {
         return new Vector2(getX() / margin, getY() / margin);
     }
 
-    final int ATTACK = 50;
-
-    final int WALK = 20;
-    final int GUARD = 20;
+    private final int ATTACK = 50;
+    private final int WALK = 20;
+    private final int GUARD = 20;
 
     private TextureRegion currentFrame;
     private TextureRegion turnTexture;
@@ -97,7 +95,7 @@ class Player extends MyActor implements stdActor {
     private final ShapeRenderer shape;
     private float curX;
     private float curY;
-    private stdPlayerState actorState;
+    private GamePlayerState actorState;
     private int HP;
     private final int maxHP = 80;
     private boolean dead = false;
@@ -107,8 +105,6 @@ class Player extends MyActor implements stdActor {
     private int attack;
 
     public Player(Texture texture) {
-
-        rects = new ArrayList<>();
         boundingBox = new BoundingBox();
 
         setHP(maxHP);
@@ -147,13 +143,14 @@ class Player extends MyActor implements stdActor {
 
         walkAnimation = new Animation(0.8f, walkFrames);
 
-        setAnimation(0);
+        setAnimation(waitAnimation);
         currentFrame = getAnimation().getKeyFrame(delta, true);
         delta = 0f;
         shape = new ShapeRenderer();
 
-        actorState = stdPlayerState.WAITING;
-        rects.add(new MyRect(getX(), getY(), margin, margin));
+        actorState = GamePlayerState.WAITING;
+        initRects();
+        super.addRect(new RectangleUtils(getX(), getY(), margin, margin));
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
 
     }
@@ -163,30 +160,30 @@ class Player extends MyActor implements stdActor {
         super.draw(batch, parentAlpha);
         delta += Gdx.graphics.getDeltaTime();
 
-        if (getPlayerState() == stdPlayerState.BEING_HITTING) {
-            batch.setColor(1, 1 - fontAlpha, 1 - fontAlpha, 1);
-            font.setColor(1, 0, 0, fontAlpha);
+        if (getPlayerState() == GamePlayerState.BEING_HITTING) {
+            batch.setColor(1, 1 - super.getFontAlpha(), 1 - super.getFontAlpha(), 1);
+            font.setColor(1, 0, 0, super.getFontAlpha());
             font.getData().scale(1f);
-            font.draw(batch, -getDamage() + " HP", getX(), getY() + margin + margin * (1 - fontAlpha) / 2);
+            font.draw(batch, -getDamage() + " HP", getX(), getY() + margin + margin * (1 - super.getFontAlpha()) / 2);
         } else {
             batch.setColor(Color.WHITE);
         }
-        if (getPlayerState() == stdPlayerState.ITEM) {
-            batch.setColor(1 - fontAlpha, 1, 1 - fontAlpha, 1);
-            font.setColor(0, 1, 0, fontAlpha);
+        if (getPlayerState() == GamePlayerState.ITEM) {
+            batch.setColor(1 - super.getFontAlpha(), 1, 1 - super.getFontAlpha(), 1);
+            font.setColor(0, 1, 0, super.getFontAlpha());
             font.getData().scale(1f);
-            font.draw(batch, "+40 " + " HP", getX(), getY() + margin + margin * (1 - fontAlpha) / 2);
+            font.draw(batch, "+40 " + " HP", getX(), getY() + margin + margin * (1 - super.getFontAlpha()) / 2);
         } else {
             batch.setColor(Color.WHITE);
         }
 
-        if (getPlayerState() == stdPlayerState.WAITING_TO_MOVE || getPlayerState() == stdPlayerState.ATTACK_TARGETING) {
+        if (getPlayerState() == GamePlayerState.WAITING_TO_MOVE || getPlayerState() == GamePlayerState.ATTACK_TARGETING) {
             batch.end();
             Gdx.gl.glEnable(GL20.GL_BLEND);
             shape.begin(ShapeRenderer.ShapeType.Filled);
             shape.setProjectionMatrix(batch.getProjectionMatrix());
 
-            for (MyRect rect : rects) {
+            for (RectangleUtils rect : super.getRects()) {
                 drawRect(rect);
             }
             shape.end();
@@ -222,24 +219,18 @@ class Player extends MyActor implements stdActor {
         switch (animations) {
             case 0:
 
-                animation = waitAnimation;
+                setAnimation(waitAnimation);
                 break;
             case 1:
 
-                animation = walkAnimation;
+                setAnimation(walkAnimation);
                 break;
             case 2:
 
-                animation = attackAnimation;
+                setAnimation(attackAnimation);
                 break;
 
         }
-    }
-
-    @Override
-    public Animation getAnimation() {
-
-        return animation;
     }
 
     @Override
@@ -260,27 +251,14 @@ class Player extends MyActor implements stdActor {
     @Override
     public void setDamage(int damage) {
 
-        this.damage = damage;
+        super.setDamage(damage);
         setHP(getHP() - damage);
     }
 
     @Override
     public int getDamage() {
 
-        return damage;
-    }
-
-
-    @Override
-    public void setFontAlpha(float fontAlpha) {
-
-        this.fontAlpha = fontAlpha;
-    }
-
-    @Override
-    public float getFontAlpha() {
-
-        return fontAlpha;
+        return super.getDamage();
     }
 
     @Override
@@ -314,12 +292,12 @@ class Player extends MyActor implements stdActor {
     @Override
     public void attackRects() {
 
-        rects.clear();
+        super.clearRects();
 
-        rects.add(new MyRect(getX(), getY() + margin, margin, margin));
-        rects.add(new MyRect(getX(), getY() - margin, margin, margin));
-        rects.add(new MyRect(getX() - margin, getY(), margin, margin));
-        rects.add(new MyRect(getX() + margin, getY(), margin, margin));
+        super.addRect(new RectangleUtils(getX(), getY() + margin, margin, margin));
+        super.addRect(new RectangleUtils(getX(), getY() - margin, margin, margin));
+        super.addRect(new RectangleUtils(getX() - margin, getY(), margin, margin));
+        super.addRect(new RectangleUtils(getX() + margin, getY(), margin, margin));
 
     }
 
@@ -327,12 +305,12 @@ class Player extends MyActor implements stdActor {
     @Override
     public void moveRects() {
 
-        rects.clear();
+        super.clearRects();
 
-        rects.add(new MyRect(getX(), getY() + margin, margin, margin));
-        rects.add(new MyRect(getX(), getY() - margin, margin, margin));
-        rects.add(new MyRect(getX() - margin, getY(), margin, margin));
-        rects.add(new MyRect(getX() + margin, getY(), margin, margin));
+        super.addRect(new RectangleUtils(getX(), getY() + margin, margin, margin));
+        super.addRect(new RectangleUtils(getX(), getY() - margin, margin, margin));
+        super.addRect(new RectangleUtils(getX() - margin, getY(), margin, margin));
+        super.addRect(new RectangleUtils(getX() + margin, getY(), margin, margin));
 
     }
 
@@ -344,7 +322,7 @@ class Player extends MyActor implements stdActor {
     }
 
     @Override
-    public void setPlayerState(stdPlayerState newPlayerState) {
+    public void setPlayerState(GamePlayerState newPlayerState) {
 
         getPlayerState().exit(this, delta);
         this.actorState = newPlayerState;
@@ -353,7 +331,7 @@ class Player extends MyActor implements stdActor {
 
 
     @Override
-    public stdPlayerState getPlayerState() {
+    public GamePlayerState getPlayerState() {
 
         return actorState;
     }
@@ -459,7 +437,7 @@ class Player extends MyActor implements stdActor {
     }
 
     @Override
-    public boolean drawRect(MyRect rect) {
+    public boolean drawRect(RectangleUtils rect) {
         shape.setColor(rect.getColor());
         shape.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         return false;
@@ -480,4 +458,15 @@ class Player extends MyActor implements stdActor {
     }
 
 
+    public int getATTACK() {
+        return ATTACK;
+    }
+
+    public int getWALK() {
+        return WALK;
+    }
+
+    public int getGUARD() {
+        return GUARD;
+    }
 }

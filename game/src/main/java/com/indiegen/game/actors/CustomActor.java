@@ -1,4 +1,4 @@
-package com.indiegen.game;
+package com.indiegen.game.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,15 +7,18 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.indiegen.game.actors.GameActor;
+import com.indiegen.game.enums.GamePlayerState;
+import com.indiegen.game.utils.RectangleUtils;
 
 import java.util.ArrayList;
 
-public class MyActor extends Actor implements stdActor {
+public class CustomActor extends Actor implements GameActor {
 
-    int damage = 0;
-    ArrayList<MyRect> rects;
-    float fontAlpha;
-    Animation animation;
+    private int damage = 0;
+    private ArrayList<RectangleUtils> rects = new ArrayList<>();
+    private float fontAlpha;
+    private Animation animation;
 
     public Texture getTexture() {
         return null;
@@ -83,7 +86,7 @@ public class MyActor extends Actor implements stdActor {
     @Override
     public Animation getAnimation() {
 
-        return null;
+        return animation;
     }
 
 
@@ -91,6 +94,11 @@ public class MyActor extends Actor implements stdActor {
     public void dead() {
 
         boolean dead = true;
+    }
+
+
+    public void setDefence(int defence){
+
     }
 
 
@@ -108,7 +116,6 @@ public class MyActor extends Actor implements stdActor {
 
     @Override
     public void setDamage(int damage) {
-
         this.damage = damage;
     }
 
@@ -179,12 +186,12 @@ public class MyActor extends Actor implements stdActor {
 
 
     @Override
-    public void setPlayerState(stdPlayerState playerState) {
+    public void setPlayerState(GamePlayerState playerState) {
 
     }
 
     @Override
-    public stdPlayerState getPlayerState() {
+    public GamePlayerState getPlayerState() {
 
         return null;
     }
@@ -285,7 +292,7 @@ public class MyActor extends Actor implements stdActor {
     }
 
     @Override
-    public boolean drawRect(MyRect rect) {
+    public boolean drawRect(RectangleUtils rect) {
 
         return false;
     }
@@ -296,4 +303,23 @@ public class MyActor extends Actor implements stdActor {
         return false;
     }
 
+    public void initRects(){
+        this.rects = new ArrayList<>();
+    }
+
+    public ArrayList<RectangleUtils> getRects() {
+        return this.rects;
+    }
+
+    public void addRect(RectangleUtils rect){
+        this.rects.add(rect);
+    }
+
+    public void clearRects(){
+        this.rects.clear();
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
+    }
 }

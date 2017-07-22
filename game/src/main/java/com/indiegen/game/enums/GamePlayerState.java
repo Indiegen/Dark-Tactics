@@ -1,12 +1,14 @@
-package com.indiegen.game;
+package com.indiegen.game.enums;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.indiegen.game.actors.CustomActor;
+import com.indiegen.game.StateMachine;
 
-public enum stdPlayerState implements StateMachine<MyActor> {
+public enum GamePlayerState implements StateMachine<CustomActor> {
 
     MOVING() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             actor.addAction(Actions.moveTo(actor.getCurX(), actor.getCurY(), .5f));
             actor.setAnimation(1);
@@ -16,7 +18,7 @@ public enum stdPlayerState implements StateMachine<MyActor> {
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             actor.setAnimation(0);
 
@@ -25,30 +27,30 @@ public enum stdPlayerState implements StateMachine<MyActor> {
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
             if (actor.getY() == actor.getCurY() && actor.getX() == actor.getCurX()) {
-                actor.setPlayerState(stdPlayerState.FINISH);
+                actor.setPlayerState(GamePlayerState.FINISH);
             }
         }
     },
 
     ATTACK_TARGETING() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             actor.attackRects();
             return null;
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             return null;
         }
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
         }
 
@@ -56,7 +58,7 @@ public enum stdPlayerState implements StateMachine<MyActor> {
 
     BEING_HITTING() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             actor.setFontAlpha(1);
 
@@ -64,21 +66,21 @@ public enum stdPlayerState implements StateMachine<MyActor> {
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             return null;
         }
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
             actor.setFontAlpha(actor.getFontAlpha() - 1f * delta);
             if (actor.getFontAlpha() <= 0) {
-                actor.setPlayerState(stdPlayerState.FINISH);
+                actor.setPlayerState(GamePlayerState.FINISH);
                 if (actor.getHP() <= 0) {
                     actor.dead();
-                    actor.setPlayerState(stdPlayerState.FINISH);
+                    actor.setPlayerState(GamePlayerState.FINISH);
                 }
             } else {
 
@@ -90,7 +92,7 @@ public enum stdPlayerState implements StateMachine<MyActor> {
 
     ATTACKING() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             actor.setAnimation(2);
             actor.setDefence(0);
@@ -99,7 +101,7 @@ public enum stdPlayerState implements StateMachine<MyActor> {
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             actor.setAnimation(0);
             return null;
@@ -107,10 +109,10 @@ public enum stdPlayerState implements StateMachine<MyActor> {
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
             if (actor.isAnimationFinished()) {
-                actor.setPlayerState(stdPlayerState.FINISH);
+                actor.setPlayerState(GamePlayerState.FINISH);
 
 
             }
@@ -120,7 +122,7 @@ public enum stdPlayerState implements StateMachine<MyActor> {
     },
     WAITING_OTHERS() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             actor.setAnimation(0);
 
@@ -128,14 +130,14 @@ public enum stdPlayerState implements StateMachine<MyActor> {
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             return null;
         }
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
         }
 
@@ -143,19 +145,19 @@ public enum stdPlayerState implements StateMachine<MyActor> {
 
     WAITING() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
             return null;
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             return null;
         }
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
         }
 
@@ -163,7 +165,7 @@ public enum stdPlayerState implements StateMachine<MyActor> {
 
     WAITING_TO_MOVE() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             actor.moveRects();
 
@@ -171,61 +173,61 @@ public enum stdPlayerState implements StateMachine<MyActor> {
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             return null;
         }
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
         }
 
     },
     READY() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             return null;
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             return null;
         }
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
         }
 
     },
     FINISH() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             return null;
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             return null;
         }
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
         }
 
     },
     ITEM() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             actor.setFontAlpha(1);
             actor.setDefence(0);
@@ -234,7 +236,7 @@ public enum stdPlayerState implements StateMachine<MyActor> {
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
 
             return null;
@@ -242,11 +244,11 @@ public enum stdPlayerState implements StateMachine<MyActor> {
 
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
             actor.setFontAlpha(actor.getFontAlpha() - 1f * delta);
             if (actor.getFontAlpha() <= 0) {
-                actor.setPlayerState(stdPlayerState.FINISH);
+                actor.setPlayerState(GamePlayerState.FINISH);
 
             } else {
 
@@ -257,7 +259,7 @@ public enum stdPlayerState implements StateMachine<MyActor> {
     },
     GUARD() {
         @Override
-        public Boolean enter(MyActor actor, float delta) {
+        public Boolean enter(CustomActor actor, float delta) {
 
             actor.setAnimation(3);
             actor.setDefence(10);
@@ -266,15 +268,15 @@ public enum stdPlayerState implements StateMachine<MyActor> {
         }
 
         @Override
-        public Boolean exit(MyActor actor, float delta) {
+        public Boolean exit(CustomActor actor, float delta) {
 
             return null;
         }
 
         @Override
-        public void update(MyActor actor, float delta) {
+        public void update(CustomActor actor, float delta) {
 
-            actor.setPlayerState(stdPlayerState.FINISH);
+            actor.setPlayerState(GamePlayerState.FINISH);
 
         }
 
