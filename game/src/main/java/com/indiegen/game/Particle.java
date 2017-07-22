@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.math.Vector2;
+import com.indiegen.game.actors.CustomActor;
 
 public class Particle {
     int MaxSize = 10;
@@ -26,7 +27,7 @@ public class Particle {
     int size;
     float Alpha;
     Color color;
-    MyActor actor;
+    CustomActor actor;
 
     public void setPos(Vector2 pos) {
         this.pos = pos;
@@ -60,7 +61,7 @@ public class Particle {
         return Alpha;
     }
 
-    public Particle(MyActor actor) {
+    public Particle(CustomActor actor) {
         this.actor = actor;
         rand = new RandomXS128();
         pos = new Vector2(actor.getX() + actor.getWidth() / 2, actor.getY() + actor.getHeight() / 2);

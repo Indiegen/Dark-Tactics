@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.indiegen.game.MyActor;
 import com.indiegen.game.Particle;
 
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class Blood extends Actor {
 
     }
 
-    public void createBlood(MyActor actor) {
+    public void createBlood(CustomActor actor) {
         bloods.add(new Particle(actor));
         bloods.add(new Particle(actor));
         bloods.add(new Particle(actor));
