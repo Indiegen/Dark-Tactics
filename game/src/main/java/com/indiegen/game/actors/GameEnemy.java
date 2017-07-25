@@ -25,7 +25,6 @@ public class GameEnemy extends CustomActor {
     private Animation walk;
     private Animation animation;
     private BoundingBox boundingBox;
-    private Rectangle rectangle;
 
     private int velX = 0;
     private Color color;
@@ -36,7 +35,6 @@ public class GameEnemy extends CustomActor {
     private final ShapeRenderer shape;
     private float curX;
     private float curY;
-    private int HP;
     private int maxHP;
 
     private GamePlayerState actorState;
@@ -106,19 +104,6 @@ public class GameEnemy extends CustomActor {
     }
 
     @Override
-    public void setDamage(int damage) {
-
-        super.setDamage(damage);
-        setHP(getHP() - damage);
-    }
-
-    @Override
-    public int getDamage() {
-
-        return super.getDamage();
-    }
-
-    @Override
     public void drawLabel(int hit) {
 
         setHP(getHP() - hit);
@@ -147,18 +132,6 @@ public class GameEnemy extends CustomActor {
     public GamePlayerState getPlayerState() {
 
         return actorState;
-    }
-
-    @Override
-    public void setHP(int HP) {
-
-        this.HP = HP;
-    }
-
-    @Override
-    public int getHP() {
-
-        return HP;
     }
 
     @Override
@@ -242,17 +215,6 @@ public class GameEnemy extends CustomActor {
         batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         batch.setColor(Color.WHITE);
 
-    }
-
-    @Override
-    public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
-    }
-
-    @Override
-    public Rectangle getRectangle() {
-
-        return rectangle;
     }
 
     public boolean drawRect(RectangleUtils rect) {

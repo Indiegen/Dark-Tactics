@@ -24,26 +24,8 @@ public abstract class CustomActor extends Actor implements GameActor {
     private Animation waitAnimation;
     private Animation walkAnimation;
     private boolean dead = false;
-
-    public void setDefence(int defence){
-
-    }
-
-    @Override
-    public void setRectangle(Rectangle rectangle) {
-
-    }
-
-    @Override
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    @Override
-    public int getDamage() {
-
-        return damage;
-    }
+    private Rectangle rectangle;
+    private int HP;
 
     @Override
     public void setFontAlpha(float fontAlpha) {
@@ -71,17 +53,6 @@ public abstract class CustomActor extends Actor implements GameActor {
 
     @Override
     public int getAttack() {
-
-        return 0;
-    }
-
-    @Override
-    public void setHP(int HP) {
-
-    }
-
-    @Override
-    public int getHP() {
 
         return 0;
     }
@@ -188,12 +159,6 @@ public abstract class CustomActor extends Actor implements GameActor {
     public int getDir() {
 
         return 0;
-    }
-
-    @Override
-    public Rectangle getRectangle() {
-
-        return null;
     }
 
     @Override
@@ -320,5 +285,34 @@ public abstract class CustomActor extends Actor implements GameActor {
 
     public void setDead(boolean dead) {
         this.dead = dead;
+    }
+
+    public void setDefence(int defence){
+
+    }
+
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+        setHP(getHP() - damage);
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
     }
 }

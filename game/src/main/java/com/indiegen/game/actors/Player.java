@@ -23,7 +23,6 @@ public class Player extends CustomActor {
     private TextureRegion currentFrame;
 
     private BoundingBox boundingBox;
-    private Rectangle rectangle;
 
     private final int margin = 64;
     private int velX = 0;
@@ -36,7 +35,6 @@ public class Player extends CustomActor {
     private float curX;
     private float curY;
     private GamePlayerState actorState;
-    private int HP;
     private final int maxHP = 80;
     private Boolean acting = false;
     private int potions = 1;
@@ -57,7 +55,7 @@ public class Player extends CustomActor {
         setWidth(margin);
         attack = 100;
         setHeight(margin);
-        rectangle = new Rectangle(getX(), getY(), margin, margin);
+        setRectangle(new Rectangle(getX(), getY(), margin, margin));
 
         TextureRegion[] attackFrames = new TextureRegion[7];
 
@@ -148,19 +146,6 @@ public class Player extends CustomActor {
     }
 
     @Override
-    public void setDamage(int damage) {
-
-        super.setDamage(damage);
-        setHP(getHP() - damage);
-    }
-
-    @Override
-    public int getDamage() {
-
-        return super.getDamage();
-    }
-
-    @Override
     public void setAttack(int attack) {
 
         this.attack = attack;
@@ -170,22 +155,6 @@ public class Player extends CustomActor {
     public int getAttack() {
 
         return attack;
-    }
-
-    @Override
-    public void setHP(int HP) {
-
-        this.HP = HP;
-        if (this.HP > maxHP) {
-            this.HP = maxHP;
-        }
-
-    }
-
-    @Override
-    public int getHP() {
-
-        return HP;
     }
 
     @Override
@@ -310,16 +279,6 @@ public class Player extends CustomActor {
     @Override
     public Color getColor() {
         return color;
-    }
-
-    @Override
-    public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
-    }
-
-    @Override
-    public Rectangle getRectangle() {
-        return rectangle;
     }
 
     @Override

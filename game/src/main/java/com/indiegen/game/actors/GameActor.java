@@ -18,8 +18,6 @@ public interface GameActor {
     float getFontAlpha();
     void setAttack(int attack);
     int getAttack();
-    void setHP(int HP);
-    int getHP();
     void drawLabel(int hit);
     void setCurY(float curY);
     float getCurY();
@@ -37,8 +35,6 @@ public interface GameActor {
     int getDir();
     void setColor(Color color);
     Color getColor();
-    void setRectangle(Rectangle rectangle);
-    Rectangle getRectangle();
     void setBoundingBox(BoundingBox boundingBox);
     BoundingBox getBoundingBox();
     boolean drawRect(RectangleUtils rect);
