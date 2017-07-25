@@ -90,6 +90,7 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
         Viewport uiViewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT);
         stage = new Stage(viewport);
         uiStage = new Stage(uiViewport);
+
         viewport.apply();
         Table table = new Table();
         table.setFillParent(true);
@@ -325,7 +326,7 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
                 actor.setPlayerState(GamePlayerState.WAITING);
             }
             if (actor.getHP() <= 0) {
-                actor.dead();
+                actor.setDead(true);
                 actor.setPlayerState(GamePlayerState.FINISH);
 
             }

@@ -14,72 +14,13 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.indiegen.game.enums.GamePlayerState;
 import com.indiegen.game.utils.RectangleUtils;
 
-public class Player extends CustomActor implements GameActor {
-
-    public void setPotions(int potions) {
-        this.potions = potions;
-    }
-
-    public int getPotions() {
-        return potions;
-    }
-
-    @Override
-    public TextureRegion getTurnTexture() {
-
-        return turnTexture;
-    }
-
-    @Override
-    public void setTurnTexture(TextureRegion turnTexture) {
-
-        this.turnTexture = turnTexture;
-    }
-
-
-    @Override
-    public void Acting(Boolean acting) {
-
-        this.acting = acting;
-    }
-
-
-    @Override
-    public Boolean isActing() {
-
-        return acting;
-    }
-
-
-    @Override
-    public void setFatigue(int fatigue) {
-
-        this.fatigue = fatigue;
-    }
-
-    @Override
-    public int getFatigue() {
-
-        return this.fatigue;
-    }
-
-
-    @Override
-    public Vector2 getPosMap() {
-
-
-        return new Vector2(getX() / margin, getY() / margin);
-    }
+public class Player extends CustomActor {
 
     private final int ATTACK = 50;
     private final int WALK = 20;
     private final int GUARD = 20;
 
     private TextureRegion currentFrame;
-    private TextureRegion turnTexture;
-    private final Animation attackAnimation;
-    private final Animation waitAnimation;
-    private final Animation walkAnimation;
 
     private BoundingBox boundingBox;
     private Rectangle rectangle;
@@ -87,7 +28,6 @@ public class Player extends CustomActor implements GameActor {
     private final int margin = 64;
     private int velX = 0;
     private Color color;
-    private float delta = 0;
     private int dir;
     private boolean flipX = false;
     private boolean flipY = false;
@@ -98,11 +38,13 @@ public class Player extends CustomActor implements GameActor {
     private GamePlayerState actorState;
     private int HP;
     private final int maxHP = 80;
-    private boolean dead = false;
-    private int fatigue = 0;
     private Boolean acting = false;
     private int potions = 1;
     private int attack;
+
+    public Boolean isActing() {
+        return acting;
+    }
 
     public Player(Texture texture) {
         boundingBox = new BoundingBox();
@@ -127,25 +69,25 @@ public class Player extends CustomActor implements GameActor {
         attackFrames[6] = new TextureRegion(texture, 64, 32, 32, 32);
         attackFrames[5] = new TextureRegion(texture, 64, 32, 32, 32);
 
-        attackAnimation = new Animation(.08f, attackFrames);
+        setAttackAnimation(new Animation(.08f, attackFrames));
 
         TextureRegion[] waitFrames = new TextureRegion[2];
 
         waitFrames[0] = new TextureRegion(texture, 0, 0, 32, 32);
         waitFrames[1] = new TextureRegion(texture, 96, 32, 32, 32);
 
-        waitAnimation = new Animation(0.8f, waitFrames);
+        setWaitAnimation(new Animation(0.8f, waitFrames));
 
         TextureRegion[] walkFrames = new TextureRegion[2];
 
         walkFrames[0] = new TextureRegion(texture, 32, 64, 32, 32);
         walkFrames[1] = new TextureRegion(texture, 32, 64, 32, 32);
 
-        walkAnimation = new Animation(0.8f, walkFrames);
+        setWalkAnimation(new Animation(0.8f, walkFrames));
 
-        setAnimation(waitAnimation);
-        currentFrame = getAnimation().getKeyFrame(delta, true);
-        delta = 0f;
+        setAnimation(getWaitAnimation());
+        currentFrame = getAnimation().getKeyFrame(getDelta(), true);
+        setDelta(0f);
         shape = new ShapeRenderer();
 
         actorState = GamePlayerState.WAITING;
@@ -158,7 +100,7 @@ public class Player extends CustomActor implements GameActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        delta += Gdx.graphics.getDeltaTime();
+        setDelta(getDelta() + Gdx.graphics.getDeltaTime());
 
         if (getPlayerState() == GamePlayerState.BEING_HITTING) {
             batch.setColor(1, 1 - super.getFontAlpha(), 1 - super.getFontAlpha(), 1);
@@ -191,7 +133,7 @@ public class Player extends CustomActor implements GameActor {
             batch.begin();
         }
 
-        currentFrame = getAnimation().getKeyFrame(delta, true);
+        currentFrame = getAnimation().getKeyFrame(getDelta(), true);
         if (dir == 0 && !currentFrame.isFlipX()) {
             currentFrame.flip(true, false);
 
@@ -204,49 +146,6 @@ public class Player extends CustomActor implements GameActor {
         batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
 
     }
-
-    @Override
-    public boolean isAnimationFinished() {
-
-        return getAnimation().isAnimationFinished(this.delta);
-    }
-
-
-    @Override
-    public void setAnimation(int animations) {
-
-        delta = 0;
-        switch (animations) {
-            case 0:
-
-                setAnimation(waitAnimation);
-                break;
-            case 1:
-
-                setAnimation(walkAnimation);
-                break;
-            case 2:
-
-                setAnimation(attackAnimation);
-                break;
-
-        }
-    }
-
-    @Override
-    public void dead() {
-
-        this.dead = true;
-    }
-
-
-    @Override
-    public boolean isDead() {
-
-
-        return this.dead;
-    }
-
 
     @Override
     public void setDamage(int damage) {
@@ -301,7 +200,6 @@ public class Player extends CustomActor implements GameActor {
 
     }
 
-
     @Override
     public void moveRects() {
 
@@ -314,7 +212,6 @@ public class Player extends CustomActor implements GameActor {
 
     }
 
-
     @Override
     public int getSpeed() {
 
@@ -324,11 +221,10 @@ public class Player extends CustomActor implements GameActor {
     @Override
     public void setPlayerState(GamePlayerState newPlayerState) {
 
-        getPlayerState().exit(this, delta);
+        getPlayerState().exit(this, getDelta());
         this.actorState = newPlayerState;
-        getPlayerState().enter(this, delta);
+        getPlayerState().enter(this, getDelta());
     }
-
 
     @Override
     public GamePlayerState getPlayerState() {
@@ -451,12 +347,9 @@ public class Player extends CustomActor implements GameActor {
 
     @Override
     public void act(float delta) {
-
         getPlayerState().update(this, delta);
-
         super.act(delta);
     }
-
 
     public int getATTACK() {
         return ATTACK;
@@ -468,5 +361,13 @@ public class Player extends CustomActor implements GameActor {
 
     public int getGUARD() {
         return GUARD;
+    }
+
+    public void setPotions(int potions) {
+        this.potions = potions;
+    }
+
+    public int getPotions() {
+        return potions;
     }
 }

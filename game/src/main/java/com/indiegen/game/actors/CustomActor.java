@@ -1,118 +1,38 @@
 package com.indiegen.game.actors;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.indiegen.game.actors.GameActor;
 import com.indiegen.game.enums.GamePlayerState;
 import com.indiegen.game.utils.RectangleUtils;
 
 import java.util.ArrayList;
 
-public class CustomActor extends Actor implements GameActor {
+public abstract class CustomActor extends Actor implements GameActor {
 
     private int damage = 0;
     private ArrayList<RectangleUtils> rects = new ArrayList<>();
     private float fontAlpha;
     private Animation animation;
-
-    public Texture getTexture() {
-        return null;
-    }
-
-    @Override
-    public TextureRegion getTurnTexture() {
-
-        return null;
-    }
-
-    @Override
-    public void setTurnTexture(TextureRegion turnTexture) {
-
-
-    }
-
-
-    @Override
-    public void Acting(Boolean acting) {
-
-
-    }
-
-
-    @Override
-    public Boolean isActing() {
-
-        return null;
-    }
-
-    @Override
-    public void setFatigue(int fatigue) {
-
-
-    }
-
-    @Override
-    public int getFatigue() {
-
-        return 0;
-    }
-
-
-    @Override
-    public Vector2 getPosMap() {
-
-
-        return new Vector2(getX() / margin, getY() / margin);
-    }
-
-    @Override
-    public boolean isAnimationFinished() {
-
-        return true;
-    }
-
-
-    @Override
-    public void setAnimation(int animations) {
-
-
-    }
-
-    @Override
-    public Animation getAnimation() {
-
-        return animation;
-    }
-
-
-    @Override
-    public void dead() {
-
-        boolean dead = true;
-    }
-
+    private TextureRegion turnTexture;
+    private int fatigue = 0;
+    private float delta = 0;
+    private Animation attackAnimation;
+    private Animation waitAnimation;
+    private Animation walkAnimation;
+    private boolean dead = false;
 
     public void setDefence(int defence){
 
-    }
-
-
-    @Override
-    public boolean isDead() {
-
-        return false;
     }
 
     @Override
     public void setRectangle(Rectangle rectangle) {
 
     }
-
 
     @Override
     public void setDamage(int damage) {
@@ -155,7 +75,6 @@ public class CustomActor extends Actor implements GameActor {
         return 0;
     }
 
-
     @Override
     public void setHP(int HP) {
 
@@ -166,7 +85,6 @@ public class CustomActor extends Actor implements GameActor {
 
         return 0;
     }
-
 
     @Override
     public void moveRects() {
@@ -184,7 +102,6 @@ public class CustomActor extends Actor implements GameActor {
         return speed;
     }
 
-
     @Override
     public void setPlayerState(GamePlayerState playerState) {
 
@@ -195,7 +112,6 @@ public class CustomActor extends Actor implements GameActor {
 
         return null;
     }
-
 
     @Override
     public void setCurY(float curY) {
@@ -321,5 +237,88 @@ public class CustomActor extends Actor implements GameActor {
 
     public void setAnimation(Animation animation) {
         this.animation = animation;
+    }
+
+    public TextureRegion getTurnTexture() {
+        return turnTexture;
+    }
+
+    public void setTurnTexture(TextureRegion turnTexture) {
+        this.turnTexture = turnTexture;
+    }
+
+    public int getFatigue() {
+        return fatigue;
+    }
+
+    public void setFatigue(int fatigue) {
+        this.fatigue = fatigue;
+    }
+
+    public Vector2 getPosMap() {
+        return new Vector2(getX() / margin, getY() / margin);
+    }
+
+    public float getDelta() {
+        return delta;
+    }
+
+    public void setDelta(float delta) {
+        this.delta = delta;
+    }
+
+    public boolean isAnimationFinished() {
+        return animation.isAnimationFinished(getDelta());
+    }
+
+    public Animation getAttackAnimation() {
+        return attackAnimation;
+    }
+
+    public Animation getWaitAnimation() {
+        return waitAnimation;
+    }
+
+    public Animation getWalkAnimation() {
+        return walkAnimation;
+    }
+
+    public void setAttackAnimation(Animation attackAnimation) {
+        this.attackAnimation = attackAnimation;
+    }
+
+    public void setWaitAnimation(Animation waitAnimation) {
+        this.waitAnimation = waitAnimation;
+    }
+
+    public void setWalkAnimation(Animation walkAnimation) {
+        this.walkAnimation = walkAnimation;
+    }
+
+    public void setAnimation(int animations) {
+        setDelta(0);
+        switch (animations) {
+            case 0:
+                animation = getWaitAnimation();
+                break;
+            case 1:
+                animation = getWalkAnimation();
+                break;
+            case 2:
+                animation = getAttackAnimation();
+                break;
+        }
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
     }
 }

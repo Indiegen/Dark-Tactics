@@ -12,14 +12,8 @@ import com.indiegen.game.utils.RectangleUtils;
 
 public interface GameActor {
 
-    Vector2 getPosMap();
-    void setAnimation(int animations);
-    Animation getAnimation();
-    boolean isAnimationFinished();
     void setDamage(int damage);
     int getDamage();
-    boolean isDead();
-    void dead();
     void setFontAlpha(float fontAlpha);
     float getFontAlpha();
     void setAttack(int attack);
@@ -58,11 +52,5 @@ public interface GameActor {
     int margin = 60;
     int speed = 60;
     int attack = 0;
-    void setFatigue(int fatigue);
-    int getFatigue();
-    Boolean isActing();
-    void Acting(Boolean acting);
-    TextureRegion getTurnTexture();
-    void setTurnTexture(TextureRegion turnTexture);
 
 }

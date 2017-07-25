@@ -15,24 +15,20 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.indiegen.game.enums.GamePlayerState;
 import com.indiegen.game.utils.RectangleUtils;
 
-public class GameEnemy extends CustomActor implements GameActor {
+public class GameEnemy extends CustomActor {
 
     private Texture texture;
     private TextureRegion[] walkFrames;
     private TextureRegion[] attackFrames;
     private TextureRegion[] waitFrames;
     private TextureRegion currentFrame;
-    private TextureRegion turnTexture;
     private Animation walk;
-    private Animation attackAnimation;
-    private Animation waitAnimation;
     private Animation animation;
     private BoundingBox boundingBox;
     private Rectangle rectangle;
 
     private int velX = 0;
     private Color color;
-    private float delta = 0;
     private int dir;
     private boolean flipX = false;
     private boolean flipY = false;
@@ -42,8 +38,6 @@ public class GameEnemy extends CustomActor implements GameActor {
     private float curY;
     private int HP;
     private int maxHP;
-    private boolean dead = false;
-    private int fatigue = 0;
 
     private GamePlayerState actorState;
     private final int attack;
@@ -99,95 +93,16 @@ public class GameEnemy extends CustomActor implements GameActor {
 
         setAnimation(0);
 
-        currentFrame = getAnimation().getKeyFrame(delta, true);
+        currentFrame = getAnimation().getKeyFrame(getDelta(), true);
         setX(x);
         setY(y);
-        delta = 0f;
+        setDelta(0f);
         shape = new ShapeRenderer();
 
         actorState = GamePlayerState.WAITING;
         initRects();
         super.addRect(new RectangleUtils(getX(), getY(), margin, margin));
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
-    }
-
-    @Override
-    public TextureRegion getTurnTexture() {
-
-        return turnTexture;
-    }
-
-    @Override
-    public void setTurnTexture(TextureRegion turnTexture) {
-
-        this.turnTexture = turnTexture;
-    }
-
-    @Override
-    public void Acting(Boolean acting) {
-
-    }
-
-    @Override
-    public void setFatigue(int fatigue) {
-
-        this.fatigue = fatigue;
-    }
-
-    @Override
-    public int getFatigue() {
-        return this.fatigue;
-    }
-
-    @Override
-    public Vector2 getPosMap() {
-        return new Vector2(getX() / margin, getY() / margin);
-    }
-
-    @Override
-    public boolean isAnimationFinished() {
-
-        return getAnimation().isAnimationFinished(this.delta);
-    }
-
-
-    @Override
-    public void setAnimation(int animations) {
-
-        delta = 0;
-        switch (animations) {
-            case 0:
-
-                animation = getWaitAnimation();
-                break;
-            case 1:
-
-                animation = getWalk();
-                break;
-            case 2:
-
-                animation = getAttackAnimation();
-                break;
-        }
-    }
-
-    @Override
-    public Animation getAnimation() {
-
-        return animation;
-    }
-
-    @Override
-    public void dead() {
-
-        this.dead = true;
-    }
-
-
-    @Override
-    public boolean isDead() {
-
-        return dead;
     }
 
     @Override
@@ -203,14 +118,11 @@ public class GameEnemy extends CustomActor implements GameActor {
         return super.getDamage();
     }
 
-
-
     @Override
     public void drawLabel(int hit) {
 
         setHP(getHP() - hit);
     }
-
 
     @Override
     public void setAttack(int attack) {
@@ -226,9 +138,9 @@ public class GameEnemy extends CustomActor implements GameActor {
     @Override
     public void setPlayerState(GamePlayerState newPlayerState) {
 
-        actorState.exit(this, delta);
+        actorState.exit(this, getDelta());
         this.actorState = newPlayerState;
-        actorState.enter(this, delta);
+        actorState.enter(this, getDelta());
     }
 
     @Override
@@ -236,7 +148,6 @@ public class GameEnemy extends CustomActor implements GameActor {
 
         return actorState;
     }
-
 
     @Override
     public void setHP(int HP) {
@@ -249,7 +160,6 @@ public class GameEnemy extends CustomActor implements GameActor {
 
         return HP;
     }
-
 
     @Override
     public void moveRects() {
@@ -275,7 +185,6 @@ public class GameEnemy extends CustomActor implements GameActor {
 
     }
 
-
     @Override
     public int getSpeed() {
 
@@ -286,7 +195,7 @@ public class GameEnemy extends CustomActor implements GameActor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        delta += Gdx.graphics.getDeltaTime();
+        setDelta(getDelta()+Gdx.graphics.getDeltaTime());
 
 
         if (getPlayerState() == GamePlayerState.BEING_HITTING) {
@@ -315,7 +224,8 @@ public class GameEnemy extends CustomActor implements GameActor {
 
 
 
-        currentFrame = getAnimation().getKeyFrame(delta, true);
+        if(getAnimation() != null)
+            currentFrame = getAnimation().getKeyFrame(getDelta(), true);
         if (getDir() == 0 && !currentFrame.isFlipX()) {
             currentFrame.flip(true, false);
 
@@ -332,6 +242,88 @@ public class GameEnemy extends CustomActor implements GameActor {
         batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         batch.setColor(Color.WHITE);
 
+    }
+
+    @Override
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+    }
+
+    @Override
+    public Rectangle getRectangle() {
+
+        return rectangle;
+    }
+
+    public boolean drawRect(RectangleUtils rect) {
+        shape.setColor(rect.getColor());
+        shape.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+
+        return false;
+    }
+
+    @Override
+    public void act(float delta) {
+
+        actorState.update(this, delta);
+        super.act(delta);
+    }
+
+    public boolean isTouched(float x, float y) {
+
+        return false;
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public TextureRegion[] getWalkFrames() {
+        return walkFrames;
+    }
+
+    public void setWalkFrames(TextureRegion[] walkFrames) {
+        this.walkFrames = walkFrames;
+    }
+
+    public void setWalkFrame(TextureRegion frame, int index){
+        this.walkFrames[index] = frame;
+    }
+
+    public int getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(int maxHP) {
+        this.maxHP = maxHP;
+    }
+
+    public Animation getWalk() {
+        return walk;
+    }
+
+    public void setWalk(Animation walk) {
+        this.walk = walk;
+    }
+
+    public TextureRegion[] getWaitFrames() {
+        return waitFrames;
+    }
+
+    public void setWaitFrames(TextureRegion[] waitFrames) {
+        this.waitFrames = waitFrames;
+    }
+
+    public TextureRegion[] getAttackFrames() {
+        return attackFrames;
+    }
+
+    public void setAttackFrames(TextureRegion[] attackFrames) {
+        this.attackFrames = attackFrames;
     }
 
     public void setCurY(float curY) {
@@ -404,106 +396,5 @@ public class GameEnemy extends CustomActor implements GameActor {
 
     public BoundingBox getBoundingBox() {
         return boundingBox;
-    }
-
-
-    @Override
-    public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
-    }
-
-    @Override
-    public Rectangle getRectangle() {
-
-        return rectangle;
-    }
-
-    public boolean drawRect(RectangleUtils rect) {
-        shape.setColor(rect.getColor());
-        shape.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-
-        return false;
-    }
-
-    @Override
-    public void act(float delta) {
-
-        actorState.update(this, delta);
-        super.act(delta);
-    }
-
-    public boolean isTouched(float x, float y) {
-
-        return false;
-    }
-
-
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
-
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
-
-    public TextureRegion[] getWalkFrames() {
-        return walkFrames;
-    }
-
-    public void setWalkFrames(TextureRegion[] walkFrames) {
-        this.walkFrames = walkFrames;
-    }
-
-    public void setWalkFrame(TextureRegion frame, int index){
-        this.walkFrames[index] = frame;
-    }
-
-    public int getMaxHP() {
-        return maxHP;
-    }
-
-    public void setMaxHP(int maxHP) {
-        this.maxHP = maxHP;
-    }
-
-    public Animation getWalk() {
-        return walk;
-    }
-
-    public void setWalk(Animation walk) {
-        this.walk = walk;
-    }
-
-    public TextureRegion[] getWaitFrames() {
-        return waitFrames;
-    }
-
-    public void setWaitFrames(TextureRegion[] waitFrames) {
-        this.waitFrames = waitFrames;
-    }
-
-    public Animation getWaitAnimation() {
-        return waitAnimation;
-    }
-
-    public void setWaitAnimation(Animation waitAnimation) {
-        this.waitAnimation = waitAnimation;
-    }
-
-    public TextureRegion[] getAttackFrames() {
-        return attackFrames;
-    }
-
-    public void setAttackFrames(TextureRegion[] attackFrames) {
-        this.attackFrames = attackFrames;
-    }
-
-    public Animation getAttackAnimation() {
-        return attackAnimation;
-    }
-
-    public void setAttackAnimation(Animation attackAnimation) {
-        this.attackAnimation = attackAnimation;
     }
 }

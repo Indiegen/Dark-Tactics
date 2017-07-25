@@ -79,7 +79,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
             if (actor.getFontAlpha() <= 0) {
                 actor.setPlayerState(GamePlayerState.FINISH);
                 if (actor.getHP() <= 0) {
-                    actor.dead();
+                    actor.setDead(true);;
                     actor.setPlayerState(GamePlayerState.FINISH);
                 }
             } else {
