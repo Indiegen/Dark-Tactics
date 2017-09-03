@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.indiegen.game.utils.RectangleUtils;
 
-public class KingSkeleton extends GameEnemy implements GameActor {
+public class KingSkeleton extends GameEnemy {
 
 
     public void initialize() {
@@ -25,8 +25,8 @@ public class KingSkeleton extends GameEnemy implements GameActor {
         setWalkFrames(new TextureRegion[1]);
 
         getWalkFrames()[0] = new TextureRegion(getTexture(), 0, 0, margin, margin);
-        setWalk(new Animation(0.2f, getWalkFrames()));
-        getWalk().setPlayMode(Animation.PlayMode.NORMAL);
+        setWalkAnimation(new Animation(0.2f, getWalkFrames()));
+        getWalkAnimation().setPlayMode(Animation.PlayMode.NORMAL);
 
         setWaitFrames(new TextureRegion[1]);
 

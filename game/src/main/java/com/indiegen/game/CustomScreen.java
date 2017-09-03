@@ -224,10 +224,10 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
     }
 
     public void buttonItem() {
-        if (player.getPlayerState() == GamePlayerState.ITEM) {
+        if (player.getActorState() == GamePlayerState.ITEM) {
             player.setPlayerState(GamePlayerState.READY);
         } else {
-            if (player.getPlayerState() == GamePlayerState.READY && player.getPotions() > 0) {
+            if (player.getActorState() == GamePlayerState.READY && player.getPotions() > 0) {
                 player.setPlayerState(GamePlayerState.ITEM);
 
                 player.setHP(player.getHP() + 40);
@@ -246,10 +246,10 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
 
 
     public void buttonGuard() {
-        if (player.getPlayerState() == GamePlayerState.GUARD) {
+        if (player.getActorState() == GamePlayerState.GUARD) {
             player.setPlayerState(GamePlayerState.READY);
         } else {
-            if (player.getPlayerState() == GamePlayerState.READY) {
+            if (player.getActorState() == GamePlayerState.READY) {
                 player.setPlayerState(GamePlayerState.GUARD);
                 actingActor = player;
                 player.setFatigue(player.getGUARD());
@@ -260,10 +260,10 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
 
     @Override
     public void buttonAttack() {
-        if (player.getPlayerState() == GamePlayerState.ATTACK_TARGETING) {
+        if (player.getActorState() == GamePlayerState.ATTACK_TARGETING) {
             player.setPlayerState(GamePlayerState.READY);
         } else {
-            if (player.getPlayerState() == GamePlayerState.READY) {
+            if (player.getActorState() == GamePlayerState.READY) {
                 player.setPlayerState(GamePlayerState.ATTACK_TARGETING);
                 drawRects(player);
                 actingActor = player;
@@ -274,10 +274,10 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
 
     @Override
     public void buttonMove() {
-        if (player.getPlayerState() == GamePlayerState.WAITING_TO_MOVE) {
+        if (player.getActorState() == GamePlayerState.WAITING_TO_MOVE) {
             player.setPlayerState(GamePlayerState.READY);
         } else {
-            if (player.getPlayerState() == GamePlayerState.READY) {
+            if (player.getActorState() == GamePlayerState.READY) {
 
                 player.setPlayerState(GamePlayerState.WAITING_TO_MOVE);
                 drawRects(player);
@@ -322,7 +322,7 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
 
 
         for (CustomActor actor : actors) {
-            if (actor.getPlayerState() == GamePlayerState.FINISH) {
+            if (actor.getActorState() == GamePlayerState.FINISH) {
                 actor.setPlayerState(GamePlayerState.WAITING);
             }
             if (actor.getHP() <= 0) {
@@ -354,11 +354,11 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
         maps.drawMap(batch, font, text);
         ui.getHealthBar().setBarHP(player.getHP());
 
-        if (actingActor == player && player.getPlayerState() == GamePlayerState.WAITING_TO_MOVE) {
+        if (actingActor == player && player.getActorState() == GamePlayerState.WAITING_TO_MOVE) {
             ui.getMessage().setText("Select Direction");
         }
 
-        if (actingActor == player && player.getPlayerState() == GamePlayerState.ATTACK_TARGETING) {
+        if (actingActor == player && player.getActorState() == GamePlayerState.ATTACK_TARGETING) {
             ui.getMessage().setText("Select Target");
         }
 
@@ -397,12 +397,12 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
     private void AITurn() {
         if (ready.size() > 0) {
             if (!Objects.equals(ready.get(0).getName(), "player")
-                    && ready.get(0).getPlayerState() == GamePlayerState.READY
+                    && ready.get(0).getActorState() == GamePlayerState.READY
                     ) {
                 AIMove(ready.get(0));
             }
 
-            if (ready.get(0).getPlayerState() == GamePlayerState.WAITING)
+            if (ready.get(0).getActorState() == GamePlayerState.WAITING)
                 ready.remove(0);
 
         }
@@ -534,7 +534,7 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
     private void AIMove(CustomActor actor) {
 
         RectangleUtils targetRect = new RectangleUtils(9999, 9999, margin, margin);
-        if (actor.getPlayerState() == GamePlayerState.READY && !actor.isDead()) {
+        if (actor.getActorState() == GamePlayerState.READY && !actor.isDead()) {
             actor.setPlayerState(GamePlayerState.WAITING_TO_MOVE);
             drawRects(actor);
             for (RectangleUtils rect : actor.getRects()) {
@@ -543,7 +543,7 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
                     rect.setDistance( (float) (Math.sqrt(Math.pow(player.getX() - rect.getX(), 2) + Math.pow(player.getY() - rect.getY(), 2))));
                 } else {
                     rect.setDistance(9999);
-                    if (rect.contains(player.getX() + margin / 2, player.getY() + margin / 2) && actor.getPlayerState() != GamePlayerState.BEING_HITTING) {
+                    if (rect.contains(player.getX() + margin / 2, player.getY() + margin / 2) && actor.getActorState() != GamePlayerState.BEING_HITTING) {
 
                         if (actor.getX() < player.getX()) {
                             actor.setDir(1);
@@ -590,8 +590,8 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
         touchVec.set(p1, p2, 0);
         touchVec = camera.unproject(touchVec);
 
-        if (player.getPlayerState() != GamePlayerState.WAITING) {
-            if (player.getPlayerState() == GamePlayerState.WAITING_TO_MOVE) {
+        if (player.getActorState() != GamePlayerState.WAITING) {
+            if (player.getActorState() == GamePlayerState.WAITING_TO_MOVE) {
                 for (RectangleUtils rect : player.getRects()) {
                     if (rect.contains(touchVec.x, touchVec.y)
                             &&
@@ -614,7 +614,7 @@ public class CustomScreen implements Screen, GestureDetector.GestureListener, Cu
                 }
 
             }
-            if (player.getPlayerState() == GamePlayerState.ATTACK_TARGETING) {
+            if (player.getActorState() == GamePlayerState.ATTACK_TARGETING) {
                 for (RectangleUtils rect : player.getRects()) {
 
                     if (rect.contains(touchVec.x, touchVec.y)) {

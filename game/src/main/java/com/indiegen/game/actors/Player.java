@@ -19,43 +19,22 @@ public class Player extends CustomActor {
     private final int ATTACK = 50;
     private final int WALK = 20;
     private final int GUARD = 20;
-
     private TextureRegion currentFrame;
-
-    private BoundingBox boundingBox;
-
-    private final int margin = 64;
-    private int velX = 0;
-    private Color color;
-    private int dir;
-    private boolean flipX = false;
-    private boolean flipY = false;
-    private int state = 0;
-    private final ShapeRenderer shape;
-    private float curX;
-    private float curY;
-    private GamePlayerState actorState;
     private final int maxHP = 80;
-    private Boolean acting = false;
     private int potions = 1;
-    private int attack;
-
-    public Boolean isActing() {
-        return acting;
-    }
 
     public Player(Texture texture) {
-        boundingBox = new BoundingBox();
+        setBoundingBox(new BoundingBox());
 
         setHP(maxHP);
         setAttack(30);
 
         setName("player");
-        setPosition(margin * 3, margin * 3);
-        setWidth(margin);
-        attack = 100;
-        setHeight(margin);
-        setRectangle(new Rectangle(getX(), getY(), margin, margin));
+        setPosition(getMargin() * 3, getMargin() * 3);
+        setWidth(getMargin());
+        setAttack(100);
+        setHeight(getMargin());
+        setRectangle(new Rectangle(getX(), getY(), getMargin(), getMargin()));
 
         TextureRegion[] attackFrames = new TextureRegion[7];
 
@@ -86,11 +65,11 @@ public class Player extends CustomActor {
         setAnimation(getWaitAnimation());
         currentFrame = getAnimation().getKeyFrame(getDelta(), true);
         setDelta(0f);
-        shape = new ShapeRenderer();
+        setShape(new ShapeRenderer());
 
-        actorState = GamePlayerState.WAITING;
+        setActorState(GamePlayerState.WAITING);
         initRects();
-        super.addRect(new RectangleUtils(getX(), getY(), margin, margin));
+        super.addRect(new RectangleUtils(getX(), getY(), getMargin(), getMargin()));
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
 
     }
@@ -99,215 +78,43 @@ public class Player extends CustomActor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         setDelta(getDelta() + Gdx.graphics.getDeltaTime());
-
-        if (getPlayerState() == GamePlayerState.BEING_HITTING) {
-            batch.setColor(1, 1 - super.getFontAlpha(), 1 - super.getFontAlpha(), 1);
-            font.setColor(1, 0, 0, super.getFontAlpha());
-            font.getData().scale(1f);
-            font.draw(batch, -getDamage() + " HP", getX(), getY() + margin + margin * (1 - super.getFontAlpha()) / 2);
+        if (getActorState() == GamePlayerState.BEING_HITTING) {
+            batch.setColor(1, 1 - getFontAlpha(), 1 - getFontAlpha(), 1);
+            getFont().setColor(1, 0, 0, getFontAlpha());
+            getFont().getData().scale(1f);
+            getFont().draw(batch, -getDamage() + " HP", getX(), getY() + getMargin() + getMargin() * (1 - getFontAlpha()) / 2);
         } else {
             batch.setColor(Color.WHITE);
         }
-        if (getPlayerState() == GamePlayerState.ITEM) {
-            batch.setColor(1 - super.getFontAlpha(), 1, 1 - super.getFontAlpha(), 1);
-            font.setColor(0, 1, 0, super.getFontAlpha());
-            font.getData().scale(1f);
-            font.draw(batch, "+40 " + " HP", getX(), getY() + margin + margin * (1 - super.getFontAlpha()) / 2);
+        if (getActorState() == GamePlayerState.ITEM) {
+            batch.setColor(1 - getFontAlpha(), 1, 1 - getFontAlpha(), 1);
+            getFont().setColor(0, 1, 0, getFontAlpha());
+            getFont().getData().scale(1f);
+            getFont().draw(batch, "+40 " + " HP", getX(), getY() + getMargin() + getMargin() * (1 - getFontAlpha()) / 2);
         } else {
             batch.setColor(Color.WHITE);
         }
-
-        if (getPlayerState() == GamePlayerState.WAITING_TO_MOVE || getPlayerState() == GamePlayerState.ATTACK_TARGETING) {
+        if (getActorState() == GamePlayerState.WAITING_TO_MOVE || getActorState() == GamePlayerState.ATTACK_TARGETING) {
             batch.end();
             Gdx.gl.glEnable(GL20.GL_BLEND);
-            shape.begin(ShapeRenderer.ShapeType.Filled);
-            shape.setProjectionMatrix(batch.getProjectionMatrix());
-
-            for (RectangleUtils rect : super.getRects()) {
+            getShape().begin(ShapeRenderer.ShapeType.Filled);
+            getShape().setProjectionMatrix(batch.getProjectionMatrix());
+            for (RectangleUtils rect : getRects()) {
                 drawRect(rect);
             }
-            shape.end();
+            getShape().end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
             batch.begin();
         }
-
         currentFrame = getAnimation().getKeyFrame(getDelta(), true);
-        if (dir == 0 && !currentFrame.isFlipX()) {
-            currentFrame.flip(true, false);
-
-        }
-        if (dir == 1 && currentFrame.isFlipX()) {
+        if (getDir() == 0 && !currentFrame.isFlipX()) {
             currentFrame.flip(true, false);
         }
-
-        setRectangle(new Rectangle(getX(), getY(), margin, margin));
+        if (getDir() == 1 && currentFrame.isFlipX()) {
+            currentFrame.flip(true, false);
+        }
+        setRectangle(new Rectangle(getX(), getY(), getMargin(), getMargin()));
         batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-
-    }
-
-    @Override
-    public void setAttack(int attack) {
-
-        this.attack = attack;
-    }
-
-    @Override
-    public int getAttack() {
-
-        return attack;
-    }
-
-    @Override
-    public void attackRects() {
-
-        super.clearRects();
-
-        super.addRect(new RectangleUtils(getX(), getY() + margin, margin, margin));
-        super.addRect(new RectangleUtils(getX(), getY() - margin, margin, margin));
-        super.addRect(new RectangleUtils(getX() - margin, getY(), margin, margin));
-        super.addRect(new RectangleUtils(getX() + margin, getY(), margin, margin));
-
-    }
-
-    @Override
-    public void moveRects() {
-
-        super.clearRects();
-
-        super.addRect(new RectangleUtils(getX(), getY() + margin, margin, margin));
-        super.addRect(new RectangleUtils(getX(), getY() - margin, margin, margin));
-        super.addRect(new RectangleUtils(getX() - margin, getY(), margin, margin));
-        super.addRect(new RectangleUtils(getX() + margin, getY(), margin, margin));
-
-    }
-
-    @Override
-    public int getSpeed() {
-
-        return speed;
-    }
-
-    @Override
-    public void setPlayerState(GamePlayerState newPlayerState) {
-
-        getPlayerState().exit(this, getDelta());
-        this.actorState = newPlayerState;
-        getPlayerState().enter(this, getDelta());
-    }
-
-    @Override
-    public GamePlayerState getPlayerState() {
-
-        return actorState;
-    }
-
-    @Override
-    public void setCurY(float curY) {
-        this.curY = curY;
-    }
-
-    @Override
-    public float getCurY() {
-        return curY;
-    }
-
-    @Override
-    public void setCurX(float curX) {
-        this.curX = curX;
-    }
-
-    @Override
-    public float getCurX() {
-        return curX;
-    }
-
-    @Override
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    @Override
-    public int getState() {
-        return state;
-    }
-
-    @Override
-    public void setFlipY(boolean flipY) {
-        this.flipY = flipY;
-    }
-
-    @Override
-    public boolean getFlipY() {
-        return flipY;
-    }
-
-    @Override
-    public void setFlipX(boolean flipX) {
-        this.flipX = flipX;
-    }
-
-    @Override
-    public boolean getFlipX() {
-        return flipX;
-    }
-
-    @Override
-    public void setVelX(int velX) {
-        this.velX = velX;
-    }
-
-    @Override
-    public int getVelX() {
-        return velX;
-    }
-
-    @Override
-    public void setDir(int dir) {
-        this.dir = dir;
-    }
-
-    @Override
-    public int getDir() {
-        return dir;
-    }
-
-    @Override
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    @Override
-    public Color getColor() {
-        return color;
-    }
-
-    @Override
-    public void setBoundingBox(BoundingBox boundingBox) {
-        this.boundingBox = boundingBox;
-    }
-
-    @Override
-    public BoundingBox getBoundingBox() {
-        return boundingBox;
-    }
-
-    @Override
-    public boolean drawRect(RectangleUtils rect) {
-        shape.setColor(rect.getColor());
-        shape.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-        return false;
-    }
-
-    @Override
-    public boolean isTouched(float x, float y) {
-
-        return false;
-    }
-
-    @Override
-    public void act(float delta) {
-        getPlayerState().update(this, delta);
-        super.act(delta);
     }
 
     public int getATTACK() {

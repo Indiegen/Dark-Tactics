@@ -1,7 +1,10 @@
 package com.indiegen.game.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -11,7 +14,7 @@ import com.indiegen.game.utils.RectangleUtils;
 
 import java.util.ArrayList;
 
-public abstract class CustomActor extends Actor implements GameActor {
+public abstract class CustomActor extends Actor {
 
     private int damage = 0;
     private ArrayList<RectangleUtils> rects = new ArrayList<>();
@@ -26,165 +29,29 @@ public abstract class CustomActor extends Actor implements GameActor {
     private boolean dead = false;
     private Rectangle rectangle;
     private int HP;
+    private int attack;
+    private GamePlayerState actorState;
+    private float curX;
+    private float curY;
+    private int velX = 0;
+    private Color color;
+    private int dir;
+    private boolean flipX = false;
+    private boolean flipY = false;
+    private int state = 0;
+    private BoundingBox boundingBox;
+    private ShapeRenderer shape;
+    private BitmapFont font = new BitmapFont();
+    private int margin = 64;
+    private int speed = 64;
+    private int defence;
 
-    @Override
-    public void setFontAlpha(float fontAlpha) {
-
-        this.fontAlpha = fontAlpha;
+    public void drawRect(RectangleUtils rect) {
+        getShape().setColor(rect.getColor());
+        getShape().rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-    @Override
-    public float getFontAlpha() {
-
-        return fontAlpha;
-    }
-
-    @Override
-    public void drawLabel(int hit) {
-
-
-    }
-
-
-    @Override
-    public void setAttack(int attack) {
-
-    }
-
-    @Override
-    public int getAttack() {
-
-        return 0;
-    }
-
-    @Override
-    public void moveRects() {
-
-    }
-
-    @Override
-    public void attackRects() {
-
-    }
-
-    @Override
-    public int getSpeed() {
-
-        return speed;
-    }
-
-    @Override
-    public void setPlayerState(GamePlayerState playerState) {
-
-    }
-
-    @Override
-    public GamePlayerState getPlayerState() {
-
-        return null;
-    }
-
-    @Override
-    public void setCurY(float curY) {
-
-    }
-
-    @Override
-    public float getCurY() {
-
-        return 0;
-    }
-
-    @Override
-    public void setCurX(float curX) {
-
-    }
-
-    @Override
-    public float getCurX() {
-
-        return 0;
-    }
-
-    @Override
-    public void setState(int state) {
-
-    }
-
-    @Override
-    public int getState() {
-
-        return 0;
-    }
-
-    @Override
-    public void setFlipY(boolean flipY) {
-
-    }
-
-    @Override
-    public boolean getFlipY() {
-
-        return false;
-    }
-
-    @Override
-    public void setFlipX(boolean flipX) {
-
-    }
-
-    @Override
-    public boolean getFlipX() {
-
-        return false;
-    }
-
-    @Override
-    public void setVelX(int velX) {
-
-    }
-
-    @Override
-    public int getVelX() {
-
-        return 0;
-    }
-
-    @Override
-    public void setDir(int dir) {
-
-    }
-
-    @Override
-    public int getDir() {
-
-        return 0;
-    }
-
-    @Override
-    public void setBoundingBox(BoundingBox boundingBox) {
-
-    }
-
-    @Override
-    public BoundingBox getBoundingBox() {
-
-        return null;
-    }
-
-    @Override
-    public boolean drawRect(RectangleUtils rect) {
-
-        return false;
-    }
-
-    @Override
-    public boolean isTouched(float x, float y) {
-
-        return false;
-    }
-
-    public void initRects(){
+    public void initRects() {
         this.rects = new ArrayList<>();
     }
 
@@ -192,11 +59,11 @@ public abstract class CustomActor extends Actor implements GameActor {
         return this.rects;
     }
 
-    public void addRect(RectangleUtils rect){
+    public void addRect(RectangleUtils rect) {
         this.rects.add(rect);
     }
 
-    public void clearRects(){
+    public void clearRects() {
         this.rects.clear();
     }
 
@@ -221,7 +88,7 @@ public abstract class CustomActor extends Actor implements GameActor {
     }
 
     public Vector2 getPosMap() {
-        return new Vector2(getX() / margin, getY() / margin);
+        return new Vector2(getX() / getMargin(), getY() / getMargin());
     }
 
     public float getDelta() {
@@ -287,10 +154,6 @@ public abstract class CustomActor extends Actor implements GameActor {
         this.dead = dead;
     }
 
-    public void setDefence(int defence){
-
-    }
-
     public Rectangle getRectangle() {
         return rectangle;
     }
@@ -314,5 +177,157 @@ public abstract class CustomActor extends Actor implements GameActor {
 
     public void setHP(int HP) {
         this.HP = HP;
+    }
+
+    public void setFontAlpha(float fontAlpha) {
+        this.fontAlpha = fontAlpha;
+    }
+
+    public float getFontAlpha() {
+        return fontAlpha;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void moveRects() {
+        clearRects();
+
+        addRect(new RectangleUtils(getX(), getY() + getMargin(), getMargin(), getMargin()));
+        addRect(new RectangleUtils(getX(), getY() - getMargin(), getMargin(), getMargin()));
+        addRect(new RectangleUtils(getX() - getMargin(), getY(), getMargin(), getMargin()));
+        addRect(new RectangleUtils(getX() + getMargin(), getY(), getMargin(), getMargin()));
+    }
+
+    public void attackRects() {
+        addRect(new RectangleUtils(getX(), getY() + getMargin(), getMargin(), getMargin()));
+        addRect(new RectangleUtils(getX(), getY() - getMargin(), getMargin(), getMargin()));
+        addRect(new RectangleUtils(getX() - getMargin(), getY(), getMargin(), getMargin()));
+        addRect(new RectangleUtils(getX() + getMargin(), getY(), getMargin(), getMargin()));
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public GamePlayerState getActorState() {
+        return actorState;
+    }
+
+    public void setActorState(GamePlayerState actorState) {
+        this.actorState = actorState;
+    }
+
+    public void setPlayerState(GamePlayerState playerState) {
+        getActorState().exit(this, getDelta());
+        this.setActorState(playerState);
+        getActorState().enter(this, getDelta());
+    }
+
+    @Override
+    public void act(float delta) {
+        getActorState().update(this, delta);
+        super.act(delta);
+    }
+
+    public float getCurX() {
+        return curX;
+    }
+
+    public void setCurX(float curX) {
+        this.curX = curX;
+    }
+
+    public float getCurY() {
+        return curY;
+    }
+
+    public void setCurY(float curY) {
+        this.curY = curY;
+    }
+
+    public int getVelX() {
+        return velX;
+    }
+
+    public void setVelX(int velX) {
+        this.velX = velX;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public int getDir() {
+        return dir;
+    }
+
+    public void setDir(int dir) {
+        this.dir = dir;
+    }
+
+    public boolean isFlipX() {
+        return flipX;
+    }
+
+    public void setFlipX(boolean flipX) {
+        this.flipX = flipX;
+    }
+
+    public boolean isFlipY() {
+        return flipY;
+    }
+
+    public void setFlipY(boolean flipY) {
+        this.flipY = flipY;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
+    }
+
+    public void setBoundingBox(BoundingBox boundingBox) {
+        this.boundingBox = boundingBox;
+    }
+
+    public ShapeRenderer getShape() {
+        return shape;
+    }
+
+    public void setShape(ShapeRenderer shape) {
+        this.shape = shape;
+    }
+
+    public int getMargin() {
+        return margin;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
     }
 }
