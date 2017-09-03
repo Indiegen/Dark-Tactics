@@ -1,10 +1,10 @@
 package com.indiegen.game;
 
-public interface StateMachine<MyActor> {
-    void update(MyActor player, float delta);
+public interface StateMachine<CustomActor> {
+    void update(CustomActor player, float delta);
 
-    Boolean enter(MyActor player, float delta);
+    Boolean enter(CustomActor player, float delta);
 
-    Boolean exit(MyActor player, float delta);
+    Boolean exit(CustomActor player, float delta);
 
 }
