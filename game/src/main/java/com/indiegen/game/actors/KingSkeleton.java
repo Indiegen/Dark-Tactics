@@ -14,8 +14,8 @@ public class KingSkeleton extends GameEnemy {
         setMaxHP(190);
 
         int margin = 64;
-        setHeight(128);
-        setWidth(128);
+        setWidth(margin * (getTexture().getWidth() / getTexture().getHeight()));
+        setHeight(margin);
 
         setName("Skeleton King");
 
@@ -76,6 +76,7 @@ public class KingSkeleton extends GameEnemy {
     public KingSkeleton(Texture texture, int x, int y, String name) {
 
         super(texture, x, y, name);
+        initialize();
 
     }
 
