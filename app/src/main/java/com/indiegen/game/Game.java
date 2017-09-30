@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.android.*;
 
 
 public class Game extends AndroidApplication{
-	game initgame;
+	DarkTactics initgame;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -14,7 +14,7 @@ public class Game extends AndroidApplication{
 		super.onCreate(savedInstanceState);
 		
 		
-		initgame = new game();
+		initgame = new DarkTactics();
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 
 		initialize(initgame,cfg);

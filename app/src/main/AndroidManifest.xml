@@ -17,8 +17,7 @@
         <activity
             android:name="com.indiegen.game.Game"
             android:label="@string/app_name"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
-        </activity>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>

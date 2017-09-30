@@ -13,7 +13,7 @@ import android.media.*;
 
 public class MainActivity extends Activity implements OnClickListener
 {
-    game initgame;
+    DarkTactics initgame;
 	
 	Button starButton;
 	TextView link;
