@@ -13,11 +13,6 @@ public class Player extends CustomActor
 {
 
 
-
-    private final int ATTACK = 50;
-    private final int WALK = 20;
-    private final int GUARD = 20;
-
     private TextureRegion currentFrame;
 
     private BoundingBox boundingBox;
@@ -33,22 +28,21 @@ public class Player extends CustomActor
     private float curX;
     private float curY;
     private GamePlayerState actorState;
-    private final int maxHP = 80;
-    private Boolean acting = false;
     private int potions = 1;
     private int attack;
 
     public Boolean isActing()
 	{
-        return acting;
+        return false;
     }
 
     public Player(Texture texture)
 	{
         boundingBox = new BoundingBox();
 
+        int maxHP = 80;
         setHP(maxHP);
-        setAttack(30);
+        setAttack();
 
         setName("player");
         setPosition(margin * 3, margin * 3);
@@ -169,7 +163,7 @@ public class Player extends CustomActor
     }
 
     @Override
-    public void setAttack(int attack)
+    public void setAttack()
 	{
 
         this.attack = attack;
@@ -363,17 +357,17 @@ public class Player extends CustomActor
 
     public int getATTACK()
 	{
-        return ATTACK;
+        return 50;
     }
 
     public int getWALK()
 	{
-        return WALK;
+        return 20;
     }
 
     public int getGUARD()
 	{
-        return GUARD;
+        return 20;
     }
 
     public void setPotions(int potions)

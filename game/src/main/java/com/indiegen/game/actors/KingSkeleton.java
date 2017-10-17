@@ -14,32 +14,23 @@ import com.indiegen.game.utils.RectangleUtils;
 
 public class KingSkeleton extends GameEnemy
 {
-	
-	private TextureRegion currentFrame; 
-    private BoundingBox boundingBox;
-	private final ShapeRenderer shape;
 
-    private GamePlayerState actorState;
-    private  int attack;
-    private final BitmapFont font;
-	
-	
-	
-	public KingSkeleton(Texture texture, int x, int y, String name){
+
+    public KingSkeleton(Texture texture, int x, int y, String name){
 		super(texture,1,2,"ey");
 
-        setHP(20);
-        setMaxHP(80);
+        setHP(222);
+        setMaxHP(222);
         this.setTexture(texture);
         setName("Skeleton " + name);
 
-        attack = 10;
+        int attack = 10;
 
         int margin = 64;
-        
 
-        boundingBox = new BoundingBox();
-        font = new BitmapFont();
+
+        BoundingBox boundingBox = new BoundingBox();
+        BitmapFont font = new BitmapFont();
         setRectangle(new Rectangle(getX(), getY(), margin, margin));
 
         setDir(1);
@@ -96,13 +87,13 @@ public class KingSkeleton extends GameEnemy
 		
         setAnimation(0);
 
-        currentFrame = getAnimation().getKeyFrame(getDelta(), true);
+        TextureRegion currentFrame = getAnimation().getKeyFrame(getDelta(), true);
         setX(x);
         setY(y);
         setDelta(0f);
-        shape = new ShapeRenderer();
+        ShapeRenderer shape = new ShapeRenderer();
 
-        actorState = GamePlayerState.WAITING;
+        GamePlayerState actorState = GamePlayerState.WAITING;
         initRects();
         addRect(new RectangleUtils(getX(), getY(), margin, margin));
         setTurnTexture(new TextureRegion(texture, 132, 64, 16, 16));

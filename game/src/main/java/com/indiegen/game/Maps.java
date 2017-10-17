@@ -3,32 +3,20 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 
-public class Maps
+class Maps
 {
 	//Assests assests;
 	Batch batch;
-	int margen = 64;
-	int tileSize= 32;
-	float delta=0;
-	TextureRegion tileRegion;
-	TextureRegion brickRegion;
-	TextureRegion grassRegion;
-	TextureRegion groundRegion;
-	TextureRegion doorRegion;
-	TextureRegion torchRegion;
-	
-	
-	Texture tilesTexture;
-	
-	
-	
-	TextureRegion[] torches;
-	
-	Animation torchAnimation;
+	private float delta=0;
+	private TextureRegion tileRegion;
+	private TextureRegion brickRegion;
+	private TextureRegion grassRegion;
+	private TextureRegion groundRegion;
+	private TextureRegion doorRegion;
 
-	Assests assests;
+	private Animation torchAnimation;
 
-	public int[][] map=	{
+	private int[][] map=	{
 		{ 3 , 3 , 3 , 3 , 3 , 3 , 6 , 3 , 3 , 3 ,},
 		{ 3 , 2 , 2 , 1 , 1 , 1 , 1 , 1 , 1 , 3 ,},
 		{ 3 , 1 , 2 , 1 , 3 , 3 , 1 , 1 , 1 , 3 ,},
@@ -52,13 +40,13 @@ public class Maps
 		{ 6 , 3 , 3 , 6 , 3 , 3 , 6 , 3 , 3 , 6 ,},
 	};
 
-	public Maps(Assests assests)
+	Maps(Assests assests)
 
 	{
-		torches = new TextureRegion[3];
-	
-		this.assests = assests;
-		tilesTexture = assests.tiles;
+		TextureRegion[] torches = new TextureRegion[3];
+
+		Texture tilesTexture = assests.tiles;
+		int tileSize = 32;
 		tileRegion = new TextureRegion(tilesTexture, tileSize * 19, tileSize * 6, tileSize, tileSize);
 		brickRegion = new TextureRegion(tilesTexture, tileSize * 7, tileSize * 7, tileSize, tileSize);
 		grassRegion = new TextureRegion(tilesTexture, tileSize * 1, tileSize * 1, tileSize, tileSize);
@@ -73,17 +61,12 @@ public class Maps
 		
 	}
 
-	public void setMap(int[][] map)
-	{
-		this.map = map;
-	}
-
-	public int[][] getMap()
+	int[][] getMap()
 	{
 		return map;
 	}
 
-	public void drawMap(Batch batch, BitmapFont font,String text)
+	void drawMap(Batch batch, BitmapFont font, String text)
 	{
 		this.batch = batch;
 		batch.begin();
@@ -93,7 +76,8 @@ public class Maps
 		{
             for (int y = 0; y < map[y].length; y++)
 			{
-                if (map[x][y] == 1)
+				int margen = 64;
+				if (map[x][y] == 1)
 				{
                     batch.draw(brickRegion, x * margen, y * margen, margen, margen);
                 }

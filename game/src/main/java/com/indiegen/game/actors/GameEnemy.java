@@ -118,7 +118,7 @@ public class GameEnemy extends CustomActor
     }
 
     @Override
-    public void setAttack(int attack) {
+    public void setAttack() {
 
     }
 

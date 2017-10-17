@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.*;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.indiegen.game.Actors.*;
 import com.indiegen.game.enums.*;
 import com.indiegen.game.utils.*;
 import java.util.*;
@@ -48,7 +47,7 @@ public abstract class CustomActor extends Actor implements GameActor {
 
 
     @Override
-    public void setAttack(int attack) {
+    public void setAttack() {
 
     }
 

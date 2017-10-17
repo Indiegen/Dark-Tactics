@@ -1,6 +1,6 @@
 package com.indiegen.game;
 
-public interface Levels
+interface Levels
 {
 	void initScreen();
 }

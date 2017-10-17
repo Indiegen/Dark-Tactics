@@ -10,18 +10,18 @@ import com.indiegen.game.Actors.CustomActor;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Blood extends Actor
+class Blood extends Actor
 {
-	ShapeRenderer shape;
+	private ShapeRenderer shape;
 	CustomActor actor;
-	ArrayList<Particle> bloods;
-	
+	private ArrayList<Particle> bloods = new ArrayList<Particle>();
+
+
+
 	Blood(ShapeRenderer shape){
 		this.shape=shape;
-		int delta;
-		bloods = new ArrayList<Particle>();
-		
-		
+
+
 	}
 	
 	@Override
@@ -47,6 +47,7 @@ public class Blood extends Actor
 		
 		while(itr.hasNext()){
 			if (itr.next().getAlpha()<= 0){
+
 				bloods.remove(itr);
 			}
 		}
@@ -57,7 +58,7 @@ public class Blood extends Actor
 		batch.begin();
 		
 	}
-	public void createBlood(CustomActor actor)
+	void createBlood(CustomActor actor)
 	{
 		bloods.add(new Particle(actor));
 		bloods.add(new Particle(actor));
