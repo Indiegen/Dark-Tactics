@@ -24,12 +24,13 @@ public class Player extends CustomActor
     private boolean flipX = false;
     private boolean flipY = false;
     private int state = 0;
-    private final ShapeRenderer shape;
+    private ShapeRenderer shape;
     private float curX;
     private float curY;
     private GamePlayerState actorState;
     private int potions = 1;
     private int attack;
+    private int defence=0;
 
     public Boolean isActing()
 	{
@@ -51,17 +52,16 @@ public class Player extends CustomActor
         setHeight(margin);
         setRectangle(new Rectangle(getX(), getY(), margin, margin));
 
-        TextureRegion[] attackFrames = new TextureRegion[7];
+        setAttackFrames(new TextureRegion[7]);
+        getAttackFrames()[0] = new TextureRegion(texture, 0, 0, 32, 32);
+        getAttackFrames()[1] = new TextureRegion(texture, 32, 0, 32, 32);
+        getAttackFrames()[2] = new TextureRegion(texture, 64, 0, 32, 32);
+        getAttackFrames()[3] = new TextureRegion(texture, 96, 0, 32, 32);
+        getAttackFrames()[4] = new TextureRegion(texture, 32, 32, 32, 32);
+        getAttackFrames()[6] = new TextureRegion(texture, 64, 32, 32, 32);
+        getAttackFrames()[5] = new TextureRegion(texture, 64, 32, 32, 32);
 
-        attackFrames[0] = new TextureRegion(texture, 0, 0, 32, 32);
-        attackFrames[1] = new TextureRegion(texture, 32, 0, 32, 32);
-        attackFrames[2] = new TextureRegion(texture, 64, 0, 32, 32);
-        attackFrames[3] = new TextureRegion(texture, 96, 0, 32, 32);
-        attackFrames[4] = new TextureRegion(texture, 32, 32, 32, 32);
-        attackFrames[6] = new TextureRegion(texture, 64, 32, 32, 32);
-        attackFrames[5] = new TextureRegion(texture, 64, 32, 32, 32);
-
-        setAttackAnimation(new Animation(.08f, attackFrames));
+        setAttackAnimation(new Animation(.08f,getAttackFrames()));
 
         TextureRegion[] waitFrames = new TextureRegion[2];
 
@@ -78,8 +78,13 @@ public class Player extends CustomActor
         setWalkAnimation(new Animation(0.8f, walkFrames));
 
 		TextureRegion[] HitFrames =new TextureRegion[1];
-		
-		
+
+        //setGuardFrames (new TextureRegion([1]));
+
+
+
+
+		//setGuardAnimation( new Animation(0.8, guardFrames) )
 
 		HitFrames[0] = new TextureRegion(texture, 96,64 , 32, 32);
         //HitFrames[1] = new TextureRegion(texture, 32, 108, 44, 36);
@@ -100,6 +105,8 @@ public class Player extends CustomActor
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
 
     }
+
+
 
     @Override
     public void draw(Batch batch, float parentAlpha)
@@ -175,6 +182,12 @@ public class Player extends CustomActor
 
         return attack;
     }
+
+    @Override
+    public int getDefence() {
+        return defence;
+    }
+
 
     @Override
     public void attackRects()

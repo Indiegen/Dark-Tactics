@@ -26,6 +26,12 @@ public abstract class CustomActor extends Actor implements GameActor {
     private int HP;
 	private boolean moveDone=false;
 	private boolean actionDone=false;
+    private int defence;
+    private TextureRegion[] walkFrames;
+    private TextureRegion[] attackFrames;
+    private TextureRegion[] waitFrames;
+    private TextureRegion[] deadFrames;
+
 
     @Override
     public void setFontAlpha(float fontAlpha) {
@@ -301,7 +307,7 @@ public abstract class CustomActor extends Actor implements GameActor {
     }
 
     public void setDefence(int defence){
-
+        this.defence = defence;
     }
 
     public Rectangle getRectangle() {
@@ -348,6 +354,41 @@ public abstract class CustomActor extends Actor implements GameActor {
 	{
 		return actionDone;
 	}
-	
-	
+
+    public TextureRegion[] getWalkFrames() {
+        return walkFrames;
+    }
+
+    public void setWalkFrames(TextureRegion[] walkFrames) {
+        this.walkFrames = walkFrames;
+    }
+
+    public void setWalkFrame(TextureRegion frame, int index){
+        this.walkFrames[index] = frame;
+    }
+
+    public TextureRegion[] getWaitFrames() {
+        return waitFrames;
+    }
+
+    public void setWaitFrames(TextureRegion[] waitFrames) {
+        this.waitFrames = waitFrames;
+    }
+
+    public TextureRegion[] getAttackFrames() {
+        return attackFrames;
+    }
+
+    public void setAttackFrames(TextureRegion[] attackFrames) {
+        this.attackFrames = attackFrames;
+    }
+
+    public TextureRegion[] getDeadFrames() {
+        return deadFrames;
+    }
+
+    public void setDeadFrames(TextureRegion[] deadFrames) {
+        this.deadFrames = deadFrames;
+    }
+
 }

@@ -13,10 +13,7 @@ import com.indiegen.game.utils.*;
 public class GameEnemy extends CustomActor
 {
     private Texture texture;
-    private TextureRegion[] walkFrames;
-    private TextureRegion[] attackFrames;
-    private TextureRegion[] waitFrames;
-	private TextureRegion[] deadFrames;
+
     private TextureRegion currentFrame;
     private Animation walk;
     private Animation animation;
@@ -36,6 +33,7 @@ public class GameEnemy extends CustomActor
     private GamePlayerState actorState;
     private final int attack;
     private final BitmapFont font;
+    private int defence=0;
 
     public GameEnemy(Texture texture, int x, int y, String name) {
         setHP(20);
@@ -126,6 +124,12 @@ public class GameEnemy extends CustomActor
     public int getAttack() {
 
         return attack;
+    }
+
+    @Override
+    public int getDefence() {
+
+        return defence;
     }
 
     @Override
@@ -252,17 +256,7 @@ public class GameEnemy extends CustomActor
         this.texture = texture;
     }
 
-    public TextureRegion[] getWalkFrames() {
-        return walkFrames;
-    }
 
-    public void setWalkFrames(TextureRegion[] walkFrames) {
-        this.walkFrames = walkFrames;
-    }
-
-    public void setWalkFrame(TextureRegion frame, int index){
-        this.walkFrames[index] = frame;
-    }
 
     public int getMaxHP() {
         return maxHP;
@@ -270,32 +264,7 @@ public class GameEnemy extends CustomActor
 
     public void setMaxHP(int maxHP) {
         this.maxHP = maxHP;
-    } 
-
-    public TextureRegion[] getWaitFrames() {
-        return waitFrames;
     }
-
-    public void setWaitFrames(TextureRegion[] waitFrames) {
-        this.waitFrames = waitFrames;
-    }
-
-    public TextureRegion[] getAttackFrames() {
-        return attackFrames;
-    }
-
-    public void setAttackFrames(TextureRegion[] attackFrames) {
-        this.attackFrames = attackFrames;
-    }
-	
-	public TextureRegion[] getDeadFrames() {
-        return deadFrames;
-    }
-
-    public void setDeadFrames(TextureRegion[] deadFrames) {
-        this.deadFrames = deadFrames;
-    }
-	
 
     public void setCurY(float curY) {
         this.curY = curY;
