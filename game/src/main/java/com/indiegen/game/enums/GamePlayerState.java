@@ -75,18 +75,18 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         @Override
         public void update(CustomActor actor, float delta) {
 
-           /* actor.setFontAlpha(actor.getFontAlpha() - 1f * delta);
+            actor.setFontAlpha(actor.getFontAlpha() - (1f * delta));
             if (actor.getFontAlpha() <= 0) {
                 actor.setPlayerState(GamePlayerState.FINISH);
                 if (actor.getHP() <= 0) {
                     actor.setDead(true);
                     actor.setPlayerState(GamePlayerState.FINISH);
                 }
-            }*/
-            actor.setPlayerState(GamePlayerState.FINISH);
 
+                actor.setPlayerState(GamePlayerState.FINISH);
+
+            }
         }
-
     },
 
     ATTACKING() {

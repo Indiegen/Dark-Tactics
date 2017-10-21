@@ -186,7 +186,7 @@ public class GameEnemy extends CustomActor
         if (getPlayerState() == GamePlayerState.BEING_HITTING) {
             batch.setColor(1, 1 - getFontAlpha(), 1 - getFontAlpha(), 1);
             font.setColor(1, 0, 0, getFontAlpha());
-           //font.scale(1f);
+            font.getData().scale(1f);
             font.draw(batch, -getDamage() + " HP", getX(), getY() + margin + margin * (1 - getFontAlpha()) / 2);
         } else {
             batch.setColor(Color.WHITE);
