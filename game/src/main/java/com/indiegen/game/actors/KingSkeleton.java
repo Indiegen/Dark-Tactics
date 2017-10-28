@@ -19,8 +19,8 @@ public class KingSkeleton extends GameEnemy
     public KingSkeleton(Texture texture, int x, int y, String name){
 		super(texture,1,2,"ey");
 
-        setHP(222);
-        setMaxHP(222);
+        setHP(90);
+        setMaxHP(90);
         this.setTexture(texture);
         setName("Skeleton " + name);
 
@@ -73,16 +73,26 @@ public class KingSkeleton extends GameEnemy
 
 		
 		//Dead
-		setDeadFrames(new TextureRegion[3]);
+		setDeadFrames(new TextureRegion[4]);
 		
-		getDeadFrames()[0] = new TextureRegion(texture, 0, 108, 44, 36);
-        getDeadFrames()[1] = new TextureRegion(texture, 32, 108, 44, 36);
-        getDeadFrames()[2] = new TextureRegion(texture, 64, 108, 44, 36);
-        
-		setHitAnimation(new Animation(0.3f, getDeadFrames()));
+		getDeadFrames()[0] = new TextureRegion(texture, 0, 132, 32, 32);
+        getDeadFrames()[1] = new TextureRegion(texture, 32, 132, 32, 32);
+        getDeadFrames()[2] = new TextureRegion(texture, 64, 132, 32, 32);
+        getDeadFrames()[3] = new TextureRegion(texture, 96, 132, 32, 32);
+
+		setDeadAnimation(new Animation(0.5f, getDeadFrames()));
+        getDeadAnimation().setPlayMode(Animation.PlayMode.NORMAL);
+		
+        //Hit
+        setHitFrames(new TextureRegion[4]);
+
+        getHitFrames()[0] = new TextureRegion(texture, 0, 100, 32, 32);
+        getHitFrames()[1] = new TextureRegion(texture, 32, 100, 32, 32);
+        getHitFrames()[2] = new TextureRegion(texture, 64, 100, 32, 32);
+        getHitFrames()[3] = new TextureRegion(texture, 96, 100, 32, 32);
+
+        setHitAnimation(new Animation(0.4f, getHitFrames()));
         getHitAnimation().setPlayMode(Animation.PlayMode.NORMAL);
-		
-		
 		
 		
         setAnimation(0);

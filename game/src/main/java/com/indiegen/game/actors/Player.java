@@ -43,7 +43,7 @@ public class Player extends CustomActor
 
         int maxHP = 80;
         setHP(maxHP);
-        setAttack();
+        setAttack(getATTACK());
 
         setName("player");
         setPosition(margin * 3, margin * 3);
@@ -77,22 +77,34 @@ public class Player extends CustomActor
 
         setWalkAnimation(new Animation(0.8f, walkFrames));
 
-		TextureRegion[] HitFrames =new TextureRegion[1];
+        setGuardFrames(new TextureRegion[1]);
 
-        //setGuardFrames (new TextureRegion([1]));
+        getGuardFrames()[0] = new TextureRegion(texture,98,64,32,32);
 
+        setGuardAnimation( new Animation(0.8f, getGuardFrames()));
 
+//DEAD
 
+        setDeadFrames(new TextureRegion[4]);
 
-		//setGuardAnimation( new Animation(0.8, guardFrames) )
+        getDeadFrames()[0] = new TextureRegion(texture, 0, 132, 32, 32);
+        getDeadFrames()[1] = new TextureRegion(texture, 32, 132, 32, 32);
+        getDeadFrames()[2] = new TextureRegion(texture, 64, 132, 32, 32);
+        getDeadFrames()[3] = new TextureRegion(texture, 96, 132, 32, 32);
 
-		HitFrames[0] = new TextureRegion(texture, 96,64 , 32, 32);
-        //HitFrames[1] = new TextureRegion(texture, 32, 108, 44, 36);
-        //HitFrames[2] = new TextureRegion(texture, 64, 108, 44, 36);
+        setDeadAnimation(new Animation(0.4f, getDeadFrames()));
+        getDeadAnimation().setPlayMode(Animation.PlayMode.NORMAL);
 
-		setHitAnimation(new Animation(0.1f, HitFrames));
+        //Hit
+        setHitFrames(new TextureRegion[4]);
+
+        getHitFrames()[0] = new TextureRegion(texture, 0, 0, 32, 32);
+        getHitFrames()[1] = new TextureRegion(texture, 32, 0, 32, 32);
+        getHitFrames()[2] = new TextureRegion(texture, 64, 0, 32, 32);
+        getHitFrames()[3] = new TextureRegion(texture, 96, 0, 32, 32);
+
+        setHitAnimation(new Animation(0.4f, waitFrames));//////////////ADD HIT ANIMATION
         getHitAnimation().setPlayMode(Animation.PlayMode.NORMAL);
-		
 		
         setAnimation(getWaitAnimation());
         currentFrame = getAnimation().getKeyFrame(getDelta(), true);
@@ -113,18 +125,16 @@ public class Player extends CustomActor
 	{
         super.draw(batch, parentAlpha);
         setDelta(getDelta() + Gdx.graphics.getDeltaTime());
+        batch.setColor(Color.WHITE);
 
         if (getPlayerState() == GamePlayerState.BEING_HITTING)
 		{
             batch.setColor(1, 1 - super.getFontAlpha(), 1 - super.getFontAlpha(), 1);
             font.setColor(1, 0, 0, super.getFontAlpha());
-            //font.scale(1f);
+            //font.getData().scale(1f);
             font.draw(batch, -getDamage() + " HP", getX(), getY() + margin + margin * (1 - super.getFontAlpha()) / 2);
         }
-		else
-		{
-            batch.setColor(Color.WHITE);
-        }
+
         if (getPlayerState() == GamePlayerState.ITEM)
 		{
             batch.setColor(1 - super.getFontAlpha(), 1, 1 - super.getFontAlpha(), 1);
@@ -132,10 +142,7 @@ public class Player extends CustomActor
             //font.scale(1f);
             font.draw(batch, "+40 " + " HP", getX(), getY() + margin + margin * (1 - super.getFontAlpha()) / 2);
         }
-		else
-		{
-            batch.setColor(Color.WHITE);
-        }
+
 
         if (getPlayerState() == GamePlayerState.WAITING_TO_MOVE || getPlayerState() == GamePlayerState.ATTACK_TARGETING||true)
 		{
@@ -170,20 +177,6 @@ public class Player extends CustomActor
     }
 
     @Override
-    public void setAttack()
-	{
-
-        this.attack = attack;
-    }
-
-    @Override
-    public int getAttack()
-	{
-
-        return attack;
-    }
-
-    @Override
     public int getDefence() {
         return defence;
     }
@@ -215,12 +208,7 @@ public class Player extends CustomActor
 
     }
 
-    @Override
-    public int getSpeed()
-	{
 
-        return speed;
-    }
 
     @Override
     public void setPlayerState(GamePlayerState newPlayerState)
@@ -262,53 +250,6 @@ public class Player extends CustomActor
         return curX;
     }
 
-    @Override
-    public void setState(int state)
-	{
-        this.state = state;
-    }
-
-    @Override
-    public int getState()
-	{
-        return state;
-    }
-
-    @Override
-    public void setFlipY(boolean flipY)
-	{
-        this.flipY = flipY;
-    }
-
-    @Override
-    public boolean getFlipY()
-	{
-        return flipY;
-    }
-
-    @Override
-    public void setFlipX(boolean flipX)
-	{
-        this.flipX = flipX;
-    }
-
-    @Override
-    public boolean getFlipX()
-	{
-        return flipX;
-    }
-
-    @Override
-    public void setVelX(int velX)
-	{
-        this.velX = velX;
-    }
-
-    @Override
-    public int getVelX()
-	{
-        return velX;
-    }
 
     @Override
     public void setDir(int dir)
@@ -334,17 +275,6 @@ public class Player extends CustomActor
         return color;
     }
 
-    @Override
-    public void setBoundingBox(BoundingBox boundingBox)
-	{
-        this.boundingBox = boundingBox;
-    }
-
-    @Override
-    public BoundingBox getBoundingBox()
-	{
-        return boundingBox;
-    }
 
     @Override
     public boolean drawRect(RectangleUtils rect)
@@ -354,12 +284,7 @@ public class Player extends CustomActor
         return false;
     }
 
-    @Override
-    public boolean isTouched(float x, float y)
-	{
 
-        return false;
-    }
 
     @Override
     public void act(float delta)

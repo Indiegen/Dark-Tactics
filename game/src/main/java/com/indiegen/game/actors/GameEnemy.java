@@ -1,17 +1,21 @@
 package com.indiegen.game.Actors;
 
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.*;
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.math.collision.*;
-import com.indiegen.game.enums.*;
-import com.indiegen.game.utils.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.indiegen.game.enums.GamePlayerState;
+import com.indiegen.game.utils.RectangleUtils;
 
-public class GameEnemy extends CustomActor
-{
+public class GameEnemy extends CustomActor {
     private Texture texture;
 
     private TextureRegion currentFrame;
@@ -33,7 +37,7 @@ public class GameEnemy extends CustomActor
     private GamePlayerState actorState;
     private final int attack;
     private final BitmapFont font;
-    private int defence=0;
+    private int defence = 0;
 
     public GameEnemy(Texture texture, int x, int y, String name) {
         setHP(20);
@@ -82,19 +86,29 @@ public class GameEnemy extends CustomActor
 
         setAttackAnimation(new Animation(0.2f, getAttackFrames()));
         getAttackAnimation().setPlayMode(Animation.PlayMode.NORMAL);
-		
-		
-//Dead
-		setDeadFrames(new TextureRegion[3]);
 
-		getDeadFrames()[0] = new TextureRegion(texture, 0, 108, 44, 36);
+
+//Dead
+        setDeadFrames(new TextureRegion[3]);
+
+        getDeadFrames()[0] = new TextureRegion(texture, 0, 108, 44, 36);
         getDeadFrames()[1] = new TextureRegion(texture, 32, 108, 44, 36);
         getDeadFrames()[2] = new TextureRegion(texture, 64, 108, 44, 36);
 
-		setHitAnimation(new Animation(0.1f, getDeadFrames()));
+        setDeadAnimation(new Animation(0.1f, getDeadFrames()));
+        getDeadAnimation().setPlayMode(Animation.PlayMode.NORMAL);
+
+//Hit
+        setHitFrames(new TextureRegion[4]);
+
+        getHitFrames()[0] = new TextureRegion(texture, 0, 0, 32, 32);
+        getHitFrames()[1] = new TextureRegion(texture, 32, 0, 32, 32);
+        getHitFrames()[2] = new TextureRegion(texture, 64, 0, 32, 32);
+        getHitFrames()[3] = new TextureRegion(texture, 96, 0, 32, 32);
+
+        setHitAnimation(new Animation(0.4f, getHitFrames()));
         getHitAnimation().setPlayMode(Animation.PlayMode.NORMAL);
 
-		
         setAnimation(0);
 
         currentFrame = getAnimation().getKeyFrame(getDelta(), true);
@@ -109,16 +123,6 @@ public class GameEnemy extends CustomActor
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
     }
 
-    @Override
-    public void drawLabel(int hit) {
-
-        setHP(getHP() - hit);
-    }
-
-    @Override
-    public void setAttack() {
-
-    }
 
     @Override
     public int getAttack() {
@@ -170,24 +174,18 @@ public class GameEnemy extends CustomActor
 
     }
 
-    @Override
-    public int getSpeed() {
-
-        return speed;
-    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        setDelta(getDelta()+Gdx.graphics.getDeltaTime());
-
+        setDelta(getDelta() + Gdx.graphics.getDeltaTime());
 
         if (getPlayerState() == GamePlayerState.BEING_HITTING) {
-            batch.setColor(1, 1 - getFontAlpha(), 1 - getFontAlpha(), 1);
-            font.setColor(1, 0, 0, getFontAlpha());
-            font.getData().scale(1f);
-            font.draw(batch, -getDamage() + " HP", getX(), getY() + margin + margin * (1 - getFontAlpha()) / 2);
+           // batch.setColor(1, 1 - super.getFontAlpha(), 1 - super.getFontAlpha(), 1);
+            font.setColor(1, 0, 0, super.getFontAlpha());
+            //font.getData().scale(1f);
+            font.draw(batch, -getDamage() + " HP", getX(), getY() + margin + margin * (1 - super.getFontAlpha()) / 2);
         } else {
             batch.setColor(Color.WHITE);
         }
@@ -208,8 +206,7 @@ public class GameEnemy extends CustomActor
         }
 
 
-
-        if(getAnimation() != null)
+        if (getAnimation() != null)
             currentFrame = getAnimation().getKeyFrame(getDelta(), true);
         if (getDir() == 0 && !currentFrame.isFlipX()) {
             currentFrame.flip(true, false);
@@ -219,8 +216,8 @@ public class GameEnemy extends CustomActor
             currentFrame.flip(true, false);
         }
 
-        setWidth(currentFrame.getRegionWidth()*2);
-        setHeight(currentFrame.getRegionHeight()*2);
+        setWidth(currentFrame.getRegionWidth() * 2);
+        setHeight(currentFrame.getRegionHeight() * 2);
 
         setRectangle(new Rectangle(getX(), getY(), margin, margin));
 
@@ -239,7 +236,7 @@ public class GameEnemy extends CustomActor
     @Override
     public void act(float delta) {
 
-        actorState.update(this, delta);
+        getPlayerState().update(this, delta);
         super.act(delta);
     }
 
@@ -255,7 +252,6 @@ public class GameEnemy extends CustomActor
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
-
 
 
     public int getMaxHP() {
@@ -337,4 +333,4 @@ public class GameEnemy extends CustomActor
     public BoundingBox getBoundingBox() {
         return boundingBox;
     }
-	}
+}

@@ -61,13 +61,14 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         public Boolean enter(CustomActor actor, float delta) {
 
             actor.setFontAlpha(1);
-
+            actor.setAnimation(5);
             return null;
         }
 
         @Override
         public Boolean exit(CustomActor actor, float delta) {
 
+            actor.setAnimation(0);
             return null;
         }
 
@@ -75,17 +76,21 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         @Override
         public void update(CustomActor actor, float delta) {
 
+
             actor.setFontAlpha(actor.getFontAlpha() - (1f * delta));
             if (actor.getFontAlpha() <= 0) {
-                actor.setPlayerState(GamePlayerState.FINISH);
                 if (actor.getHP() <= 0) {
-                    actor.setDead(true);
-                    actor.setPlayerState(GamePlayerState.FINISH);
+                    actor.setPlayerState(GamePlayerState.DEAD);
+                } else {
+                    if (actor.isAnimationFinished()) {
+                        actor.setPlayerState(GamePlayerState.FINISH);
+                    }
                 }
-
-                actor.setPlayerState(GamePlayerState.FINISH);
+            } else {
 
             }
+
+
         }
     },
 
@@ -119,6 +124,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         }
 
     },
+
     WAITING_OTHERS() {
         @Override
         public Boolean enter(CustomActor actor, float delta) {
@@ -184,6 +190,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         }
 
     },
+
     READY() {
         @Override
         public Boolean enter(CustomActor actor, float delta) {
@@ -204,6 +211,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         }
 
     },
+
     FINISH() {
         @Override
         public Boolean enter(CustomActor actor, float delta) {
@@ -224,6 +232,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         }
 
     },
+
     ITEM() {
         @Override
         public Boolean enter(CustomActor actor, float delta) {
@@ -256,6 +265,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         }
 
     },
+
     GUARD() {
         @Override
         public Boolean enter(CustomActor actor, float delta) {
@@ -276,6 +286,33 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         public void update(CustomActor actor, float delta) {
 
             actor.setPlayerState(GamePlayerState.FINISH);
+
+        }
+
+    },
+
+    DEAD() {
+        @Override
+        public Boolean enter(CustomActor actor, float delta) {
+
+            actor.setAnimation(4);
+            return null;
+        }
+
+        @Override
+        public Boolean exit(CustomActor actor, float delta) {
+
+            return null;
+        }
+
+        @Override
+        public void update(CustomActor actor, float delta) {
+
+            if (actor.isAnimationFinished()) {
+                actor.setPlayerState(GamePlayerState.FINISH);
+                actor.setDead(true);
+
+            }
 
         }
 

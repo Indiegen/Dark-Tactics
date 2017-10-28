@@ -1,18 +1,20 @@
 package com.indiegen.game.Actors;
 
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.math.collision.*;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.indiegen.game.enums.*;
-import com.indiegen.game.utils.*;
-import java.util.*;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.indiegen.game.enums.GamePlayerState;
+import com.indiegen.game.utils.RectangleUtils;
+
+import java.util.ArrayList;
 
 public abstract class CustomActor extends Actor implements GameActor {
 
     private int damage = 0;
     private ArrayList<RectangleUtils> rects = new ArrayList<>();
-    private float fontAlpha;
+    private float fontAlpha = 0;
     private Animation animation;
     private TextureRegion turnTexture;
     private int fatigue = 0;
@@ -20,17 +22,23 @@ public abstract class CustomActor extends Actor implements GameActor {
     private Animation attackAnimation;
     private Animation waitAnimation;
     private Animation walkAnimation;
-	private Animation deadAnimation;
+    private Animation deadAnimation;
+    private Animation guardAnimation;
+    private Animation hitAnimation;
     private boolean dead = false;
     private Rectangle rectangle;
     private int HP;
-	private boolean moveDone=false;
-	private boolean actionDone=false;
+    private boolean moveDone = false;
+    private boolean actionDone = false;
     private int defence;
     private TextureRegion[] walkFrames;
     private TextureRegion[] attackFrames;
     private TextureRegion[] waitFrames;
     private TextureRegion[] deadFrames;
+    private TextureRegion[] guardFrames;
+    private TextureRegion[] hitFrames;
+    private int attack;
+
 
 
     @Override
@@ -45,22 +53,17 @@ public abstract class CustomActor extends Actor implements GameActor {
         return fontAlpha;
     }
 
-    @Override
-    public void drawLabel(int hit) {
-
-
-    }
-
 
     @Override
-    public void setAttack() {
+    public void setAttack(int attack) {
 
+        this.attack = attack;
     }
 
     @Override
     public int getAttack() {
 
-        return 0;
+        return attack;
     }
 
     @Override
@@ -73,11 +76,6 @@ public abstract class CustomActor extends Actor implements GameActor {
 
     }
 
-    @Override
-    public int getSpeed() {
-
-        return speed;
-    }
 
     @Override
     public void setPlayerState(GamePlayerState playerState) {
@@ -113,50 +111,6 @@ public abstract class CustomActor extends Actor implements GameActor {
     }
 
     @Override
-    public void setState(int state) {
-
-    }
-
-    @Override
-    public int getState() {
-
-        return 0;
-    }
-
-    @Override
-    public void setFlipY(boolean flipY) {
-
-    }
-
-    @Override
-    public boolean getFlipY() {
-
-        return false;
-    }
-
-    @Override
-    public void setFlipX(boolean flipX) {
-
-    }
-
-    @Override
-    public boolean getFlipX() {
-
-        return false;
-    }
-
-    @Override
-    public void setVelX(int velX) {
-
-    }
-
-    @Override
-    public int getVelX() {
-
-        return 0;
-    }
-
-    @Override
     public void setDir(int dir) {
 
     }
@@ -168,29 +122,13 @@ public abstract class CustomActor extends Actor implements GameActor {
     }
 
     @Override
-    public void setBoundingBox(BoundingBox boundingBox) {
-
-    }
-
-    @Override
-    public BoundingBox getBoundingBox() {
-
-        return null;
-    }
-
-    @Override
     public boolean drawRect(RectangleUtils rect) {
 
         return false;
     }
 
-    @Override
-    public boolean isTouched(float x, float y) {
 
-        return false;
-    }
-
-    public void initRects(){
+    public void initRects() {
         this.rects = new ArrayList<>();
     }
 
@@ -198,11 +136,11 @@ public abstract class CustomActor extends Actor implements GameActor {
         return this.rects;
     }
 
-    public void addRect(RectangleUtils rect){
+    public void addRect(RectangleUtils rect) {
         this.rects.add(rect);
     }
 
-    public void clearRects(){
+    public void clearRects() {
         this.rects.clear();
     }
 
@@ -239,7 +177,7 @@ public abstract class CustomActor extends Actor implements GameActor {
     }
 
     public boolean isAnimationFinished() {
-        return animation.isAnimationFinished(getDelta());
+        return getAnimation().isAnimationFinished(getDelta());
     }
 
     public Animation getAttackAnimation() {
@@ -254,6 +192,10 @@ public abstract class CustomActor extends Actor implements GameActor {
         return walkAnimation;
     }
 
+    public Animation getHitAnimation() {
+        return hitAnimation;
+    }
+
     public void setAttackAnimation(Animation attackAnimation) {
         this.attackAnimation = attackAnimation;
     }
@@ -265,15 +207,28 @@ public abstract class CustomActor extends Actor implements GameActor {
     public void setWalkAnimation(Animation walkAnimation) {
         this.walkAnimation = walkAnimation;
     }
-	public Animation getHitAnimation() {
+
+    public Animation getDeadAnimation() {
         return deadAnimation;
     }
 
-    public void setHitAnimation(Animation deadAnimation) {
+    public void setDeadAnimation(Animation deadAnimation) {
         this.deadAnimation = deadAnimation;
     }
-	
-	
+
+    public void setHitAnimation(Animation hitAnimation) {
+        this.hitAnimation = hitAnimation;
+    }
+
+    public Animation getGuardAnimation() {
+
+        return guardAnimation;
+    }
+
+    public void setGuardAnimation(Animation guardAnimation) {
+        this.guardAnimation = guardAnimation;
+    }
+
     public void setAnimation(int animations) {
         setDelta(0);
         switch (animations) {
@@ -286,11 +241,16 @@ public abstract class CustomActor extends Actor implements GameActor {
             case 2:
                 animation = getAttackAnimation();
                 break;
-			//case 3:
-				//animation = getGuardAnimation();
-				//break;
-			case 4:
-				animation = getHitAnimation();
+            case 3:
+                animation = getGuardAnimation();
+                break;
+            case 4:
+                animation = getDeadAnimation();
+                break;
+
+            case 5:
+                animation = getHitAnimation();
+                break;
         }
     }
 
@@ -298,6 +258,53 @@ public abstract class CustomActor extends Actor implements GameActor {
         return animation;
     }
 
+    public TextureRegion[] getWalkFrames() {
+        return walkFrames;
+    }
+
+    public void setWalkFrames(TextureRegion[] walkFrames) {
+        this.walkFrames = walkFrames;
+    }
+
+    public TextureRegion[] getWaitFrames() {
+        return waitFrames;
+    }
+
+    public void setWaitFrames(TextureRegion[] waitFrames) {
+        this.waitFrames = waitFrames;
+    }
+
+    public TextureRegion[] getAttackFrames() {
+        return attackFrames;
+    }
+
+    public void setAttackFrames(TextureRegion[] attackFrames) {
+        this.attackFrames = attackFrames;
+    }
+
+    public TextureRegion[] getDeadFrames() {
+        return deadFrames;
+    }
+
+    public void setDeadFrames(TextureRegion[] deadFrames) {
+        this.deadFrames = deadFrames;
+    }
+
+    public TextureRegion[] getGuardFrames() {
+        return guardFrames;
+    }
+
+    public void setGuardFrames(TextureRegion[] guardFrames) {
+        this.guardFrames = guardFrames;
+    }
+
+    public TextureRegion[] getHitFrames() {
+        return hitFrames;
+    }
+
+    public void setHitFrames(TextureRegion[] hitFrames) {
+        this.hitFrames = hitFrames;
+    }
     public boolean isDead() {
         return dead;
     }
@@ -306,7 +313,7 @@ public abstract class CustomActor extends Actor implements GameActor {
         this.dead = dead;
     }
 
-    public void setDefence(int defence){
+    public void setDefence(int defence) {
         this.defence = defence;
     }
 
@@ -334,61 +341,22 @@ public abstract class CustomActor extends Actor implements GameActor {
     public void setHP(int HP) {
         this.HP = HP;
     }
-	
-	public void setMoveDone(boolean moveDone)
-	{
-		this.moveDone=moveDone;
-	}
 
-	public Boolean isMoveDone()
-	{
-		return moveDone;
-	}
-
-	public void setActionDone(boolean actionDone)
-	{
-		this.actionDone=actionDone;
-	}
-
-	public Boolean isActionDone()
-	{
-		return actionDone;
-	}
-
-    public TextureRegion[] getWalkFrames() {
-        return walkFrames;
+    public void setMoveDone(boolean moveDone) {
+        this.moveDone = moveDone;
     }
 
-    public void setWalkFrames(TextureRegion[] walkFrames) {
-        this.walkFrames = walkFrames;
+    public Boolean isMoveDone() {
+        return moveDone;
     }
 
-    public void setWalkFrame(TextureRegion frame, int index){
-        this.walkFrames[index] = frame;
+    public void setActionDone(boolean actionDone) {
+        this.actionDone = actionDone;
     }
 
-    public TextureRegion[] getWaitFrames() {
-        return waitFrames;
+    public Boolean isActionDone() {
+        return actionDone;
     }
 
-    public void setWaitFrames(TextureRegion[] waitFrames) {
-        this.waitFrames = waitFrames;
-    }
-
-    public TextureRegion[] getAttackFrames() {
-        return attackFrames;
-    }
-
-    public void setAttackFrames(TextureRegion[] attackFrames) {
-        this.attackFrames = attackFrames;
-    }
-
-    public TextureRegion[] getDeadFrames() {
-        return deadFrames;
-    }
-
-    public void setDeadFrames(TextureRegion[] deadFrames) {
-        this.deadFrames = deadFrames;
-    }
 
 }
