@@ -6,7 +6,9 @@ import com.indiegen.game.StateMachine;
 
 public enum GamePlayerState implements StateMachine<CustomActor> {
 
+
     MOVING() {
+
         @Override
         public Boolean enter(CustomActor actor, float delta) {
 
@@ -316,6 +318,6 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
 
         }
 
-    }
+    };
 
 }

@@ -20,14 +20,14 @@ public class AssetsManager {
     }
 
     private static Texture texture;
-    private static Texture hero21;
-    private static Texture tiles;
-    private static Texture enemy;
+    private static Texture heroTexture;
+    private static Texture tileTexture;
+    private static Texture enemyTexture;
     private static Texture kingSkeleton;
-    private static Texture swordButton;
-    private static Texture walkbutton;
+    private static Texture attackButtonTexture;
+    private static Texture walkButtonTexture;
     private static Texture background;
-    private static Texture torch;
+    private static Texture torchTexture;
     private static Texture heroCloseUp;
     private static Texture guard;
     private static Texture item;
@@ -36,33 +36,35 @@ public class AssetsManager {
     private static Texture light;
     private static Music music;
     private static Music music2;
-    private static Sound swordAttackSound;
-    private static Sound walkSound;
+    private static Sound heroAttackSound;
+    private static Sound heroWalkSound;
     private static Sound potionSound;
     private static Skin skin;
 
     public static void loadAssets() {
-        texture = new Texture(Gdx.files.internal("floor.png"));
-        hero21 = new Texture(Gdx.files.internal("hero22.png"));
-        tiles = new Texture(Gdx.files.internal("tiles.png"));
-        enemy = new Texture(Gdx.files.internal("skull.png"));
-        kingSkeleton = new Texture(Gdx.files.internal("Boss4.png"));
-        swordButton = new Texture(Gdx.files.internal("sword.png"));
-        walkbutton = new Texture(Gdx.files.internal("walkbutton2.png"));
+        //public Texture hero = new Texture(Gdx.files.internal("hero.jpg"));
+        heroTexture = new Texture(Gdx.files.internal("hero22.png"));
+        tileTexture = new Texture(Gdx.files.internal("tiles.png"));
+        enemyTexture = new Texture(Gdx.files.internal("skull.png"));
+        kingSkeleton = new Texture(Gdx.files.internal("sprite_king.png"));
+        attackButtonTexture = new Texture(Gdx.files.internal("sword.png"));
+        walkButtonTexture = new Texture(Gdx.files.internal("walkbutton2.png"));
         background = new Texture(Gdx.files.internal("Background.png"));
-        torch = new Texture(Gdx.files.internal("torch.png"));
+        hmi = new Texture(Gdx.files.internal("hmi.png"));
+        light = new Texture(Gdx.files.internal("Picture3.png"));
+        torchTexture = new Texture(Gdx.files.internal("torch.png"));
         heroCloseUp = new Texture(Gdx.files.internal("heroCloseUp2.png"));
         guard = new Texture(Gdx.files.internal("guard.png"));
         item = new Texture(Gdx.files.internal("item.png"));
         item2 = new Texture(Gdx.files.internal("item2.png"));
-        hmi = new Texture(Gdx.files.internal("hmi.png"));
-        light = new Texture(Gdx.files.internal("Picture3.png"));
+
         music = Gdx.audio.newMusic(Gdx.files.internal("EnemyAttack.mp3"));
         music2 = Gdx.audio.newMusic(Gdx.files.internal("EnemyAttack.mp3"));
-        swordAttackSound = Gdx.audio.newSound(Gdx.files.internal("SwordAttack.mp3"));
-        walkSound = Gdx.audio.newSound(Gdx.files.internal("walk.wav"));
+
+        heroAttackSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Hero_Attack.wav"));
+        heroWalkSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Walk_hero.wav"));
         potionSound = Gdx.audio.newSound(Gdx.files.internal("potionSound.wav"));
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+
     }
 
     /**
@@ -77,25 +79,25 @@ public class AssetsManager {
      *
      * @return The hero22 texture asset
      */
-    public static Texture getHero21(){
-        return hero21;
+    public static Texture getHeroTexture(){
+        return heroTexture;
 
     }
 
     /**
      *
-     * @return The tiles texture asset
+     * @return The tileTexture texture asset
      */
-    public static Texture getTiles(){
-        return tiles;
+    public static Texture getTileTexture(){
+        return tileTexture;
     }
 
     /**
      *
      * @return The enemy texture asset
      */
-    public static Texture getEnemy(){
-        return enemy;
+    public static Texture getEnemyTexture(){
+        return enemyTexture;
     }
 
     /**
@@ -110,16 +112,16 @@ public class AssetsManager {
      *
      * @return The sword button texture asset
      */
-    public static Texture getSwordButton(){
-        return swordButton;
+    public static Texture getAttackButtonTexture(){
+        return attackButtonTexture;
     }
 
     /**
      *
      * @return The walk button texture asset
      */
-    public static Texture getWalkbutton(){
-        return walkbutton;
+    public static Texture getWalkButtonTexture(){
+        return walkButtonTexture;
     }
 
     /**
@@ -132,10 +134,10 @@ public class AssetsManager {
 
     /**
      *
-     * @return The torch texture asset
+     * @return The torchTexture texture asset
      */
-    public static Texture getTorch(){
-        return torch;
+    public static Texture getTorchTexture(){
+        return torchTexture;
     }
 
     /**
@@ -206,16 +208,16 @@ public class AssetsManager {
      *
      * @return The sword attack sound asset
      */
-    public static Sound getSwordAttackSound(){
-        return swordAttackSound;
+    public static Sound getHeroAttackSound(){
+        return heroAttackSound;
     }
 
     /**
      *
      * @return The walk sound asset
      */
-    public static Sound getWalkSound(){
-        return walkSound;
+    public static Sound getHeroWalkSound(){
+        return heroWalkSound;
     }
 
     /**
@@ -236,14 +238,14 @@ public class AssetsManager {
 
     public static void dispose(){
         texture.dispose();
-        hero21.dispose();
-        tiles.dispose();
-        enemy.dispose();
+        heroTexture.dispose();
+        tileTexture.dispose();
+        enemyTexture.dispose();
         kingSkeleton.dispose();
-        swordButton.dispose();
-        walkbutton.dispose();
+        attackButtonTexture.dispose();
+        walkButtonTexture.dispose();
         background.dispose();
-        torch.dispose();
+        torchTexture.dispose();
         heroCloseUp.dispose();
         guard.dispose();
         item.dispose();
@@ -252,8 +254,8 @@ public class AssetsManager {
         light.dispose();
         music.dispose();
         music2.dispose();
-        swordAttackSound.dispose();
-        walkSound.dispose();
+        heroAttackSound.dispose();
+        heroWalkSound.dispose();
         potionSound.dispose();
         skin.dispose();
     }

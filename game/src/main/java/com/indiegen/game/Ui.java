@@ -49,7 +49,7 @@ public class Ui
 		brickRegion = new TextureRegion(tilesTexture, tileSize * 7, tileSize * 7, tileSize, tileSize);
 		grassRegion = new TextureRegion(tilesTexture, tileSize * 1, tileSize * 1, tileSize, tileSize);
 		groundRegion = new TextureRegion(tilesTexture, tileSize * 1, tileSize * 16, tileSize, tileSize);
-		button1 = new TextureRegion(assests.button1,0,0,32,32);
+		button1 = new TextureRegion(assests.attackButton,0,0,32,32);
 		walkbutton = new TextureRegion(assests.walkbutton,0,0,32,32);
 		guard = assests.guard;
 		item = assests.item;

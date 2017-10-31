@@ -1,5 +1,6 @@
 package com.indiegen.game.Actors;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -38,7 +39,7 @@ public abstract class CustomActor extends Actor implements GameActor {
     private TextureRegion[] guardFrames;
     private TextureRegion[] hitFrames;
     private int attack;
-
+    private Sound walkSound;
 
 
     @Override
@@ -358,5 +359,12 @@ public abstract class CustomActor extends Actor implements GameActor {
         return actionDone;
     }
 
+    public void setWalkSound(Sound walkSound)
+    {
+        this.walkSound = walkSound;
+    }
 
+    public Sound getWalkSound(){
+        return walkSound;
+    }
 }
