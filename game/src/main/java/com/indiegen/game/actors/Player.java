@@ -121,7 +121,9 @@ public class Player extends CustomActor
 
         //Sounds
 
-
+        setWalkSound(AssetsManager.getHeroWalkSound());
+        setAttackSound(AssetsManager.getHeroAttackSound());
+        setDeathSound(AssetsManager.getHeroDeathSound());
     }
 
 

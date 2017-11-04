@@ -40,6 +40,8 @@ public abstract class CustomActor extends Actor implements GameActor {
     private TextureRegion[] hitFrames;
     private int attack;
     private Sound walkSound;
+    private Sound attackSound;
+    private Sound deathSound;
 
 
     @Override
@@ -367,4 +369,23 @@ public abstract class CustomActor extends Actor implements GameActor {
     public Sound getWalkSound(){
         return walkSound;
     }
+
+    public void setAttackSound(Sound attackSound)
+    {
+        this.attackSound = attackSound;
+    }
+
+    public Sound getAttackSound(){
+        return attackSound;
+    }
+
+    public void setDeathSound(Sound deathSound)
+    {
+        this.deathSound = deathSound;
+    }
+
+    public Sound getDeathSound(){
+        return deathSound;
+    }
+
 }

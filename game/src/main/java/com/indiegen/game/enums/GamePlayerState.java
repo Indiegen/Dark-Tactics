@@ -15,7 +15,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
             actor.addAction(Actions.moveTo(actor.getCurX(), actor.getCurY(), .5f));
             actor.setAnimation(1);
             actor.setDefence(0);
-
+            actor.getWalkSound().play();
             return null;
         }
 
@@ -102,7 +102,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
 
             actor.setAnimation(2);
             actor.setDefence(0);
-
+            actor.getAttackSound().play();
             return null;
         }
 
@@ -298,6 +298,7 @@ public enum GamePlayerState implements StateMachine<CustomActor> {
         public Boolean enter(CustomActor actor, float delta) {
 
             actor.setAnimation(4);
+            actor.getDeathSound().play();
             return null;
         }
 

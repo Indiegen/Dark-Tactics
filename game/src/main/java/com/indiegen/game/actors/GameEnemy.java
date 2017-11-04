@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.indiegen.game.enums.GamePlayerState;
+import com.indiegen.game.utils.AssetsManager;
 import com.indiegen.game.utils.RectangleUtils;
 
 public class GameEnemy extends CustomActor {
@@ -109,6 +110,12 @@ public class GameEnemy extends CustomActor {
         setHitAnimation(new Animation(0.4f, getHitFrames()));
         getHitAnimation().setPlayMode(Animation.PlayMode.NORMAL);
 
+        //Sounds
+
+        setWalkSound(AssetsManager.getEnemyWalkSound());
+        setAttackSound(AssetsManager.getEnemyAttackSound());
+        setDeathSound(AssetsManager.getEnemyDeathSound());
+
         setAnimation(0);
 
         currentFrame = getAnimation().getKeyFrame(getDelta(), true);
@@ -121,6 +128,7 @@ public class GameEnemy extends CustomActor {
         initRects();
         addRect(new RectangleUtils(getX(), getY(), margin, margin));
         setTurnTexture(new TextureRegion(texture, 64, 64, 16, 16));
+
     }
 
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.indiegen.game.enums.GamePlayerState;
+import com.indiegen.game.utils.AssetsManager;
 import com.indiegen.game.utils.RectangleUtils;
 
 public class KingSkeleton extends GameEnemy
@@ -93,8 +94,15 @@ public class KingSkeleton extends GameEnemy
 
         setHitAnimation(new Animation(0.4f, getHitFrames()));
         getHitAnimation().setPlayMode(Animation.PlayMode.NORMAL);
-		
-		
+
+        //Sounds
+
+        setWalkSound(AssetsManager.getKingWalkSound());
+        setAttackSound(AssetsManager.getKingAttackSound());
+        setDeathSound(AssetsManager.getKingDeathSound());
+
+
+
         setAnimation(0);
 
         TextureRegion currentFrame = getAnimation().getKeyFrame(getDelta(), true);

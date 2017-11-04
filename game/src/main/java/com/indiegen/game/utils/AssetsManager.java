@@ -37,8 +37,15 @@ public class AssetsManager {
     private static Music music;
     private static Music music2;
     private static Sound heroAttackSound;
+    private static Sound enemyAttackSound;
+    private static Sound kingAttackSound;
     private static Sound heroWalkSound;
+    private static Sound enemyWalkSound;
+    private static Sound kingWalkSound;
     private static Sound potionSound;
+    private static Sound heroDeathSound;
+    private static Sound enemyDeathSound;
+    private static Sound kingDeathSound;
     private static Skin skin;
 
     public static void loadAssets() {
@@ -62,9 +69,15 @@ public class AssetsManager {
         music2 = Gdx.audio.newMusic(Gdx.files.internal("EnemyAttack.mp3"));
 
         heroAttackSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Hero_Attack.wav"));
-        heroWalkSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Walk_hero.wav"));
+        enemyAttackSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Enemy_Attack_1.wav"));
+        kingAttackSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Boss_Attack_1.wav"));
+        heroWalkSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Walk_Hero3.wav"));
         potionSound = Gdx.audio.newSound(Gdx.files.internal("potionSound.wav"));
-
+        enemyWalkSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Enemy_Walk.wav"));
+        kingWalkSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Boss_Walk.wav"));
+        heroDeathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Hero_Death.wav"));
+        enemyDeathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Enemy_death.wav"));
+        kingDeathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Boss_defeat.wav"));
     }
 
     /**
@@ -216,6 +229,24 @@ public class AssetsManager {
      *
      * @return The walk sound asset
      */
+
+    public static Sound getEnemyAttackSound(){
+        return enemyAttackSound;
+    }
+
+    /**
+     *
+     * @return The walk sound asset
+     */
+
+    public static Sound getKingAttackSound(){
+        return kingAttackSound;
+    }
+
+    /**
+     *
+     * @return The walk sound asset
+     */
     public static Sound getHeroWalkSound(){
         return heroWalkSound;
     }
@@ -226,6 +257,48 @@ public class AssetsManager {
      */
     public static Sound getPotionSound(){
         return potionSound;
+    }
+
+
+    /**
+     *
+     * @return The walk sound asset
+     */
+    public static Sound getEnemyWalkSound() {
+        return enemyWalkSound;
+    }
+
+
+    /**
+     *
+     * @return The walk sound asset
+     */
+    public static Sound getKingWalkSound() {
+        return kingWalkSound;
+    }
+
+    /**
+     *
+     * @return The death sound asset
+     */
+    public static Sound getHeroDeathSound() {
+        return heroDeathSound;
+    }
+
+    /**
+     *
+     * @return The death sound asset
+     */
+    public static Sound getEnemyDeathSound() {
+        return enemyDeathSound;
+    }
+
+    /**
+     *
+     * @return The death sound asset
+     */
+    public static Sound getKingDeathSound() {
+        return kingDeathSound;
     }
 
     /**
