@@ -3,6 +3,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.utils.Align;
 
 public class StoryText extends Actor
 {
@@ -14,18 +15,7 @@ public class StoryText extends Actor
     Texture icon;
     Texture startGame;
     Texture logoText;
-    String text1="Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n" +
-            "Esta es la historia del juego empieza con oliver en si cuardo despertando por el reloj despertador despues \n";
+    String text1="Esta es la historia del juego empieza con oliver en su cuarto despertando por el reloj despertador despues";
 
 
 
@@ -66,6 +56,7 @@ public class StoryText extends Actor
         setY(0);
 
         font = new BitmapFont();
+        font.getData().setScale(1f);
 
     }
 
@@ -99,19 +90,19 @@ public class StoryText extends Actor
         if(cloud4X>185)
             cloud4X=-85;
 
-        batch.draw(cloud1,(int)(getX()+cloud1X),getY()+200);
-        batch.draw(cloud2,(int)(getX()+cloud2X),getY()+250);
+        batch.draw(cloud1,getX()+cloud1X,getY()+200);
+        batch.draw(cloud2,getX()+cloud2X,getY()+250);
 
-        batch.draw(cloud1,(int)(getX()+cloud3X),getY()+220);
-        batch.draw(cloud2,(int)(getX()+cloud4X),getY()+280);
+        batch.draw(cloud1,getX()+cloud3X,getY()+220);
+        batch.draw(cloud2,getX()+cloud4X,getY()+280);
 
 
         batch.draw(column,143,176,column.getWidth(),column.getHeight());
 
-        batch.draw(logoText,180/2-logoText.getWidth()/20,150,logoText.getWidth()/10,logoText.getHeight()/10);
-        batch.draw(icon,180/2-icon.getWidth()/20,190,icon.getWidth()/10,icon.getHeight()/10);
+        //batch.draw(logoText,180/2-logoText.getWidth()/20,150,logoText.getWidth()/10,logoText.getHeight()/10);
+        //batch.draw(icon,180/2-icon.getWidth()/20,190,icon.getWidth()/10,icon.getHeight()/10);
 
-        font.draw(batch,text1,5,getY());
+        font.draw(batch,text1,5,(int)(delta*10),180, Align.topLeft,true);
         batch.end();
 
 
