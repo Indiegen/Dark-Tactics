@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.Align;
+import com.indiegen.game.utils.AssetsManager;
 
 public class StoryText extends Actor
 {
@@ -15,7 +16,13 @@ public class StoryText extends Actor
     Texture icon;
     Texture startGame;
     Texture logoText;
-    String text1="Esta es la historia del juego empieza con oliver en su cuarto despertando por el reloj despertador despues";
+    String text1=
+            "Day I - The Day I understood that I should wake up\n" +
+            "6:00 am - I start to hear strong vibrations in the distance accompanied by a " +
+            "shuddering sound ... it is the alarm - I start waking up to go to work, as is " +
+            "customary throughout my life awake with clothes, I go to the mirror and looked at me. " +
+            "At that moment I open my eyes slowly and look in a fixed way at my reflected face, a vague memory comes " +
+            "suddenly to my mind, that dream that frequently tormented me had returned.";
 
 
 
@@ -33,7 +40,7 @@ public class StoryText extends Actor
     public BitmapFont font;
     public StoryText()
     {
-        background = new Texture(Gdx.files.internal("titleScreen.png"));
+        background = AssetsManager.getStoryBackground();
         stars = new Texture(Gdx.files.internal("stars.png"));
         moon = new Texture(Gdx.files.internal("moon.png"));
         clouds = new Texture(Gdx.files.internal("clouds.png"));
@@ -43,9 +50,9 @@ public class StoryText extends Actor
 
         starsFrames = new TextureRegion[4];
         starsFrames[0] = new TextureRegion(stars,0,0,7,7);
-        starsFrames[1] =new TextureRegion(stars,7,0,7,7);
-        starsFrames[2] =new TextureRegion(stars,14,0,7,7);
-        starsFrames[3] =new TextureRegion(stars,21,0,7,7);
+        starsFrames[1] = new TextureRegion(stars,7,0,7,7);
+        starsFrames[2] = new TextureRegion(stars,14,0,7,7);
+        starsFrames[3] = new TextureRegion(stars,21,0,7,7);
 
         cloud1 = new TextureRegion(clouds,0,0,83,30);
         cloud2 = new TextureRegion(clouds,83,30,80,30);
@@ -66,7 +73,7 @@ public class StoryText extends Actor
         // TODO: Implement this method
         //delta += Gdx.graphics.getDeltaTime();
 
-        batch.draw(background,0,0,background.getWidth(),background.getHeight());
+        //batch.draw(background,-80,0,background.getWidth()*.8f,background.getHeight()*.8f);
         batch.draw(twinkle.getKeyFrame(delta),50,250);
 
         batch.draw(twinkle.getKeyFrame(delta+2),100,270);
@@ -76,7 +83,7 @@ public class StoryText extends Actor
         batch.draw(twinkle.getKeyFrame(delta+3),110,200);
         batch.draw(twinkle.getKeyFrame(delta+4),30,220);
         //batch.draw(stars,getX(),getY(),stars.getWidth(),stars.getHeight());
-        batch.draw(moon,110,(int)(getY()+250+delta*0.2f),moon.getWidth(),moon.getHeight());
+        //batch.draw(moon,110,(int)(getY()+250+delta*0.2f),moon.getWidth(),moon.getHeight());
 
         if(cloud1X>120)
             cloud1X=-85;
@@ -90,14 +97,14 @@ public class StoryText extends Actor
         if(cloud4X>185)
             cloud4X=-85;
 
-        batch.draw(cloud1,getX()+cloud1X,getY()+200);
-        batch.draw(cloud2,getX()+cloud2X,getY()+250);
+        //batch.draw(cloud1,getX()+cloud1X,getY()+200);
+        //batch.draw(cloud2,getX()+cloud2X,getY()+250);
 
-        batch.draw(cloud1,getX()+cloud3X,getY()+220);
-        batch.draw(cloud2,getX()+cloud4X,getY()+280);
+        //batch.draw(cloud1,getX()+cloud3X,getY()+220);
+        //batch.draw(cloud2,getX()+cloud4X,getY()+280);
 
 
-        batch.draw(column,143,176,column.getWidth(),column.getHeight());
+        //batch.draw(column,143,176,column.getWidth(),column.getHeight());
 
         //batch.draw(logoText,180/2-logoText.getWidth()/20,150,logoText.getWidth()/10,logoText.getHeight()/10);
         //batch.draw(icon,180/2-icon.getWidth()/20,190,icon.getWidth()/10,icon.getHeight()/10);

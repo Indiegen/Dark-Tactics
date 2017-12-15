@@ -34,8 +34,13 @@ public class AssetsManager {
     private static Texture item2;
     private static Texture hmi;
     private static Texture light;
+    private static Texture storyBackground;
+    private static Texture dialogBoxTexture;
+    private static Texture treeBranches;
+
     private static Music music;
     private static Music music2;
+
     private static Sound heroAttackSound;
     private static Sound enemyAttackSound;
     private static Sound kingAttackSound;
@@ -55,7 +60,7 @@ public class AssetsManager {
         enemyTexture = new Texture(Gdx.files.internal("skull.png"));
         kingSkeleton = new Texture(Gdx.files.internal("sprite_king.png"));
         attackButtonTexture = new Texture(Gdx.files.internal("sword.png"));
-        walkButtonTexture = new Texture(Gdx.files.internal("walkbutton2.png"));
+        walkButtonTexture = new Texture(Gdx.files.internal("walkButton2.png"));
         background = new Texture(Gdx.files.internal("Background.png"));
         hmi = new Texture(Gdx.files.internal("hmi.png"));
         light = new Texture(Gdx.files.internal("Picture3.png"));
@@ -64,6 +69,10 @@ public class AssetsManager {
         guard = new Texture(Gdx.files.internal("guard.png"));
         item = new Texture(Gdx.files.internal("item.png"));
         item2 = new Texture(Gdx.files.internal("item2.png"));
+        storyBackground = new Texture(Gdx.files.internal("story.jpg"));
+        dialogBoxTexture = new Texture(Gdx.files.internal("dialogBox5.png"));
+        treeBranches = new Texture(Gdx.files.internal("treeBranches.png"));
+
 
         music = Gdx.audio.newMusic(Gdx.files.internal("EnemyAttack.mp3"));
         music2 = Gdx.audio.newMusic(Gdx.files.internal("EnemyAttack.mp3"));
@@ -80,6 +89,9 @@ public class AssetsManager {
         kingDeathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Boss_defeat.wav"));
     }
 
+    public static Texture getStoryBackground() {
+        return storyBackground;
+    }
     /**
      *
      * @return The floor texture asset
@@ -199,6 +211,18 @@ public class AssetsManager {
      */
     public static Texture getLight(){
         return light;
+    }
+
+    /**
+     *
+     * @return The dialog box texture asset
+     */
+    public static Texture getDialogBox(){
+        return dialogBoxTexture;
+    }
+
+    public static Texture getTreeBranches() {
+        return treeBranches;
     }
 
     /**

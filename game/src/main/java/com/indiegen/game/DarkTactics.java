@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 
 
 import com.badlogic.gdx.Game;
+import com.indiegen.game.utils.AssetsManager;
 
 public class DarkTactics extends Game implements ApplicationListener
 {
@@ -14,6 +15,7 @@ public class DarkTactics extends Game implements ApplicationListener
 	@Override
 	public void create()
 	{
+		AssetsManager.loadAssets();
 		batch = new SpriteBatch();
 	    //world = new World(new Vector2(1,1),true);
 		titleScreens screen1 = new titleScreens(this, batch);

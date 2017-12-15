@@ -1,11 +1,18 @@
 package com.indiegen.game;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.Pixmap.*;
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.*;
-import com.badlogic.gdx.scenes.scene2d.utils.*;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
+import com.indiegen.game.utils.AssetsManager;
 
 public class Ui
 {
@@ -20,7 +27,7 @@ public class Ui
 	TextureRegion groundRegion;
 	TextureRegion button1;
 	TextureRegion walkbutton;
-	Dialog  endDialog;
+	//Dialog  endDialog;
 	
 	int tileSize=32;
 	int margen=64*3;
@@ -31,6 +38,8 @@ public class Ui
 	TextButton moveButton;
 	TextButton guardButton;
 	TextButton itemButton;
+	TextButton dialogBox;
+
 	HealthBar HealthBar;
 	Message message;
 	CloseUp closeUp;
@@ -66,10 +75,11 @@ public class Ui
 		skin.add("upGuard",guard);
 		skin.add("upItem",item);
 		skin.add("upItem2",item2);
+		skin.add("dialogBox", AssetsManager.getDialogBox());
 
 		// Store the default libgdx font under the name "default".
 		BitmapFont bfont=new BitmapFont();
-		//bfont.scale(0.5f);
+		bfont.getData().setScale(4f);
 		skin.add("default", bfont);
 
 		// Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
@@ -83,14 +93,14 @@ public class Ui
 		skin.add("default", textButtonStyle);
 		
 		
-		TextButtonStyle textButtonStyle2 = new TextButtonStyle();
-		textButtonStyle2.up = skin.newDrawable("upWalk");
-		textButtonStyle2.down = skin.newDrawable("down");
-		textButtonStyle2.checked = skin.newDrawable("upWalk");
-		textButtonStyle2.over = skin.newDrawable("upWalk");
+		TextButtonStyle walkStyle = new TextButtonStyle();
+		walkStyle.up = skin.newDrawable("upWalk");
+		walkStyle.down = skin.newDrawable("down");
+		walkStyle.checked = skin.newDrawable("upWalk");
+		walkStyle.over = skin.newDrawable("upWalk");
 		
-		textButtonStyle2.font = skin.getFont("default");
-		skin.add("walk", textButtonStyle2);
+		walkStyle.font = skin.getFont("default");
+		skin.add("walk", walkStyle);
 		
 		TextButtonStyle guardStyle = new TextButtonStyle();
 		guardStyle.up = skin.newDrawable("upGuard");
@@ -109,16 +119,22 @@ public class Ui
 
 		itemStyle.font = skin.getFont("default");
 		skin.add("default", itemStyle);
-		
-		
-		
+
+		TextButtonStyle dialogBoxStyle = new TextButtonStyle();
+		dialogBoxStyle.up = skin.newDrawable("dialogBox");
+		dialogBoxStyle.down = skin.newDrawable("dialogBox");
+		dialogBoxStyle.checked = skin.newDrawable("dialogBox");
+		dialogBoxStyle.over = skin.newDrawable("dialogBox");
+
+		dialogBoxStyle.font = skin.getFont("default");
+		skin.add("dialogBox", dialogBoxStyle);
 		
 		attackButton = new TextButton("", textButtonStyle);
 		attackButton.setPosition(1000, 200);
 		attackButton.setBounds(0,0,margen,margen);
 		
 		
-		moveButton = new TextButton("", textButtonStyle2);
+		moveButton = new TextButton("", walkStyle);
 		moveButton.setPosition(margen, margen);
 		moveButton.setBounds(0,0,margen,margen);
 		
@@ -129,8 +145,18 @@ public class Ui
 		itemButton = new TextButton("", itemStyle);
 		itemButton.setPosition(margen*4, margen);
 		itemButton.setBounds(0,0,margen,margen);
-		
-		
+
+		dialogBox = new TextButton("", dialogBoxStyle);
+		dialogBox.setPosition(0, margen *3);
+		dialogBox.setBounds(0,0,1080,margen*2);
+        dialogBox.getLabel().setAlignment(Align.topLeft);
+        dialogBox.getLabel().setWrap(true);
+        dialogBox.getLabel().setPosition(5,5);
+        dialogBox.pad(50);
+
+        dialogBox.setText("Oliver - \"Te mataré maldito esqueleto\"\n" +
+                "Rey esqueleto - \"Jajaja esqueleto?...");
+
 		HealthBar = new HealthBar();
 		
 		
@@ -149,7 +175,7 @@ public class Ui
 					myCallBack.buttonMove();
 				}
 			});
-			
+
 		getItemButton().addListener(new ChangeListener() {
 				public void changed(ChangeEvent event, Actor actor)
 				{
@@ -274,7 +300,14 @@ public class Ui
 	{
 		return attackButton;
 	}
-	
-	
+
+
+	public TextButton getDialogBox() {
+		return dialogBox;
+	}
+
+	public void setDialogBox(TextButton dialogBox) {
+		this.dialogBox = dialogBox;
+	}
 	
 }
