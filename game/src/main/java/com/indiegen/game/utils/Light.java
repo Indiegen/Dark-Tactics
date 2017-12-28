@@ -1,8 +1,10 @@
 package com.indiegen.game.utils;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.RandomXS128;
+import com.indiegen.game.Actors.CustomActor;
 
 public class Light
 {
@@ -18,6 +20,94 @@ public class Light
     float maxSize=2;
     float minSize=1;
     float size=96;
+    float width=0, Height=0;
+    Texture texture;
+
+
+    public Light(Batch batch, int col, int row)
+	{
+
+	}
+
+	public Light(Batch batch, float x, float y, Color color)
+	{
+        this.batch=batch;
+        rand = new RandomXS128();
+        setColor(color);
+        setTexture(AssetsManager.getLight());
+	}
+
+    public void draw()
+
+    {
+        batch.draw(getTexture(), getX(), getY(), getWidth(), getHeight());
+
+    }
+
+	public void draw(CustomActor actor)
+	
+	{
+		batch.draw(getTexture(), getX(), getY(), getWidth(), getHeight());
+
+	}
+
+    public void drawFix()
+    {
+        batch.draw(getTexture(), getX(), getY(), getWidth(), getHeight());
+
+    }
+
+    public void drawFix(CustomActor actor)
+
+    {
+        setX(actor.getX()- getWidth() / 2 +32);
+        setY(actor.getY()- getHeight() / 2 +32);
+        batch.setColor(getColor());
+        batch.draw(getTexture(), getX(), getY(), getWidth(), getHeight());
+        batch.setColor(new Color(1, 1, 1,1));
+
+
+    }
+
+    public float getDelta() {
+        return delta;
+    }
+
+    public void setDelta(float delta) {
+        this.delta = delta;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return Height;
+    }
+
+    public void setHeight(float height) {
+        Height = height;
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
 
     public float getMaxSize() {
         return maxSize;
@@ -36,13 +126,15 @@ public class Light
     }
 
     public float getSize() {
+
         return size;
     }
 
     public void setSize(float size) {
         this.size = size;
+        setWidth(size);
+        setHeight(size);
     }
-
 
     public float getLightSize() {
         return lightSize;
@@ -55,7 +147,7 @@ public class Light
     float lightSize=64;
 
     public float getX() {
-        return x-lightSize/2+32;
+        return x;
     }
 
     public void setX(float x) {
@@ -63,53 +155,11 @@ public class Light
     }
 
     public float getY() {
-        return y-lightSize/2+32;
+        return y;
     }
 
     public void setY(float y) {
         this.y = y;
     }
-
-    public Light(Batch batch, int col, int row)
-	{
-		rand = new RandomXS128();
-		this.batch=batch;
-		this.x = 64 * col - lightSize / 2 +32;
-		this.y = 64 * row - lightSize / 2 +32;
-		this.color = new Color(1f, .6f, .3f,1);
-		setMaxSize(2);
-		setMinSize(1);
-	}
-
-	public Light(Batch batch, float x, float y, Color color)
-	{
-		rand = new RandomXS128();
-		this.batch=batch;
-		this.x = x;
-		this.y = y;
-		this.color = color;
-	}
-
-	public void draw()
-	
-	{
-		delta=delta+inc*incDir;
-		alpha=alpha+inc*incDir;
-		lightSize=size*delta;
-		if(delta > getMaxSize())
-		{
-			incDir=-1;
-			inc = (float)(rand.nextFloat()*.009+.005);
-		}
-
-		if(delta<getMinSize()){
-			incDir=1;
-			inc = (float)(rand.nextFloat()*.009+.005);
-
-		}
-		batch.setColor(color.r, color.g, color.b, delta/2.5f-.05f);
-		
-		batch.draw(AssetsManager.getLight(), getX(), getY(), lightSize, lightSize);
-	}
 
 }

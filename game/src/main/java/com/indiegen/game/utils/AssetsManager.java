@@ -37,6 +37,10 @@ public class AssetsManager {
     private static Texture storyBackground;
     private static Texture dialogBoxTexture;
     private static Texture treeBranches;
+    private static Texture slash1;
+    private static Texture slash2;
+    private static Texture slash3;
+
 
     private static Music music;
     private static Music music2;
@@ -72,6 +76,9 @@ public class AssetsManager {
         storyBackground = new Texture(Gdx.files.internal("story.jpg"));
         dialogBoxTexture = new Texture(Gdx.files.internal("dialogBox5.png"));
         treeBranches = new Texture(Gdx.files.internal("treeBranches.png"));
+        slash1 = new Texture(Gdx.files.internal("Slash1.png"));
+        slash2 = new Texture(Gdx.files.internal("Slash2.png"));
+        slash3 = new Texture(Gdx.files.internal("Slash3.png"));
 
 
         music = Gdx.audio.newMusic(Gdx.files.internal("EnemyAttack.mp3"));
@@ -223,6 +230,18 @@ public class AssetsManager {
 
     public static Texture getTreeBranches() {
         return treeBranches;
+    }
+
+    public static Texture getSlash1() {
+        return slash1;
+    }
+
+    public static Texture getSlash2() {
+        return slash2;
+    }
+
+    public static Texture getSlash3() {
+        return slash3;
     }
 
     /**
