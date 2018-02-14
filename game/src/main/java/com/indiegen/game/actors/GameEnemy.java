@@ -341,4 +341,9 @@ public class GameEnemy extends CustomActor {
     public BoundingBox getBoundingBox() {
         return boundingBox;
     }
+
+    @Override
+    public void drawLights(Batch batch) {
+        super.drawLights(batch);
+    }
 }

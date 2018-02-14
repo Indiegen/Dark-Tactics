@@ -2,6 +2,7 @@ package com.indiegen.game.Actors;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -43,11 +44,25 @@ public abstract class CustomActor extends Actor implements GameActor {
     private Sound attackSound;
     private Sound deathSound;
 
+    public Batch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(Batch batch) {
+        this.batch = batch;
+    }
+
+    Batch batch;
 
     @Override
     public void setFontAlpha(float fontAlpha) {
 
         this.fontAlpha = fontAlpha;
+    }
+
+    @Override
+    public void drawLights(Batch batch) {
+
     }
 
     @Override

@@ -786,9 +786,9 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
         torch4.draw();
         torch5.draw();
 
+        king.drawLights(batch);
 
-        kingAuraRed.draw(king);
-        slash.draw(player);
+        slash.draw(batch,player);
 
 
         batch.end();
@@ -830,12 +830,8 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
         torch4.draw();
         torch5.draw();
 
-        kingAura.setX(king.getX());
-        kingAura.setY(king.getY());
-        kingAura.drawFix(king);
-
-        slash.draw(player);
-
+        king.drawLights(batch);
+        slash.draw(batch, player);
 
         batch.end();
 

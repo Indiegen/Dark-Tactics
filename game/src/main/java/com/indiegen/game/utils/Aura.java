@@ -34,8 +34,21 @@ public class Aura extends Light {
 
     }
 
+    public Aura(float x, float y, Color color)
+    {
+        super(x, y, color);
+        rand = new RandomXS128();
+        this.batch=batch;
+        this.x = x-getWidth()/2+32;
+        this.y = y-getHeight()/2+32;
+        this.color = color;
+        setMaxSize(2);
+        setMinSize(1);
+        setTexture(AssetsManager.getLight());
+        setSize(64);
+    }
     @Override
-    public void draw(CustomActor actor) {
+    public void draw(Batch batch, CustomActor actor) {
         delta=delta+inc*incDir;
         alpha=alpha+inc*incDir;
         setHeight(size*delta*.8f);
@@ -55,9 +68,7 @@ public class Aura extends Light {
 
         }
         setColor(new Color(1f, 0, 0,(delta-.99f)/2));
-        batch.setColor(getColor());
-        super.draw(actor);
-        batch.setColor(new Color(1, 1, 1,1));
+        super.draw(batch, actor);
     }
 
     @Override

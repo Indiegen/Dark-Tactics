@@ -37,6 +37,15 @@ public class Light
         setTexture(AssetsManager.getLight());
 	}
 
+    public Light(float width, float height, Color color)
+    {
+        setWidth(width);
+        setHeight(height);
+        rand = new RandomXS128();
+        setColor(color);
+        setTexture(AssetsManager.getLight());
+    }
+
     public void draw()
 
     {
@@ -44,7 +53,7 @@ public class Light
 
     }
 
-	public void draw(CustomActor actor)
+	public void draw(Batch batch, CustomActor actor)
 	
 	{
 		batch.draw(getTexture(), getX(), getY(), getWidth(), getHeight());

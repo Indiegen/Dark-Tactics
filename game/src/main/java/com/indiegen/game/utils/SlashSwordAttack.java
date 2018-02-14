@@ -45,7 +45,7 @@ public class SlashSwordAttack extends Light {
     }
 
     @Override
-    public void draw(CustomActor actor) {
+    public void draw(Batch batch, CustomActor actor) {
         if (isShow())
         {
             setDelta(getDelta() + Gdx.graphics.getDeltaTime());

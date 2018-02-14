@@ -1,6 +1,7 @@
 package com.indiegen.game.Actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,11 +12,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.indiegen.game.enums.GamePlayerState;
 import com.indiegen.game.utils.AssetsManager;
+import com.indiegen.game.utils.Aura;
+import com.indiegen.game.utils.Light;
 import com.indiegen.game.utils.RectangleUtils;
 
 public class KingSkeleton extends GameEnemy
 {
 
+    Light aura;
 
     public KingSkeleton(Texture texture, int x, int y, String name){
 		super(texture,1,2,"ey");
@@ -115,7 +119,8 @@ public class KingSkeleton extends GameEnemy
         initRects();
         addRect(new RectangleUtils(getX(), getY(), margin, margin));
         setTurnTexture(new TextureRegion(texture, 132, 64, 16, 16));
-   
+
+        aura = new Aura(1000,1000,new Color(1,0,0,1));
 	}
 
 	@Override
@@ -125,9 +130,10 @@ public class KingSkeleton extends GameEnemy
 		super.draw(batch, parentAlpha);
 		setDelta(getDelta() + Gdx.graphics.getDeltaTime());
 	}
-	
-	
 
-	
-	
+    @Override
+    public void drawLights(Batch batch) {
+        super.drawLights(batch);
+        aura.draw(batch,this);
+    }
 }
