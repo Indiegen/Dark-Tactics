@@ -75,7 +75,7 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
     private FrameBuffer lightBuffer;
     Music music1;
     private Game thisGame;
-    private Assests assests;
+
     private ShapeRenderer shape;
     private Viewport uiViewport;
     private Camera camera = new OrthographicCamera(hmiWidth, hmiHeight);
@@ -104,7 +104,7 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
         Table table = new Table();
         table.setFillParent(true);
         uiStage.addActor(table);
-        assests = new Assests();
+
 
 
 
@@ -112,7 +112,7 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
         music1 = AssetsManager.getMusic2();
 
 
-        Texture tilesTexture = assests.tiles;
+        Texture tilesTexture = AssetsManager.getTileTexture();
         int tileSize = 64;
         TextureRegion tileRegion = new TextureRegion(tilesTexture, tileSize * 19, tileSize * 6, tileSize, tileSize);
         TextureRegion brickRegion = new TextureRegion(tilesTexture, tileSize * 7, tileSize * 7, tileSize, tileSize);
@@ -138,10 +138,10 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
 
 
         font = new BitmapFont();
-        ui = new Ui(this, assests);
+        ui = new Ui(this);
 
 
-        mydialog = new MyDialog(this, uiStage, assests);
+        mydialog = new MyDialog(this, uiStage);
 
         table.addActor(ui.getAttackButton());
         table.addActor(ui.getMoveButton());
@@ -153,7 +153,7 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
         table.addActor(ui.getDialogBox());
 
         initScreen();
-        maps = new Maps(assests);
+        maps = new Maps();
 
 
     }
@@ -234,7 +234,7 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
 
         actors.add(new GameEnemy(AssetsManager.getEnemyTexture(), margen * 4, margen * 5, "1"));
         actors.add(new GameEnemy(AssetsManager.getEnemyTexture(), margen * 10, margen * 6, "2"));
-        actors.add(new KingSkeleton(assests.kingSkeleton, margen * 3, margen * 2, "king"));
+        actors.add(new KingSkeleton(AssetsManager.getKingSkeleton(), margen * 3, margen * 2, "king"));
         king = actors.get(3);
         //actors.add(new KingSkeleton2(assests.kingSkeleton, margen * 3, margen * 1, "4"));
         //actors.add(new KingSkeleton(assests.kingSkeleton, margen*1,margen*2,"Boss"));
@@ -267,7 +267,7 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
                 actingActor = player;
                 player.setFatigue(player.getFatigue() + 30);
 
-                assests.potionSound.play();
+                AssetsManager.getPotionSound().play();
                 player.setActionDone(true);
             }
         }
@@ -822,7 +822,7 @@ class GamePlay implements Screen, GestureListener, callBack, Levels, InputProces
 
 // and render the sprite
 
-        batch.draw(assests.light, camera.position.x - assests.light.getWidth() / 4, camera.position.y - assests.light.getHeight() / 4, assests.light.getWidth()/2, assests.light.getHeight()/2);
+        batch.draw(AssetsManager.getLight(), camera.position.x - AssetsManager.getLight().getWidth() / 4, camera.position.y - AssetsManager.getLight().getHeight() / 4, AssetsManager.getLight().getWidth()/2, AssetsManager.getLight().getHeight()/2);
 
         torch1.draw();
         torch2.draw();

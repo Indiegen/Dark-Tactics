@@ -1,4 +1,4 @@
-package com.indiegen.game;
+package com.indiegen.game.enums;
 
 public interface StateMachine<CustomActor> {
     void update(CustomActor player, float delta);

@@ -13,8 +13,8 @@ import java.util.Iterator;
 class Blood extends Actor
 {
 	private ShapeRenderer shape;
-	CustomActor actor;
-	private ArrayList<Particle> bloods = new ArrayList<Particle>();
+
+	private ArrayList<Particle> bloods = new ArrayList<>();
 
 
 
@@ -48,7 +48,7 @@ class Blood extends Actor
 		while(itr.hasNext()){
 			if (itr.next().getAlpha()<= 0){
 
-				bloods.remove(itr);
+				final boolean remove = bloods.remove(itr);
 			}
 		}
 

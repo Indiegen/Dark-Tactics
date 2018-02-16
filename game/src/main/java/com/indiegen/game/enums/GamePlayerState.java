@@ -2,7 +2,6 @@ package com.indiegen.game.enums;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.indiegen.game.Actors.CustomActor;
-import com.indiegen.game.StateMachine;
 
 public enum GamePlayerState implements StateMachine<CustomActor> {
 

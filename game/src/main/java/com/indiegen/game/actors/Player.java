@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.*;
-import com.indiegen.game.Assests;
+
 import com.indiegen.game.enums.*;
 import com.indiegen.game.utils.*;
 
@@ -32,7 +32,6 @@ public class Player extends CustomActor
     private int potions = 1;
     private int attack;
     private int defence=0;
-    private Assests assests;
 
 
     public Boolean isActing()

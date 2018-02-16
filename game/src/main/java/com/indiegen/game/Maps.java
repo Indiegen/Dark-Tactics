@@ -2,6 +2,7 @@ package com.indiegen.game;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.indiegen.game.utils.AssetsManager;
 
 public class Maps
 {
@@ -36,7 +37,7 @@ public class Maps
 
 	Animation torchAnimation;
 
-	Assests assests;
+
 
 	public int[][] map=	{
 			{ 34 , 35 , 35 , 6 , 35 , 35 , 6 , 35 , 35 , 34 ,},
@@ -62,13 +63,13 @@ public class Maps
 			{ 6 , 3 , 3 , 6 , 3 , 3 , 6 , 3 , 3 , 6 ,},
 	};
 
-	public Maps(Assests assests)
+	public Maps()
 
 	{
 		torches = new TextureRegion[3];
 
-		this.assests = assests;
-		tilesTexture = assests.tiles;
+
+		tilesTexture = AssetsManager.getTileTexture();
 		tileRegion = new TextureRegion(tilesTexture, tileSize * 20, tileSize * 9, tileSize, tileSize);
 
 		dirtyGrass0 = new TextureRegion(tilesTexture, tileSize * 6, tileSize * 6, tileSize, tileSize);
@@ -95,9 +96,9 @@ public class Maps
 		grassRegion = new TextureRegion(tilesTexture, tileSize * 1, tileSize * 1, tileSize, tileSize);
 		groundRegion = new TextureRegion(tilesTexture, tileSize * 0, tileSize * 1, tileSize, tileSize);
 		doorRegion = new TextureRegion(tilesTexture, tileSize * 5, tileSize * 19, tileSize, tileSize);
-		torches[0]=(new TextureRegion(assests.torch, tileSize * 0, tileSize * 0, tileSize, tileSize));
-		torches[1]=(new TextureRegion(assests.torch, tileSize * 1, tileSize * 0, tileSize, tileSize));
-		torches[2]=(new TextureRegion(assests.torch, tileSize * 0, tileSize * 1, tileSize, tileSize));
+		torches[0]=(new TextureRegion(AssetsManager.getTorchTexture(), tileSize * 0, tileSize * 0, tileSize, tileSize));
+		torches[1]=(new TextureRegion(AssetsManager.getTorchTexture(), tileSize * 1, tileSize * 0, tileSize, tileSize));
+		torches[2]=(new TextureRegion(AssetsManager.getTorchTexture(), tileSize * 0, tileSize * 1, tileSize, tileSize));
 
 		torchAnimation = new Animation(0.2f, torches);
 		torchAnimation.setPlayMode(Animation.PlayMode.LOOP);
